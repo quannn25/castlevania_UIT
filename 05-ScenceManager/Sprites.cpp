@@ -29,6 +29,8 @@ void CSprite::Draw(float x, float y, int alpha)
 	game->Draw(x, y, texture, left, top, right, bottom, alpha);
 }
 
+
+
 void CSprite::DrawFlipX(float x, float y, int alpha)
 {
 	RECT r = GetRectFrame();
@@ -44,6 +46,12 @@ void CSprite::DrawFlipX(float x, float y, int alpha)
 	CGame * game = CGame::GetInstance();
 	game->DrawFlipX(x, y, texture, r, alpha);
 	spriteHandler->SetTransform(&AA);
+}
+
+void CSprite::DrawWithRect(RECT r, float x, float y, int alpha)
+{
+	CGame * game = CGame::GetInstance();
+	game->Draw(x, y, texture, r.left, r.top, r.right, r.bottom, alpha);
 }
 
 RECT CSprite::GetRectFrame()

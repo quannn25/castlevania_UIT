@@ -1,20 +1,11 @@
 #include "Brick.h"
 
 
+
 void CBrick::Render()
 {
 
-
 	animation_set->at(0)->Render(x, y);
-
-}
-
-void CBrick::Render(Camera * camera)
-{
-
-	D3DXVECTOR2 pos = camera->Transform(x, y);
-
-	animation_set->at(0)->Render(pos.x, pos.y);
 
 }
 

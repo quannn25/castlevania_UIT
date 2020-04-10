@@ -35,8 +35,10 @@ void CGame::Init(HWND hWnd)
 	d3dpp.BackBufferHeight = r.bottom + 1;
 	d3dpp.BackBufferWidth = r.right + 1;
 
-	screen_height = r.bottom + 1;
-	screen_width = r.right + 1;
+	Camera::GetInstance()->SetScreenHeight(r.bottom + 1);
+	Camera::GetInstance()->SetScreenWidth(r.right + 1);// thay 2 dong duoi
+	//screen_height = r.bottom + 1;
+	//screen_width = r.right + 1;
 
 	d3d->CreateDevice(
 		D3DADAPTER_DEFAULT,
@@ -65,7 +67,8 @@ void CGame::Init(HWND hWnd)
 */
 void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha)
 {
-	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
+	Camera * cam = Camera::GetInstance();
+	D3DXVECTOR3 p(x - cam->Getx(), y - cam->Gety(), 0);
 	RECT r; 
 	r.left = left;
 	r.top = top;
@@ -76,8 +79,9 @@ void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top
 
 void CGame::DrawFlipX(float x, float y, LPDIRECT3DTEXTURE9 texture, RECT r, int alpha)
 {
-	x += cam_x;
-	y += cam_y;
+	Camera * cam = Camera::GetInstance();
+	x += cam->Getx();
+	y += cam->Gety();
 	//D3DXVECTOR3 p(floor(x), floor(y), 0); // https://docs.microsoft.com/vi-vn/windows/desktop/direct3d9/directly-mapping-texels-to-pixels
 	// Try removing floor() to see blurry Mario
 	D3DXVECTOR3 p(trunc(x), trunc(y), 0);

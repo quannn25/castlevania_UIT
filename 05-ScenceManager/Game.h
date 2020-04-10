@@ -36,11 +36,6 @@ class CGame
 
 	LPKEYEVENTHANDLER keyHandler;
 
-	float cam_x = 0.0f;
-	float cam_y = 0.0f;
-
-	int screen_width;
-	int screen_height; // 4 dong tren xu ly camera cho main.cpp
 
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
@@ -63,8 +58,6 @@ public:
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 
-	int GetScreenWidth() { return screen_width; }
-	int GetScreenHeight() { return screen_height; }
 
 	static void SweptAABB(
 		float ml,			// move left 
@@ -85,7 +78,6 @@ public:
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
-	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 
 	static CGame * GetInstance();
 

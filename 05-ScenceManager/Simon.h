@@ -72,7 +72,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 
 
-	virtual void Render(Camera * camera);
 	virtual void Render();
 
 	void SetState(int state);

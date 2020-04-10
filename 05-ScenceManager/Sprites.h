@@ -22,6 +22,8 @@ public:
 
 	void Draw(float x, float y, int alpha = 255);
 
+	void DrawWithRect(RECT rect, float x, float y, int alpha = 255);
+
 	RECT GetRectFrame();
 };
 

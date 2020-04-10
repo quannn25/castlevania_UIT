@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Simon.h"
+#include "map.h"
 
 class CPlayScene: public CScene
 {
@@ -16,11 +17,14 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 
+	Map *titleMap;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_TITLEMAP(string line);
 public: 
 	CPlayScene(int id, LPCWSTR filePath);
 

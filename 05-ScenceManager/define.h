@@ -8,9 +8,6 @@
 #include <map> 
 using namespace std;
 
-#define WINDOW_WIDTH 512
-#define WINDOW_HEIGHT 448
-
 #define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)  
 #define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f) 
 
@@ -18,13 +15,14 @@ using namespace std;
 #define SHOWBOX_PINK 0
 
 
-
-
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 448
 
 
-
+#define TILE_FRAME_WIDTH	64
+#define TILE_FRAME_HEIGHT	64
+#define ID_TEXTURE_TILEMAP	30
+#define ID_SPRITE_TILEMAP	50001
 
 extern int Window_Width;
 extern int Window_Height;

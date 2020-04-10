@@ -1,105 +1,114 @@
-﻿//#include "Map.h"
-//
-//
-//
-//Map::Map()
-//{
-//	LoadMap();
-//}
-//
-//
-//Map::~Map()
-//{
-//}
-//
-//void Map::LoadMap()
-//{
-//	ReadMapTXT("Resources/map/1.txt");
-//	TileTexture = new CTextures("Resources/map/1.png", ColTile, RowTile, CountTileFrame);
-//	TileSprite = new CSprite(TileTexture, 0);
-//
-//
-//	MapWidth = (TileTexture->FrameHeight)*(ColumnMatrix);  // Chiều dài của MAP
-//	MapHeight = (TileTexture->FrameHeight)*(RowMatrix* +1); //  chiều cao của MAP
-//
-//
-//	ScreenColumn = Window_Width / TileTexture->FrameWidth;
-//	ScreenRow = Window_Height / TileTexture->FrameHeight;
-//
-//
-//
-//
-//}
-//
-//void Map::ReadMapTXT(char * filename)
-//{
-//	ifstream fileIn;
-//	fileIn.open(filename, ios::in);
-//
-//	if (fileIn)
-//	{
-//		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
-//		for (int i = 0; i < RowMatrix; i++)
-//		{
-//			for (int j = 0; j < ColumnMatrix; j++)
-//			{
-//				fileIn >> TileMap[i][j];
-//			}
-//		}
-//		fileIn.close();
-//	}
-//
-//
-//
-//
-//
-//}
-//
-//void Map::DrawMap(Camera *camera)
-//{
-//	/*
-//
-//	row = int(camera->GetViewport().y) / TileTexture->FrameHeight;
-//	column = int(camera->GetViewport().x) / TileTexture->FrameHeight;
-//
-//	for (int i = 0; i < ScreenRow; i++)
-//	{
-//	for (int j = 0; j < ScreenColumn; j++)
-//	{
-//	TileSprite->SelectIndex(TileMap[i][j + column]);
-//
-//	//D3DXVECTOR2 pos = camera->Transform(0 + j * TILE_FRAME_HEIGHT, 0 + i * TILE_FRAME_WIDTH);
-//	//TileSprite->Draw(pos.x, pos.y);
-//
-//	TileSprite->Draw(0 + j * TILE_FRAME_HEIGHT , 0 + i * TILE_FRAME_WIDTH);
-//	}
-//	}
-//	*/
-//	int AutoFit = 64;
-//
-//
-//	row = int(camera->GetViewport().y) / TileTexture->FrameHeight;
-//	column = int(camera->GetViewport().x) / TileTexture->FrameHeight;
-//
-//	x = -(int(camera->GetViewport().x) % TileTexture->FrameHeight);
-//	y = -(int(camera->GetViewport().y) % TileTexture->FrameHeight);
-//
-//	for (int i = 0; i < ScreenRow; i++)
-//	{
-//		//if (y + TileTexture->FrameWidth * i >=  AutoFit)
-//		{
-//			for (int j = 0; j < ScreenColumn + 1; j++)
-//			{
-//				//	if ((RowMatrix - row + i >= 0) && (RowMatrix - row + i <= RowMatrix))
-//				{
-//					TileSprite->SelectIndex(TileMap[row + i][column + j]);
-//					TileSprite->DrawRaw(x + TileTexture->FrameWidth*j, y + TileTexture->FrameHeight*i); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
-//																										//x = x + TileTexture->FrameHeight;
-//				}
-//			}
-//		}
-//		//y = y + TileTexture->FrameHeight;
-//		//	x = -int(camera->GetViewport().x) % TileTexture->FrameHeight;
-//	}
-//
-//}
+﻿#include "Map.h"
+
+
+
+Map::Map(LPCWSTR texPath1, LPCWSTR txtPath1)
+{
+	texPath = texPath1;
+	txtPath = txtPath1;
+}
+
+
+Map::~Map()
+{
+}
+void Map::load()
+{
+	ReadMapTXT(txtPath);
+	loadFrameWidthHeight();
+	LoadMap();
+}
+
+void Map::loadFrameWidthHeight() // lấy đc frameWidth-Height
+{
+	D3DXIMAGE_INFO info;
+	HRESULT result;
+
+
+	result = D3DXGetImageInfoFromFile(texPath, &info); // đường dẫn file ảnh
+
+	RECT s = { 0, 0, info.Width, info.Height };
+
+	frameWidth = info.Width / ColTile;
+	frameHeight = info.Height / RowTile;
+
+}
+
+void Map::LoadMap()
+{
+	//ReadMapTXT("Resources/map/1.txt");
+	//TileTexture = new CTextures("Resources/map/1.png", ColTile, RowTile, CountTileFrame); // texture thi quan ly bang id luon
+	//// có nghĩa readMap txt đọc luôn id texture và các thông số fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
+	//TileSprite = new CSprite(TileTexture, 0);
+	//// tạo 1 sprite tương ứng với id texture, time chuyển =0
+
+	TileSprite = CSprites::GetInstance()->Get(ID_SPRITE_TILEMAP);// ID TEXTURE 30, ID SPRITE 50001
+
+	MapWidth = (frameHeight)*(ColumnMatrix);  // Chiều dài của MAP
+	MapHeight = (frameHeight)*(RowMatrix* +1); //  chiều cao của MAP
+
+
+	ScreenColumn = Window_Width / frameWidth;
+	ScreenRow = Window_Height / frameHeight;
+
+
+
+
+}
+
+void Map::ReadMapTXT(LPCWSTR filename)
+{
+	ifstream fileIn;
+	fileIn.open(filename, ios::in);
+
+	if (fileIn)
+	{
+		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
+		for (int i = 0; i < RowMatrix; i++)
+		{
+			for (int j = 0; j < ColumnMatrix; j++)
+			{
+				fileIn >> TileMap[i][j];
+			}
+		}
+		fileIn.close();
+	}
+
+
+
+
+
+}
+
+void Map::DrawMap(Camera *camera, Simon *simon)
+{
+	int AutoFit = 64;
+	
+	row = int(camera->Gety()) / frameHeight;
+	column = int(camera->Getx()) / frameHeight;
+
+	x = (-(int(camera->Getx()) % frameHeight)) + camera->Getx();
+	y = -(int(camera->Gety()) % frameHeight);
+	for (int i = 0; i < ScreenRow; i++)
+	{
+		//if (y + TileTexture->FrameWidth * i >=  AutoFit)
+		{
+			for (int j = 0; j < ScreenColumn + 1; j++)
+			{
+					int index = TileMap[row + i][column + j];
+					
+					RECT r;
+					r.left = (index % ColTile)*(frameWidth);
+					r.top = (index / ColTile)*(frameHeight);
+					r.right = r.left + frameWidth;
+					r.bottom = r.top + frameHeight;
+
+					TileSprite->DrawWithRect(r, x + frameWidth*j, frameHeight*i); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
+								
+			}
+		}
+		//y = y + TileTexture->FrameHeight;
+		//	x = -int(camera->GetViewport().x) % TileTexture->FrameHeight;
+	}
+
+}

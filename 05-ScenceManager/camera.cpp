@@ -1,16 +1,15 @@
 #include "Camera.h"
 
+Camera * Camera::__instance = NULL;
 
-
-
-
-Camera::Camera(float w, float h)
+Camera *Camera::GetInstance()
 {
-	_width = w;
-	_height = h;
-
-
+	if (__instance == NULL) __instance = new Camera();
+	return __instance;
 }
+
+
+
 
 Camera::~Camera()
 {
@@ -18,10 +17,11 @@ Camera::~Camera()
 
 D3DXVECTOR2 Camera::Transform(int x, int y)
 {
-	return D3DXVECTOR2(x - viewport.x, y - viewport.y);
+	//return D3DXVECTOR2(x - viewport.x, y - viewport.y);
+	return D3DXVECTOR2(x, y);
 }
 
-void Camera::SetPosition(int x, int y)
+void Camera::SetPosition(float x, float y)
 {
 	viewport.x = x;
 	viewport.y = y;

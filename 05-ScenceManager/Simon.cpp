@@ -147,11 +147,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
+
 void Simon::Render()
 {
-
-
-
 
 	/////////////////////
 	int ani = -1;
@@ -200,66 +198,6 @@ void Simon::Render()
 		isLeft = false;
 
 	animation_set->at(ani)->Render(x, y, alpha, isLeft, GetStateChange()); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
-																				   // hàm Render() sẽ làm thêm 1 tham số chiều trái phải
-
-	RenderBoundingBox();
-
-}
-
-void Simon::Render(Camera* camera)
-{
-
-	D3DXVECTOR2 pos = camera->Transform(x, y);
-
-
-
-	/////////////////////
-	int ani = -1;
-	if (state == SIMON_STATE_DIE)
-		ani = SIMON_ANI_DIE;
-
-	if (isSitting == true)
-	{
-		ani = SIMON_ANI_SITTING;
-	}
-	else
-	{
-		if (isWalking == true) // đang di chuyển
-		{
-			if (isJumping == false) // ko nhảy
-			{
-				ani = SIMON_ANI_WALKING;
-
-				//cập nhật frame mới
-				//_sprite->Update(dt); // dt này được cập nhật khi gọi update; 
-			}
-			else
-			{
-				ani = SIMON_ANI_JUMPING;
-			}
-
-		}
-		else
-		{
-			if (isJumping == true) // nếu ko đi mà chỉ nhảy
-			{
-				ani = SIMON_ANI_JUMPING;
-			}
-			else
-			{
-				ani = SiMON_ANI_IDLE;		// SIMON đứng yên
-
-			}
-		}
-	}
-
-	int alpha = 255;
-	if (untouchable) alpha = 128;
-	bool isLeft = true;
-	if (nx > 0)
-		isLeft = false;
-
-	animation_set->at(ani)->Render(pos.x, pos.y, alpha, isLeft, GetStateChange()); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
 	// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
 
 	RenderBoundingBox();
