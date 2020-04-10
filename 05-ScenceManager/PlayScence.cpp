@@ -267,10 +267,11 @@ void CPlayScene::Update(DWORD dt)
 	int w = Camera::GetInstance()->GetScreenWidth();
 	int h = Camera::GetInstance()->GetScreenHeight();
 
-	//cx -= w / 2;
+	cx -= w / 2;
 	cy -= h / 2;
 
 	Camera::GetInstance()->SetPosition(cx, 0.0f);
+	Camera::GetInstance()->Update();
 }
 
 void CPlayScene::Render()
@@ -343,7 +344,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 		return;
 	}
-	else if(game->IsKeyDown(DIK_RIGHT))
+	else 
+		simon->SetState(SIMON_STATE_STOP);
+	if(game->IsKeyDown(DIK_RIGHT))
 	{
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}

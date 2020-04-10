@@ -4,12 +4,25 @@ Camera * Camera::__instance = NULL;
 
 Camera *Camera::GetInstance()
 {
-	if (__instance == NULL) __instance = new Camera();
+	if (__instance == NULL) __instance = new Camera(Window_Width, Window_Height);
 	return __instance;
 }
 
+Camera::Camera(int w, int h)
+{
+	screen_width = w;
+	screen_height = h;
+}
 
+void Camera::Update()
+{
+	if (viewport.x < 0)
+		viewport.x = 0;
 
+	if (viewport.x > MapWidth - Window_Width)
+		viewport.x = MapWidth - Window_Width;
+
+}
 
 Camera::~Camera()
 {

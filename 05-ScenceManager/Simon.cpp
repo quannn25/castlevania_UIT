@@ -27,15 +27,15 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 {
 	if (isSitting == true) // simon đang ngồi
 	{
-		left = x + 12;
-		top = y - 1; // không chỉnh lại y bởi vì hàm Sit() đã điều chỉnh
+		left = x;
+		top = y; 
 		right = x + SIMON_BBOX_WIDTH;
 		bottom = y + SIMON_BBOX_SITTING_HEIGHT;
 	}
 	else
 	{
-		left = x + 12;
-		top = y - 1;
+		left = x;
+		top = y;
 		right = x + SIMON_BBOX_WIDTH;
 		bottom = y + SIMON_BBOX_HEIGHT;
 	}
@@ -44,6 +44,13 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 
 void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+	// Không cho lọt khỏi camera 
+	if (x < 0)
+		x = 0;
+	if (x + SIMON_BBOX_WIDTH > MapWidth)
+		x = MapWidth - SIMON_BBOX_WIDTH;
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 

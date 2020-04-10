@@ -63,7 +63,7 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 	if (fileIn)
 	{
-		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
+		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame >> AutoFit;
 		for (int i = 0; i < RowMatrix; i++)
 		{
 			for (int j = 0; j < ColumnMatrix; j++)
@@ -82,33 +82,29 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 void Map::DrawMap(Camera *camera, Simon *simon)
 {
-	int AutoFit = 64;
-	
 	row = int(camera->Gety()) / frameHeight;
 	column = int(camera->Getx()) / frameHeight;
 
 	x = (-(int(camera->Getx()) % frameHeight)) + camera->Getx();
-	y = -(int(camera->Gety()) % frameHeight);
+	y = -(int(camera->Gety()) % frameHeight) + camera->Gety();
 	for (int i = 0; i < ScreenRow; i++)
 	{
-		//if (y + TileTexture->FrameWidth * i >=  AutoFit)
+		for (int j = 0; j < ScreenColumn + 1; j++)
 		{
-			for (int j = 0; j < ScreenColumn + 1; j++)
+			if (!(row + i < 0 || row + i>RowMatrix || j + column < 0 || j + column > ColumnMatrix))
 			{
-					int index = TileMap[row + i][column + j];
-					
-					RECT r;
-					r.left = (index % ColTile)*(frameWidth);
-					r.top = (index / ColTile)*(frameHeight);
-					r.right = r.left + frameWidth;
-					r.bottom = r.top + frameHeight;
+				int index = TileMap[row + i][column + j];
 
-					TileSprite->DrawWithRect(r, x + frameWidth*j, frameHeight*i); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
-								
+				RECT r;
+				r.left = (index % ColTile)*(frameWidth);
+				r.top = (index / ColTile)*(frameHeight);
+				r.right = r.left + frameWidth;
+				r.bottom = r.top + frameHeight;
+
+				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + AutoFit); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
 			}
+
 		}
-		//y = y + TileTexture->FrameHeight;
-		//	x = -int(camera->GetViewport().x) % TileTexture->FrameHeight;
 	}
 
 }

@@ -12,6 +12,7 @@ protected:
 	int screen_height;
 
 public:
+	Camera(int w, int h);
 	~Camera();
 	
 
@@ -21,6 +22,7 @@ public:
 	void SetPosition(float x, float y);
 
 	D3DXVECTOR2 GetViewport();
+	void Update();
 
 	float Getx() { return viewport.x; }
 	float Gety() { return viewport.y; }

@@ -47,6 +47,7 @@ private:
 	int frameWidth; // tính đc
 	int frameHeight;// tính đc
 	int index; // giá trị là phần tử của TileMap[500][500]
+	int AutoFit;
 
 public:
 	Map(LPCWSTR texpath, LPCWSTR txtPath);
