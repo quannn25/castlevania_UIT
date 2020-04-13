@@ -12,10 +12,9 @@
 
 
 #define SIMON_GRAVITY 0.005f
-#define SIMON_VJUMP 0.8f
 
 #define SIMON_WALKING_SPEED 0.15f 
-#define SIMON_JUMP_SPEED_Y		0.5f
+#define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
 
 
@@ -77,15 +76,6 @@ public:
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 
-
-	void Left();  // set lại hướng của simon
-	void Right(); // set lại hướng của simon
-	void Go();
-	void Sit();
-	void Jump();
-
-
-	void Stop();
 
 };
 

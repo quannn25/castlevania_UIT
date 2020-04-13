@@ -11,11 +11,11 @@
 
 Simon::Simon() : CGameObject()
 {
-	type = eID::SIMON;
 
 	isWalking = 0; // sua doi is jumping, sitting... thành state hết
 	isJumping = 0;// sua doi is jumping, sitting... thành state hết
 	isSitting = 0;// sua doi is jumping, sitting... thành state hết
+	health = 16;
 }
 
 
@@ -96,11 +96,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) vx = 0;
+		if (nx != 0)
+			vx = 0;
 		if (ny != 0)
 		{
 			vy = 0;
-			isJumping = false; // ket thuc nhay
+			isJumping = false;
 		}
 
 
@@ -292,56 +293,4 @@ void Simon::SetState(int state)
 
 }
 
-void Simon::Left()
-{
-	nx = -1;
-}
 
-void Simon::Right()
-{
-	nx = 1; // quay qua phải
-}
-
-void Simon::Go()
-{
-	vx = SIMON_WALKING_SPEED * nx;
-	isWalking = 1;
-}
-
-void Simon::Sit()
-{
-	vx = 0;
-	isWalking = 0;
-
-	if (isSitting == false) // nếu trước đó simon chưa ngồi
-		y = y + 16; // kéo simon xuống
-
-	isSitting = 1;
-}
-
-void Simon::Jump()
-{
-	if (isSitting == true)
-		return;
-	vy -= SIMON_VJUMP;
-	isJumping = true;
-}
-
-void Simon::Stop()
-{
-	if (vx != 0)
-		vx -= dt * SIMON_GRAVITY*0.1*nx;
-	if (nx == 1 && vx < 0)
-		vx = 0;
-	if (nx == -1 && vx > 0)
-		vx = 0;
-
-
-	isWalking = 0;
-	if (isSitting == true) // nếu simon đang ngồi
-	{
-		isSitting = 0; // hủy trạng thái ngồi
-		y = y - 18; // kéo simon lên
-	}
-
-}

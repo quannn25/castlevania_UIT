@@ -1,13 +1,14 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
-20	textures\misc.png	176	224	248
+20	textures\castle\ground\2.png	255	0	255
 30	textures\castle\map\map1\1.png	255	0	255
+40	textures\castle\ground\0.png	255	0	255
 
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-# BIG MARIO 
+# SIMON
 # idle left
 10011	12	3	45	63	0
 #walk
@@ -20,21 +21,22 @@
 # die 
 10099	76	64	105	165	0
 
-#QUESTION BRICK
-40001	300	117	316	133	20
-40002	318	117	334	133	20
-40003	336	117	352	133	20
-40004	355	117	370	133	20
+#BRICK
+40001	0	0	32	32	20
+
+#TORCH
+60001	0	0	32	64	40
+60002	32	0	64	64	40
 
 #Title Map, l, t, r, b se dc set lai
 50001	1	1	1	1	30
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-# ==== MARIO =========
-#idle BIG left
+# ==== SIMON =========
+#idle left
 401	10011	100
-#walk left big
+#walk left 
 501	10011	100	10012	100	10013	100
 #jump left
 502	10051	100
@@ -43,22 +45,31 @@
 #die
 599	10099	100
 
-# ==== QUESTION BRICK =========
-602	40001	1000	40001	100	40002	100	40003	100	40004	100
+# ==== BRICK =========
+602	40001	100
+
+# === TORCH ====
+701	60001	100	60002	100
 
 #
-# id	ani1	ani2	ani3
-#
+# id	ani1	ani2	ani3  (id.push_back(ani1...)
+# 
 [ANIMATION_SETS]
 # MARIO
 1	401	501	503	502	599
-# QUESTION BRICK 
+#  BRICK 
 22	602
+
+# TORCH
+33	701
 
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type
+
 #id: simon 0, portal 1, 2 <= brick < 1000, 1000 <= torch < 1200, 1200 <= ghost < 1300...
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+
+# type: 0 = Mario , 1 = Brick, 2 = torch, 50 = portal
+
 # MARIO
 0	17	115	1	0
 
@@ -163,13 +174,19 @@
 
 
 
-
+# TORCH
+2	135	259	33	99
+2	460	259	33	100
+2	790	259	33	101
+2	1200	259	33	102
+2	1300	259	33	103
+2	1488	259	33	104
 
 
 
 # --- SCENE PORTAL ---- 115 98 150 1
 # type	l	t	ani_set_id	id	r	b	scene_id
-50	1	1	0	id	148	1	1
+50	1	1	0	999	148	1	1
 
 [TITLEMAP]
 #TITLEMAP

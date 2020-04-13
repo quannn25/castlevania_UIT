@@ -11,3 +11,5 @@ có đánh dấu vào tham số listObj truyền vào hàm trên.
 - tạo hàm khởi tạo có id, xong quay lại làm hàm loadgrid có id của obj ( coi có cần hàm get weight height của obj ko)
 
 xem hàm resetTake: làm sao để reset onCam khi ko dùng listObj tổng
+
+Change check Collision of Simon with Brick

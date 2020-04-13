@@ -20,22 +20,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-#define SCENE_SECTION_TITLEMAP	7
-
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
-
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 1024
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -145,24 +129,31 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_SIMON:
 		if (player!=NULL) 
 		{
 			DebugOut(L"[ERROR] MARIO object was created before! ");
 			return;
 		}
 		obj = new Simon(); 
+		obj->SetType(eID::SIMON);
 		player = (Simon*)obj;
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_BRICK:
+		obj = new CBrick();
+		obj->SetType(eID::BRICK);
+		break;
+	case OBJECT_TYPE_TORCH:
+		obj = new Torch();
+		obj->SetType(eID::TORCH);
+		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
 			float b = atof(tokens[6].c_str());
 			int scene_id = atoi(tokens[7].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
+			obj->SetType(eID::PORTAL);
 		}
 		break;
 	default:

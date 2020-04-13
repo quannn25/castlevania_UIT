@@ -112,6 +112,7 @@ public:
 	int GetHealth();
 	void SetNx(int Nx);
 	void SetId(int ID);
+	void SetType(eID t) { this->type = t; }
 
 
 	~CGameObject();
