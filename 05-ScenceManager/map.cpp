@@ -85,8 +85,8 @@ void Map::DrawMap(Camera *camera, Simon *simon)
 	row = int(camera->Gety()) / frameHeight;
 	column = int(camera->Getx()) / frameHeight;
 
-	x = (-(int(camera->Getx()) % frameHeight)) + camera->Getx();
-	y = -(int(camera->Gety()) % frameHeight) + camera->Gety();
+	x = (-(int(camera->Getx()) % frameHeight)) +camera->Getx();
+	y = -(int(camera->Gety()) % frameHeight) +camera->Gety();
 	for (int i = 0; i < ScreenRow; i++)
 	{
 		for (int j = 0; j < ScreenColumn + 1; j++)

@@ -137,6 +137,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
+	int id = atoi(tokens[4].c_str());
+
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
@@ -157,9 +159,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
+			float r = atof(tokens[5].c_str());
+			float b = atof(tokens[6].c_str());
+			int scene_id = atoi(tokens[7].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 		}
 		break;
@@ -170,6 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	// General object setup
 	obj->SetPosition(x, y);
+	obj->SetId(id);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
@@ -247,16 +250,17 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+	if(grid == NULL)
+		grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
+	
+	grid->ResetTake(objects); // set lai trang thai onCam
+	
+	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
 
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	player->Update(dt, &coObjects);
+	for (size_t i = 0; i < coObjects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
-	}
-
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
+		coObjects[i]->Update(dt, &coObjects);
 	}
 
 
@@ -279,8 +283,9 @@ void CPlayScene::Render()
 	
 	titleMap->DrawMap(Camera::GetInstance(), player);
 
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	player->Render();
+	for (int i = 0; i < coObjects.size(); i++)
+		coObjects[i]->Render();
 
 }
 
@@ -293,10 +298,14 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+	coObjects.clear();
 	player = NULL;
 
 	delete titleMap;
 	titleMap = NULL;
+
+	delete grid;
+	grid = NULL;
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)

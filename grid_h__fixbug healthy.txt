@@ -1,0 +1,13 @@
+ý tưởng grid:
+tạo đối tượng từ class grid có thuộc tính là: vector<ObjGame*> listObj , mỗi obj có thuộc tính istake
+rồi bằng cách nào đó listObj này chứa tất cả các Obj của scene.
+rồi bắt đầu: khi mà camera di chuyển, 
+thì ta gọi 1 hàm của grid là getListObj tham số là (vector<GameObject*>& ListObj, Camera * camera)
+lúc này dùng thuộc tính istake để đánh dấu obj có nằm trong camera ko, và lấy ra bằng cách add những obj
+có đánh dấu vào tham số listObj truyền vào hàm trên.
+
+
+
+- tạo hàm khởi tạo có id, xong quay lại làm hàm loadgrid có id của obj ( coi có cần hàm get weight height của obj ko)
+
+xem hàm resetTake: làm sao để reset onCam khi ko dùng listObj tổng

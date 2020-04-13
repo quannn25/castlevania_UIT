@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "define.h"
 #include "camera.h"
+#include "Utils.h"
 
 
 using namespace std;
@@ -45,6 +46,8 @@ struct CCollisionEvent
 
 class CGameObject
 {
+protected:
+	int health;
 public:
 
 	float x; 
@@ -58,13 +61,17 @@ public:
 
 	int nx;	 // nx > 0 quay sang phai
 
-	int state;
+	int state; // trend
 
 	DWORD dt; 
 
-	LPANIMATION_SET animation_set;
+	LPANIMATION_SET animation_set; // ham destroy??
 
-	eID type;
+	eID type; // loai obj
+
+	int id; // id obj
+
+	bool onCam;
 	
 	int stateChange; // true thì đã đổi trạng thái nên set frame lại từ đầu, false là tiếp tục trạng thái cũ - tăng currentFrame lên
 	// stateChange dùng để quản lý currentFrame trong mỗi CAnimation, thay cho index của của texture đc chia hàng và cột
@@ -101,6 +108,10 @@ public:
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 	virtual void SetStateChange(int stateChange) { this->stateChange = stateChange; }
+
+	int GetHealth();
+	void SetNx(int Nx);
+	void SetId(int ID);
 
 
 	~CGameObject();

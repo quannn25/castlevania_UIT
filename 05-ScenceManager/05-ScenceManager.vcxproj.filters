@@ -28,6 +28,9 @@
     <Filter Include="Framework\camera">
       <UniqueIdentifier>{613d23fa-ae8b-486e-b332-d12e1299b5b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\grid">
+      <UniqueIdentifier>{b5af2dd7-5fcb-4f5d-88ce-d3c7119a9473}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="map.cpp">
       <Filter>Framework\map</Filter>
     </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Framework\grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -139,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Framework\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Framework\grid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

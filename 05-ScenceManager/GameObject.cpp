@@ -14,6 +14,7 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;
 	stateChange = 1;
+	health = 1; // alive
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -133,6 +134,21 @@ void CGameObject::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x, y, bbox, rect.left, rect.top, rect.right, rect.bottom, 32);
 }
 
+
+int CGameObject::GetHealth()
+{
+	return health;
+}
+
+void CGameObject::SetNx(int nx1)
+{
+	nx = nx1;
+}
+
+void CGameObject::SetId(int ID)
+{
+	this->id = ID;
+}
 
 CGameObject::~CGameObject()
 {
