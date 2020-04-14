@@ -274,9 +274,9 @@ void CPlayScene::Render()
 	
 	titleMap->DrawMap(Camera::GetInstance(), player);
 
-	player->Render();
 	for (int i = 0; i < coObjects.size(); i++)
 		coObjects[i]->Render();
+	player->Render();
 
 }
 

@@ -36,11 +36,10 @@ void Map::loadFrameWidthHeight() // lấy đc frameWidth-Height
 
 void Map::LoadMap()
 {
-	//ReadMapTXT("Resources/map/1.txt");
-	//TileTexture = new CTextures("Resources/map/1.png", ColTile, RowTile, CountTileFrame); // texture thi quan ly bang id luon
-	//// có nghĩa readMap txt đọc luôn id texture và các thông số fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
-	//TileSprite = new CSprite(TileTexture, 0);
-	//// tạo 1 sprite tương ứng với id texture, time chuyển =0
+	// texture thi quan ly bang id luon
+	// có nghĩa readMap txt đọc luôn id texture và các thông số fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame;
+	
+	// tạo 1 sprite tương ứng với id texture, time chuyển =0
 
 	TileSprite = CSprites::GetInstance()->Get(ID_SPRITE_TILEMAP);// ID TEXTURE 30, ID SPRITE 50001
 

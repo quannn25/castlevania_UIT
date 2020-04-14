@@ -48,6 +48,7 @@ class CGameObject
 {
 protected:
 	int health;
+	eID type; // loai obj
 public:
 
 	float x; 
@@ -66,8 +67,6 @@ public:
 	DWORD dt; 
 
 	LPANIMATION_SET animation_set; // ham destroy??
-
-	eID type; // loai obj
 
 	int id; // id obj
 
@@ -113,6 +112,7 @@ public:
 	void SetNx(int Nx);
 	void SetId(int ID);
 	void SetType(eID t) { this->type = t; }
+	eID GetType() { return type; }
 
 
 	~CGameObject();

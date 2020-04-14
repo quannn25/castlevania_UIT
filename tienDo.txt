@@ -13,3 +13,5 @@ có đánh dấu vào tham số listObj truyền vào hàm trên.
 xem hàm resetTake: làm sao để reset onCam khi ko dùng listObj tổng
 
 Change check Collision of Simon with Brick
+
+Complete loading Morningstar sprite
