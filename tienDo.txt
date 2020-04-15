@@ -16,3 +16,7 @@ Change check Collision of Simon with Brick
 
 Complete loading Morningstar sprite
 	auto đánh ko ngừng :)) fix mau
+
+đã fix simon đánh, fix luôn đánh frame đầu _ xong loading morningStar sprite => next
+
+Update animation attacking sitting

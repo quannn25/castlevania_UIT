@@ -23,6 +23,11 @@ void Weapon::SetNx(int nx1)
 	this->nx = nx1;
 }
 
+void Weapon::Update()
+{
+
+}
+
 void Weapon::Create(float simonX, float simonY, int simonNx)
 {
 	this->x = simonX;
@@ -33,6 +38,7 @@ void Weapon::Create(float simonX, float simonY, int simonNx)
 
 void Weapon::Render()
 {
+	DebugOut(L"[INFO] curFrame: %d\n", animation_set->at(0)->getCurrentFrame());
 	bool isLeft = true;
 	if (nx > 0)
 		isLeft = false;

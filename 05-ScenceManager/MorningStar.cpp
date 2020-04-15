@@ -20,7 +20,7 @@ MorningStar::~MorningStar()
 {
 }
 
-void MorningStar::Update(int dt) // sẽ chạy cùng simonUpdate để đảm bảo dt
+void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo dt
 {// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
@@ -30,14 +30,14 @@ void MorningStar::Update(int dt) // sẽ chạy cùng simonUpdate để đảm b
 		isFinish = true;
 	}
 
-
 	if (level == 0)// kiểm tra sai frame ko
 	{ 
 		if (curFrame >= MORNINGSTAR_ANI_LEVEL0_END) // tới frame 3 thì quay lại 0
 		{
-			animation_set->at(0)->setCurrentFrame(0);
+			animation_set->at(0)->setCurrentFrame(-1);
 		}
 	}
+	
 }
 
 void MorningStar::Create(float simonX, float simonY, int simonNx)
@@ -48,19 +48,19 @@ void MorningStar::Create(float simonX, float simonY, int simonNx)
 
 	if (level == 0)
 	{
-		animation_set->at(0)->setCurrentFrame(0);
+		animation_set->at(0)->setCurrentFrame(-1);
 	}
 }
 
 void MorningStar::UpdatePositionFitSimon()
 {
-	if (nx == -1)
+	if (nx < 0)
 	{
-		this->x = x - 76;
+		this->x = x - 92;
 
 	}
 	else
 	{
-		this->x = x - 25;
+		this->x = x - 37;
 	}
 }

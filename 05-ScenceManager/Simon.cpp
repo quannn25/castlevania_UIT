@@ -74,6 +74,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			ListWeapon[0]->SetPosition(this->x, this->y);
 			ListWeapon[0]->UpdatePositionFitSimon();
+			ListWeapon[0]->Update();
 			if (ListWeapon[0]->GetFinish() == true) 
 				isAttacking = false;
 		}

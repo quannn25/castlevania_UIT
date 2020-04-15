@@ -30,6 +30,7 @@ public:
 	int GetNx();
 	void SetNx(int nx1);
 
+	virtual void Update();
 	virtual void Create(float simonX, float simonY, int simonTrend);
 	virtual void Render();
 
