@@ -32,7 +32,7 @@ void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo d
 
 	if (level == 0)// kiểm tra sai frame ko
 	{ 
-		if (curFrame >= MORNINGSTAR_ANI_LEVEL0_END) // tới frame 3 thì quay lại 0
+		if (curFrame >= 3) // tới frame 3 thì quay lại 0
 		{
 			animation_set->at(0)->setCurrentFrame(-1);
 		}
@@ -56,11 +56,11 @@ void MorningStar::UpdatePositionFitSimon()
 {
 	if (nx < 0)
 	{
-		this->x = x - 92;
+		this->x = x - 65;
 
 	}
 	else
 	{
-		this->x = x - 37;
+		this->x = x - 30;
 	}
 }

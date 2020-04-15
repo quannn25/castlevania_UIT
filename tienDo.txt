@@ -19,4 +19,6 @@ Complete loading Morningstar sprite
 
 đã fix simon đánh, fix luôn đánh frame đầu _ xong loading morningStar sprite => next
 
-Update animation attacking sitting
+Update animation attacking sitting_ done
+
+Add new DebugRenderBBOX

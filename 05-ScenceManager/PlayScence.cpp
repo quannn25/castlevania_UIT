@@ -299,7 +299,7 @@ void CPlayScene::Unload()
 	grid = NULL;
 }
 
-void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
+void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// sua doi is jumping, sitting... thành state hết
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
@@ -307,8 +307,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		if (simon->isJumping == false) // sua doi is jumping, sitting... thành state hết
-			simon->SetState(SIMON_STATE_JUMPING);
+		simon->SetState(SIMON_STATE_JUMPING);
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);

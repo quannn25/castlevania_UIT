@@ -1,8 +1,6 @@
 #ifndef MORNINGSTAR_H
 #define MORNINGSTAR_H
 
-#define MORNINGSTAR_ANI_LEVEL0_START 0
-#define MORNINGSTAR_ANI_LEVEL0_END 3
 
 
 #include "Weapon.h"

@@ -30,17 +30,17 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 {
 	if (isSitting == true) // simon đang ngồi
 	{
-		left = x;
-		top = y; 
-		right = x + SIMON_BBOX_WIDTH;
-		bottom = y + SIMON_BBOX_SITTING_HEIGHT;
+		left = x + 12;
+		top = y;
+		right = x + SIMON_BBOX_WIDTH - 13;
+		bottom = y + SIMON_BBOX_SITTING_HEIGHT - 3;
 	}
 	else
 	{
-		left = x;
+		left = x + 12;
 		top = y;
-		right = x + SIMON_BBOX_WIDTH;
-		bottom = y + SIMON_BBOX_HEIGHT;
+		right = x + SIMON_BBOX_WIDTH - 13;
+		bottom = y + SIMON_BBOX_HEIGHT - 3;
 	}
 
 }
@@ -49,8 +49,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	// Không cho lọt khỏi camera 
-	if (x < 0)
-		x = 0;
+	if (x < -12)
+		x = -12;
 	if (x + SIMON_BBOX_WIDTH > MapWidth)
 		x = MapWidth - SIMON_BBOX_WIDTH;
 
@@ -92,18 +92,36 @@ void Simon::Render()
 
 	if (isSitting == true)
 	{
-		ani = SIMON_ANI_SITTING;
-	}
-	else
-	{
-		if (isWalking == true) // đang di chuyển
+		if (isAttacking == true) // tấn công
 		{
-			if (isJumping == false) // ko nhảy
+			ani = SIMON_ANI_SIT_ATTACK;
+			int curFrame = animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame();
+			if (curFrame > 2 || curFrame < 0) // bị lỗi vũ khí render tốn time nên kết thúc đánh ở frame 1 còn frame 2 chưa render nên hàm này ko vào dc => lần đánh sau đủ sẽ bắt đầu render frame 2 dù mới bắt đầu đánh
+			{
+				animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+			}
+		}
+		else
+			ani = SIMON_ANI_SITTING;
+	}
+	else // standing
+	{
+		if (isAttacking == true)
+		{
+			DebugOut(L"[INFO] curFrame: %d\n", animation_set->at(6)->getCurrentFrame());
+			ani = SIMON_ANI_STAND_ATTACK;
+			int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
+			if (curFrame > 2 || curFrame < 0)
+			{
+				animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);
+			}
+		}
+		else if (isWalking == true)
+		{
+			if (isJumping == false) 
 			{
 				ani = SIMON_ANI_WALKING;
 
-				//cập nhật frame mới
-				//_sprite->Update(dt); // dt này được cập nhật khi gọi update; 
 			}
 			else
 			{
@@ -169,11 +187,15 @@ void Simon::SetState(int state)
 	switch (state)
 	{
 	case SIMON_STATE_WALKING_RIGHT:
+		if (isAttacking == true)
+			return;
 		vx = SIMON_WALKING_SPEED;
 		nx = 1;
 		isWalking = 1;
 		break;
 	case SIMON_STATE_WALKING_LEFT:
+		if (isAttacking == true)
+			return;
 		vx = -SIMON_WALKING_SPEED;
 		nx = -1;
 		isWalking = 1;
@@ -190,6 +212,10 @@ void Simon::SetState(int state)
 	case SIMON_STATE_JUMPING:
 		if (isSitting == true)
 			return;
+		if (isAttacking == true)
+			return;
+		if (isJumping == true)
+			return;
 		y -= 16;
 		vy = -SIMON_JUMP_SPEED_Y;
 		isJumping = true;
@@ -204,13 +230,10 @@ void Simon::SetState(int state)
 		nx = -1;
 		break;
 	case SIMON_STATE_STOP:
-		if (vx != 0)
-			vx -= dt * SIMON_GRAVITY*0.1*nx;
-		if (nx == 1 && vx < 0)
-			vx = 0;
-		if (nx == -1 && vx > 0)
-			vx = 0;
+		if (isAttacking == true)
+			return;
 
+		vx = 0;
 
 		isWalking = 0;
 		if (isSitting == true) // nếu simon đang ngồi

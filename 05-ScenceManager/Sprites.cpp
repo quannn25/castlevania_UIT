@@ -37,15 +37,14 @@ void CSprite::DrawFlipX(float x, float y, int alpha)
 
 	D3DXMATRIX AA, BB;
 	spriteHandler->GetTransform(&AA);
-	D3DXMatrixTransformation2D(&BB, &D3DXVECTOR2(x, x), 0.0f, &D3DXVECTOR2(-1.0f, 1.0f), NULL, 0.0f, NULL);
-	D3DXMATRIX CC = AA * BB;
+	D3DXMatrixTransformation2D(&BB, &D3DXVECTOR2(x, y), 0.0f, &D3DXVECTOR2(-1.0f, 1.0f), NULL, 0.0f, NULL);
+	D3DXMATRIX CC = BB * AA;
 	spriteHandler->SetTransform(&CC);
 	x -= (right - left);
-	//D3DXVECTOR3 p(trunc(x), trunc(y), 0);
-	//spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, 255, 255, 255));
 	CGame * game = CGame::GetInstance();
 	game->DrawFlipX(x, y, texture, r, alpha);
 	spriteHandler->SetTransform(&AA);
+
 }
 
 void CSprite::DrawWithRect(RECT r, float x, float y, int alpha)
