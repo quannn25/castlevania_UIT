@@ -62,7 +62,7 @@ public:
 
 	int nx;	 // nx > 0 quay sang phai
 
-	int state; // trend
+	int state; 
 
 	DWORD dt; 
 

@@ -34,6 +34,9 @@
     <Filter Include="Object">
       <UniqueIdentifier>{cfbb53ca-17ad-42b3-99c6-3650c52555e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\weapon">
+      <UniqueIdentifier>{f9c90b63-a0bf-4b08-afeb-5c82db6cf379}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -96,6 +99,12 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="MorningStar.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -157,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="Torch.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="MorningStar.h">
+      <Filter>Object\weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

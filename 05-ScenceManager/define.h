@@ -1,5 +1,5 @@
-﻿#ifndef _DEFINE_H__
-#define _DEFINE_H__
+﻿#ifndef DEFINE_H
+#define DEFINE_H
 
 #define _USE_MATH_DEFINES
 
@@ -39,6 +39,8 @@ using namespace std;
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
+
+#define MORNINGSTAR_ANI_SET_ID 44
 
 extern int Window_Width;
 extern int Window_Height;

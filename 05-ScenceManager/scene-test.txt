@@ -4,6 +4,7 @@
 20	textures\castle\ground\2.png	255	0	255
 30	textures\castle\map\map1\1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
+50	textures\castle\weapon\morningstar.png	255	0	255
 
 
 # id	left	top	right	bottom	texture_id
@@ -24,12 +25,19 @@
 #BRICK
 40001	0	0	32	32	20
 
+
+#Title Map, l, t, r, b se dc set lai
+50001	1	1	1	1	30
+
 #TORCH
 60001	0	0	32	64	40
 60002	32	0	64	64	40
 
-#Title Map, l, t, r, b se dc set lai
-50001	1	1	1	1	30
+# morningStar
+70001	0	0	160	68	50
+70002	160	0	320	68	50
+70003	320	0	480	68	50
+70004	480	0	540	68	50
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -51,6 +59,9 @@
 # === TORCH ====
 701	60001	100	60002	100
 
+# =======MorningStar======
+801	70001	100	70002	100	70003	100	70004	100
+
 #
 # id	ani1	ani2	ani3  (id.push_back(ani1...)
 # 
@@ -62,6 +73,9 @@
 
 # TORCH
 33	701
+
+# MORNINGSTAR
+44	801
 
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type

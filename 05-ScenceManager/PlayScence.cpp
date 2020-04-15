@@ -315,10 +315,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		simon->SetPosition(50.0f, 0.0f);
 		simon->SetSpeed(0, 0);
 		break;
+	case DIK_X:
+		simon->Attack(simon->ListWeapon[0]);
+		break;
 	}
 
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)

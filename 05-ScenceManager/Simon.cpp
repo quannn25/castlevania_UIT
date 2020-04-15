@@ -15,7 +15,10 @@ Simon::Simon() : CGameObject()
 	isWalking = 0; // sua doi is jumping, sitting... thành state hết
 	isJumping = 0;// sua doi is jumping, sitting... thành state hết
 	isSitting = 0;// sua doi is jumping, sitting... thành state hết
+	isAttacking = 0;
 	health = 16;
+	ListWeapon.clear();
+	ListWeapon.push_back(new MorningStar());
 }
 
 
@@ -65,6 +68,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 
 
+	if (isAttacking == true) 
+	{
+		if (ListWeapon[0]->GetFinish() == false) 
+		{
+			ListWeapon[0]->SetPosition(this->x, this->y);
+			ListWeapon[0]->UpdatePositionFitSimon();
+			if (ListWeapon[0]->GetFinish() == true) 
+				isAttacking = false;
+		}
+	}
 }
 
 
@@ -121,7 +134,14 @@ void Simon::Render()
 	// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
 
 	RenderBoundingBox();
-
+	// render weapon
+	for (int i = 0; i < ListWeapon.size(); i++)
+	{
+		if (ListWeapon[i]->GetFinish() == false)
+		{
+			ListWeapon[i]->Render();
+		}
+	}
 }
 
 void Simon::SetState(int state)
@@ -305,4 +325,11 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
+void Simon::Attack(Weapon * w)
+{
+	if (isAttacking == true) // đang tấn công thì bỏ qua
+		return;
 
+	isAttacking = true; // set trang thái tấn công
+	w->Create(this->x, this->y, this->nx); // set vị trí weapon theo simon
+}
