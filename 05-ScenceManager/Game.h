@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <unordered_map>
 
@@ -73,6 +73,8 @@ public:
 		float &t, 
 		float &nx, 
 		float &ny);
+
+	bool AABBCheck(RECT a, RECT b); // rút gọn
 
 	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }

@@ -108,6 +108,7 @@ public:
 	virtual void SetState(int state) { this->state = state; }
 	virtual void SetStateChange(int stateChange) { this->stateChange = stateChange; }
 
+	void beAttacked(int th);
 	int GetHealth();
 	void SetNx(int Nx);
 	void SetId(int ID);

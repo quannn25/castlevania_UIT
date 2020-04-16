@@ -150,6 +150,13 @@ void CGameObject::SetId(int ID)
 	this->id = ID;
 }
 
+void CGameObject::beAttacked(int i)
+{
+	health -= i;
+	if (health < 0)
+		health = 0;
+}
+
 CGameObject::~CGameObject()
 {
 

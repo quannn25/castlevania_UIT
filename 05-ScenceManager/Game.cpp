@@ -319,6 +319,11 @@ void CGame::SweptAABB(
 
 }
 
+bool CGame::AABBCheck(RECT a, RECT b)
+{
+	return !(a.right < b.left || a.left > b.right || a.top > b.bottom || a.bottom < b.top);
+}
+
 CGame *CGame::GetInstance()
 {
 	if (__instance == NULL) __instance = new CGame();

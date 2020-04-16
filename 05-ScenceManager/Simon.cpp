@@ -77,6 +77,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			ListWeapon[0]->Update();
 			if (ListWeapon[0]->GetFinish() == true) 
 				isAttacking = false;
+			ListWeapon[0]->CollisionWithObject(dt, coObjects); // kiểm tra va chạm với các object khác
 		}
 	}
 }

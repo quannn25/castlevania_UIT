@@ -38,10 +38,10 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 		{
 			for (int i = 0; i < cells[row + GRID_BASE][col + GRID_BASE].size(); i++)
 			{
-				if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->GetHealth() > 0)
+				if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->GetHealth() > 0) // còn sống thì thêm vào
 				{
-					if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->onCam == false)
-					{
+					if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->onCam == false) // nếu 1 obj có onCam rồi thì bỏ qua, vì 1 obj có thể nằm nhiều grid
+					{ // nếu thêm obj 2 lần thì có thể nó bị đánh 2 lần ????
 						ListObj.push_back(cells[row + GRID_BASE][col + GRID_BASE].at(i));
 						cells[row + GRID_BASE][col + GRID_BASE].at(i)->onCam = true;
 					}
