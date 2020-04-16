@@ -64,3 +64,27 @@ void MorningStar::UpdatePositionFitSimon()
 		this->x = x - 30;
 	}
 }
+
+void MorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom)
+{
+	if (level == 0)
+	{
+		if (nx == 1)
+		{
+			left = x + 10;
+			top = y + 15;
+			right = x + 160 - 30; // 160 weight_ 68 height define lại
+			bottom = y + 68 - 15;
+		}
+		else
+		{
+			left = x + 30;
+			top = y + 15;
+			right = x + 160 - 10;
+			bottom = y + 68 - 15;
+
+		}
+
+	}
+
+}

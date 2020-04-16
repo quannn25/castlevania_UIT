@@ -22,3 +22,5 @@ Complete loading Morningstar sprite
 Update animation attacking sitting_ done
 
 Add new DebugRenderBBOX
+
+Use AABB to check collision Weapon with Torch

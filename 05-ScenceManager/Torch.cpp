@@ -17,4 +17,5 @@ void Torch::GetBoundingBox(float & left, float & top, float & right, float & bot
 void Torch::Render()
 {
 	animation_set->at(0)->Render(x, y);
+	RenderBoundingBox();
 }
