@@ -103,8 +103,9 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 
 
 
-	for (int i = 0; i< listObj->size(); i++)
-		if (listObj->at(i)->GetHealth()>0 && listObj->at(i)->GetType() == eID::TORCH)
+	for (int i = 0; i < listObj->size(); i++)
+	{
+		if (listObj->at(i)->GetHealth() > 0 && listObj->at(i)->GetType() == eID::TORCH)
 		{
 			listObj->at(i)->GetBoundingBox(l1, t1, r1, b1);
 			rect1.left = (int)l1;
@@ -114,6 +115,8 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 			if (CGame::GetInstance()->AABBCheck(rect, rect1))
 			{
 				listObj->at(i)->beAttacked(1);
+				ItemManager::GetInstance()->ListItem.push_back(new LargeHeart(listObj->at(i)->x, listObj->at(i)->y));
 			}
 		}
+	}
 }

@@ -5,6 +5,7 @@
 30	textures\castle\map\map1\1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
+60	textures\castle\item\1.png	255	0	255
 
 
 # id	left	top	right	bottom	texture_id
@@ -48,6 +49,9 @@
 70003	320	0	480	68	50
 70004	480	0	540	68	50
 
+#large_heart
+80001	0	0	32	32	60
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # ==== SIMON =========
@@ -75,6 +79,9 @@
 # =======MorningStar======
 801	70001	90	70002	90	70003	90	70004	90
 
+#=======LARGEHEART===========
+901	80001	100
+
 #
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
@@ -89,6 +96,9 @@
 
 # MORNINGSTAR
 44	801
+
+#LARGEHEART
+45	901
 
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type

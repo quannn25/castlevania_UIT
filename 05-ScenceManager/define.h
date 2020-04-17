@@ -42,6 +42,8 @@ using namespace std;
 
 #define MORNINGSTAR_ANI_SET_ID 44
 
+#define LARGEHEART_ANI_SET_ID 45
+
 extern int Window_Width;
 extern int Window_Height;
 

@@ -4,6 +4,8 @@
 
 
 #include "Weapon.h"
+#include "ItemManager.h"
+#include "LargeHeart.h"
 
 class MorningStar : public Weapon
 {
