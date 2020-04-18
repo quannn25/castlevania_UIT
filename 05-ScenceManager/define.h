@@ -65,7 +65,9 @@ enum eID
 
 	TORCH = 2,
 
-	PORTAL = 50
+	PORTAL = 50,
+
+	MORNINGSTAR = 51
 
 };
 

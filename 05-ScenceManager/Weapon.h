@@ -12,7 +12,7 @@
 class Weapon
 {
 protected:
-	eID TypeWeapon;
+	eID Type;
 
 	float vx;
 	float vy;

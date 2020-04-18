@@ -12,6 +12,7 @@ MorningStar::MorningStar()
 	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
+	Type = eID::MORNINGSTAR;
 	this->level = 0;
 }
 
@@ -65,22 +66,22 @@ void MorningStar::UpdatePositionFitSimon()
 	}
 }
 
-void MorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom)
+void MorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom) // danh toi frame 2 bi dung dot ngot
 {
-	if (level == 0)
+	if (level == 0) // 160 weight_ 68 height define lại
 	{
 		if (nx == 1)
 		{
-			left = x + 10;
+			left = x + 50;
 			top = y + 15;
-			right = x + 160 - 30; // 160 weight_ 68 height define lại
+			right = x + 160 - 30 - (animation_set->at(0)->getCurrentFrame() == 0 || animation_set->at(0)->getCurrentFrame() == 1) * 80;
 			bottom = y + 68 - 15;
 		}
 		else
 		{
-			left = x + 30;
+			left = x + 30 + (animation_set->at(0)->getCurrentFrame() == 0 || animation_set->at(0)->getCurrentFrame() == 1) * 80;
 			top = y + 15;
-			right = x + 160 - 10;
+			right = x + 160 - 50;// -(animation_set->at(0)->getCurrentFrame() == 2) * 40;
 			bottom = y + 68 - 15;
 
 		}

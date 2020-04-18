@@ -10,7 +10,6 @@ Weapon::Weapon()
 
 Weapon::~Weapon()
 {
-	SAFE_DELETE(animation_set);
 }
 
 int Weapon::GetNx()
@@ -68,7 +67,7 @@ void Weapon::SetFinish(bool f)
 
 eID Weapon::GetType()
 {
-	return TypeWeapon;
+	return Type;
 }
 
 void Weapon::RenderBoundingBox()
@@ -85,6 +84,6 @@ void Weapon::RenderBoundingBox()
 	rect.right = (int)r - (int)l;
 	rect.bottom = (int)b - (int)t;
 
-	CGame::GetInstance()->Draw(l, t, bbox, rect.left, rect.top, rect.right, rect.bottom, 92);
+	CGame::GetInstance()->Draw(l, t, bbox, rect.left, rect.top, rect.right, rect.bottom, 255);
 
 }
