@@ -6,6 +6,7 @@
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
+70	textures\castle\item\3.png	255	0	255
 
 
 # id	left	top	right	bottom	texture_id
@@ -49,8 +50,12 @@
 70003	320	0	480	68	50
 70004	480	0	540	68	50
 
+#UpgradeMorningStar
+71000	0	0	32	32	70
+
 #large_heart
 80001	0	0	24	20	60
+
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -79,6 +84,9 @@
 # =======MorningStar======
 801	70001	90	70002	90	70003	90	70004	90
 
+#========upgradeMorningStar=======
+809	71000	100
+
 #=======LARGEHEART===========
 901	80001	100
 
@@ -99,6 +107,9 @@
 
 #LARGEHEART
 45	901
+
+#UpgradeMorningStar
+46	809
 
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type

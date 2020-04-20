@@ -41,8 +41,8 @@ using namespace std;
 #define MAX_SCENE_LINE 1024
 
 #define MORNINGSTAR_ANI_SET_ID 44
-
 #define LARGEHEART_ANI_SET_ID 45
+#define UPGRADEMORNINGSTAR_ANI_SET_ID 46
 
 extern int Window_Width;
 extern int Window_Height;
@@ -69,7 +69,9 @@ enum eID
 
 	MORNINGSTAR = 51,
 
-	LARGEHEART = 52
+	LARGEHEART = 52,
+
+	UPGRADEMORNINGSTAR = 53
 
 };
 

@@ -430,10 +430,10 @@ void Simon::CollisionWithItem()
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		for (UINT i = 0; i < coEventsResult.size(); i++)
+		for (UINT i = 0; i < coEventsResult.size(); i++) // xử lý
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			Item *item = dynamic_cast<Item *>(e->obj); // Chắc chắn là Item nên ép kiểu luôn
+			Item *item = dynamic_cast<Item *>(e->obj); 
 
 			item->SetReward();
 			item->SetFinish(true);

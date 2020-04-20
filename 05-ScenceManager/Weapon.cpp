@@ -87,3 +87,16 @@ void Weapon::RenderBoundingBox()
 	CGame::GetInstance()->Draw(l, t, bbox, rect.left, rect.top, rect.right, rect.bottom, 92);
 
 }
+
+Item * Weapon::GetNewItem(int id, eID type, float x, float y)
+{
+	if (type == eID::TORCH)
+	{
+		if (id == 1 || id == 4)
+			return new LargeHeart(x, y);
+		if (id == 100 || id == 101)
+			return new UpgradeMorningStar(x, y);
+
+		return new LargeHeart(x, y);
+	}
+}

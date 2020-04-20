@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LARGEHEART_H
+#define LARGEHEART_H
 #include "Item.h"
 #include "ItemManager.h"
 
@@ -22,3 +23,5 @@ public:
 	~LargeHeart();
 };
 
+
+#endif 

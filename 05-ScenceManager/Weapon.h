@@ -8,6 +8,9 @@
 #include "Textures.h"
 #include "Game.h"
 #include "GameObject.h"
+#include "Item.h"
+#include "LargeHeart.h"
+#include "UpgradeMorningStar.h"
 
 class Weapon
 {
@@ -48,6 +51,7 @@ public:
 	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj) = 0;
 
 	eID GetType();
+	static Item * GetNewItem(int id, eID type, float x, float y);
 };
 
 

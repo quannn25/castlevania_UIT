@@ -99,10 +99,10 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 	float l1, t1, r1, b1;
 
 	GetBoundingBox(l, t, r, b);
-	rect.left = (int)l;
-	rect.top = (int)t;
-	rect.right = (int)r;
-	rect.bottom = (int)b;
+	rect.left = l;
+	rect.top = t;
+	rect.right = r;
+	rect.bottom = b;
 
 
 
@@ -111,14 +111,14 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 		if (listObj->at(i)->GetHealth() > 0 && dynamic_cast<Torch *>(listObj->at(i)))
 		{
 			listObj->at(i)->GetBoundingBox(l1, t1, r1, b1);
-			rect1.left = (int)l1;
-			rect1.top = (int)t1;
-			rect1.right = (int)r1;
-			rect1.bottom = (int)b1;
+			rect1.left = l1;
+			rect1.top = t1;
+			rect1.right = r1;
+			rect1.bottom = b1;
 			if (CGame::GetInstance()->AABBCheck(rect, rect1))
 			{
 				listObj->at(i)->beAttacked(1);
-				ItemManager::GetInstance()->ListItem.push_back(new LargeHeart(listObj->at(i)->x, listObj->at(i)->y));
+				ItemManager::GetInstance()->ListItem.push_back(Weapon::GetNewItem(listObj->at(i)->id, listObj->at(i)->GetType(), listObj->at(i)->x, listObj->at(i)->y));
 			}
 		}
 	}

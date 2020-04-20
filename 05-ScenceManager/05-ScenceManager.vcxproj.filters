@@ -117,6 +117,9 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="UpgradeMorningStar.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="ItemManager.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeMorningStar.h">
+      <Filter>Object\weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
