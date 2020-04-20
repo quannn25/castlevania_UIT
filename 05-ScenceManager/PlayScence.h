@@ -17,16 +17,18 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects;
 
-	Map *titleMap;
+	Map *tileMap;
 
 	Grid *grid;
+
+	ItemManager *itemManager;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
-	void _ParseSection_TITLEMAP(string line);
+	void _ParseSection_TILEMAP(string line);
 public: 
 	CPlayScene(int id, LPCWSTR filePath);
 

@@ -37,11 +37,6 @@ private:
 	int x, y; // tọa độ vẽ
 
 
-
-
-
-
-
 	LPCWSTR texPath; // đọc file của titleTexture
 	LPCWSTR txtPath; // file txt thuộc tính
 	int frameWidth; // tính đc

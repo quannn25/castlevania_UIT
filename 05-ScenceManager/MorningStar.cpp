@@ -25,7 +25,6 @@ void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo d
 {// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
-
 	if (curFrame == 3)
 	{
 		isFinish = true;
@@ -72,17 +71,17 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 	{
 		if (nx == 1)
 		{
-			left = x + 50;
+			left = x + 80;
 			top = y + 15;
-			right = x + 160 - 30 - (animation_set->at(0)->getCurrentFrame() == 0 || animation_set->at(0)->getCurrentFrame() == 1) * 80;
-			bottom = y + 68 - 15;
+			right = x + MORNINGSTAR_FRAMEWEIGHT - 30;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 35;
 		}
 		else
 		{
-			left = x + 30 + (animation_set->at(0)->getCurrentFrame() == 0 || animation_set->at(0)->getCurrentFrame() == 1) * 80;
+			left = x + 30;
 			top = y + 15;
-			right = x + 160 - 50;// -(animation_set->at(0)->getCurrentFrame() == 2) * 40;
-			bottom = y + 68 - 15;
+			right = x + MORNINGSTAR_FRAMEWEIGHT - 85;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 35;
 
 		}
 
@@ -92,6 +91,9 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 
 void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 {
+	if (animation_set->at(0)->getCurrentFrame() != 2)
+		return;
+
 	RECT rect, rect1;
 	float l, t, r, b;
 	float l1, t1, r1, b1;
@@ -106,7 +108,7 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 
 	for (int i = 0; i < listObj->size(); i++)
 	{
-		if (listObj->at(i)->GetHealth() > 0 && listObj->at(i)->GetType() == eID::TORCH)
+		if (listObj->at(i)->GetHealth() > 0 && dynamic_cast<Torch *>(listObj->at(i)))
 		{
 			listObj->at(i)->GetBoundingBox(l1, t1, r1, b1);
 			rect1.left = (int)l1;

@@ -50,7 +50,7 @@
 70004	480	0	540	68	50
 
 #large_heart
-80001	0	0	32	32	60
+80001	0	0	24	20	60
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -225,7 +225,7 @@
 # type	l	t	ani_set_id	id	r	b	scene_id
 50	1	1	0	999	148	1	1
 
-[TITLEMAP]
-#TITLEMAP
+[TILEMAP]
+#TILEMAP
 # filepath	mapTXT
 textures\castle\map\map1\1.png	textures\castle\map\map1\1.txt

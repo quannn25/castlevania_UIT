@@ -6,6 +6,10 @@
 #include "Weapon.h"
 #include "ItemManager.h"
 #include "LargeHeart.h"
+#include "Torch.h"
+
+#define MORNINGSTAR_FRAMEWEIGHT 160
+#define MORNINGSTAR_FRAMEHEIGHT 68
 
 class MorningStar : public Weapon
 {

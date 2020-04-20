@@ -63,10 +63,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> coBrick;
 	coBrick.clear();
 	for (int i = 0; i < coObjects->size(); i++)
-		if (coObjects->at(i)->GetType() == eID::BRICK || coObjects->at(i)->GetType() == eID::PORTAL)
+	{
+		if(dynamic_cast<CBrick *>(coObjects->at(i)) || dynamic_cast<CPortal *>(coObjects->at(i))) // tutu xu ly portal
 			coBrick.push_back(coObjects->at(i));
+	}
 	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 
+	CollisionWithItem();
 
 	if (isAttacking == true) 
 	{
@@ -109,7 +112,6 @@ void Simon::Render()
 	{
 		if (isAttacking == true)
 		{
-			DebugOut(L"[INFO] curFrame: %d\n", animation_set->at(6)->getCurrentFrame());
 			ani = SIMON_ANI_STAND_ATTACK;
 			int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
 			if (curFrame > 2 || curFrame < 0)
@@ -357,4 +359,89 @@ void Simon::Attack(Weapon * w)
 
 	isAttacking = true; // set trang thái tấn công
 	w->Create(this->x, this->y, this->nx); // set vị trí weapon theo simon
+}
+
+void Simon::CollisionWithItem()
+{
+	ItemManager *ListItem = ItemManager::GetInstance();
+	vector<LPGAMEOBJECT> listObj;
+	listObj.clear();
+
+
+	/*Xóa những Item đã kết thúc*/
+	vector<Item*>::iterator it;
+	for (it = ListItem->ListItem.begin(); it != ListItem->ListItem.end(); ) // stackoverlow remove obj vector c++
+	{
+		if ((*it)->GetFinish() == true)
+		{
+			it = ListItem->ListItem.erase(it);
+		}
+		else
+			++it;
+	}
+
+	float l, t, r, b; // bbox simon
+	float l1, t1, r1, b1;
+	RECT rect, rect1;
+	GetBoundingBox(l, t, r, b);
+	rect.left = l;
+	rect.top = t;
+	rect.right = r;
+	rect.bottom = b;
+
+	for (int i = 0; i < ListItem->ListItem.size(); i++) // check trước bằng AABB xem có va chạm không?
+	{
+		ListItem->ListItem.at(i)->GetBoundingBox(l1, t1, r1, b1);
+		rect1.left = l1;
+		rect1.top = t1;
+		rect1.right = r1;
+		rect1.bottom = b1;
+		if (CGame::GetInstance()->AABBCheck(rect, rect1) == true)
+		{
+			ListItem->ListItem.at(i)->SetReward();
+			ListItem->ListItem.at(i)->SetFinish(true);
+		}
+	}
+
+
+
+	for (int i = 0; i < ListItem->ListItem.size(); i++)
+	{
+		if (ListItem->ListItem[i]->GetFinish() == false) // chưa kết thúc thì xét
+		{
+			listObj.push_back(ListItem->ListItem[i]);
+		}
+	}
+
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	CalcPotentialCollisions(&listObj, coEvents); // Lấy danh sách các va chạm
+
+												 // No collision occured, proceed normally
+	if (coEvents.size() != 0)
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+			Item *item = dynamic_cast<Item *>(e->obj); // Chắc chắn là Item nên ép kiểu luôn
+
+			item->SetReward();
+			item->SetFinish(true);
+
+		}
+	}
+
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+
 }

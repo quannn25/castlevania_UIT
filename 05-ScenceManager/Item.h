@@ -7,25 +7,14 @@
 #include "GameObject.h"
 #include "define.h"
 #include "Game.h"
+#include "Brick.h"
 
 
-class Item
+class Item : public CGameObject
 {
 protected:
-	LPANIMATION_SET animation_set;
-
-	float x;
-	float y;
-
-	float vx;
-	float vy;
-	float dx;
-	float dy;
-
-	eID type;
-
-	int TimeDisplayMax; // thời gian tối đa cho phép hiển thị.
-	int TimeDisplayed; // Thời gian đã hiển thị.
+	int TimeDisplayMax; // thgian tối đa cho phép hiển thị
+	int TimeDisplayed; // thgian đã hiển thị
 
 	bool isFinish; // đã kết thúc chưa?
 
@@ -34,13 +23,15 @@ public:
 	~Item();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	virtual void Update(DWORD dt, vector<CGameObject*> *listObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* listObject = NULL);
 	virtual void Render();
-	virtual void SetPosition(float X, float Y);
-	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
-	eID GetType();
-	void RenderBoundingBox();
+	//virtual void SetPosition(float X, float Y);
+	//void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
+	virtual void SetReward() = 0; // update điểm or máu cho player
+	//eID GetType();
+	//void RenderBoundingBox();
 	bool GetFinish();
+	void SetFinish(bool f);
 };
 
 

@@ -12,6 +12,7 @@ public:
 	static ItemManager * GetInstance();
 
 	vector<Item*> ListItem;
+	int HeartCollect;
 
 	ItemManager();
 	~ItemManager();

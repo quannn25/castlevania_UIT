@@ -171,7 +171,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void CPlayScene::_ParseSection_TITLEMAP(string line)
+void CPlayScene::_ParseSection_TILEMAP(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -182,8 +182,8 @@ void CPlayScene::_ParseSection_TITLEMAP(string line)
 	wstring texPath = ToWSTR(tokens[0]);
 	wstring txtPath = ToWSTR(tokens[1]);
 
-	titleMap = new Map(texPath.c_str(), txtPath.c_str());
-	titleMap->load();
+	tileMap = new Map(texPath.c_str(), txtPath.c_str());
+	tileMap->load();
 }
 
 void CPlayScene::Load()
@@ -212,8 +212,8 @@ void CPlayScene::Load()
 			section = SCENE_SECTION_ANIMATION_SETS; continue; }
 		if (line == "[OBJECTS]") { 
 			section = SCENE_SECTION_OBJECTS; continue; }
-		if (line == "[TITLEMAP]") {
-			section = SCENE_SECTION_TITLEMAP; continue; }
+		if (line == "[TILEMAP]") {
+			section = SCENE_SECTION_TILEMAP; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -226,7 +226,7 @@ void CPlayScene::Load()
 			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			case SCENE_SECTION_TITLEMAP: _ParseSection_TITLEMAP(line); break;
+			case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP(line); break;
 		}
 	}
 
@@ -241,6 +241,7 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+
 	if(grid == NULL)
 		grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
 	
@@ -254,6 +255,11 @@ void CPlayScene::Update(DWORD dt)
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
+	itemManager = ItemManager::GetInstance();
+	for (int i = 0; i < itemManager->ListItem.size(); i++) // update các Item
+	{
+		itemManager->ListItem[i]->Update(dt, &coObjects);
+	}
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -272,10 +278,18 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	
-	titleMap->DrawMap(Camera::GetInstance(), player);
+	tileMap->DrawMap(Camera::GetInstance(), player);
 
 	for (int i = 0; i < coObjects.size(); i++)
+	{
 		coObjects[i]->Render();
+	}
+
+	for (int i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
+	{
+		itemManager->ListItem[i]->Render();
+	}
+
 	player->Render();
 
 }
@@ -292,11 +306,14 @@ void CPlayScene::Unload()
 	coObjects.clear();
 	player = NULL;
 
-	delete titleMap;
-	titleMap = NULL;
+	delete tileMap;
+	tileMap = NULL;
 
 	delete grid;
 	grid = NULL;
+
+	delete itemManager;
+	itemManager = NULL;
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// sua doi is jumping, sitting... thành state hết
