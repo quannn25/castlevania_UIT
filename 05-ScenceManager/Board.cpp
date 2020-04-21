@@ -9,7 +9,10 @@ Board::Board(int x1, int y1)
 
 void Board::Render()
 {
-	BoardSprite->Draw(x, y);
+	float x1 = Camera::GetInstance()->Getx();
+	float y1 = Camera::GetInstance()->Gety();
+	BoardSprite->Draw(x1, y1);
+	font.Draw(x1, y1, "hahaha");
 }
 
 

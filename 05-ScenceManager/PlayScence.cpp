@@ -287,8 +287,6 @@ void CPlayScene::Render()
 	
 	tileMap->DrawMap(Camera::GetInstance(), player);
 
-	boardGame->Render();
-
 	for (int i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Render();
@@ -298,6 +296,8 @@ void CPlayScene::Render()
 	{
 		itemManager->ListItem[i]->Render();
 	}
+
+	boardGame->Render();
 
 	player->Render();
 
