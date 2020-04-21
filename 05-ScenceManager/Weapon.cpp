@@ -55,7 +55,7 @@ void Weapon::UpdatePositionFitSimon()
 {
 }
 
-int Weapon::GetFinish()
+bool Weapon::GetFinish()
 {
 	return isFinish;
 }

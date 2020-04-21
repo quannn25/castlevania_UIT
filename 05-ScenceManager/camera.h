@@ -1,5 +1,5 @@
-#ifndef __CAMERA_H__
-#define __CAMERA_H__
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include "define.h"
 
@@ -7,7 +7,8 @@ class Camera
 {
 	static Camera * __instance;
 protected:
-	D3DXVECTOR2 viewport;
+	float x;
+	float y;
 	int screen_width;
 	int screen_height;
 
@@ -15,17 +16,12 @@ public:
 	Camera(int w, int h);
 	~Camera();
 	
-
-
-	D3DXVECTOR2 Transform(int x, int y);
-
 	void SetPosition(float x, float y);
 
-	D3DXVECTOR2 GetViewport();
 	void Update();
 
-	float Getx() { return viewport.x; }
-	float Gety() { return viewport.y; }
+	float Getx() { return x; }
+	float Gety() { return y; }
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }

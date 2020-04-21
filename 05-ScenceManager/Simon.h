@@ -61,8 +61,6 @@ public:
 
 	vector<Weapon*> ListWeapon;
 
-
-
 	int level; // mario 123
 	int untouchable;
 	DWORD untouchable_start;

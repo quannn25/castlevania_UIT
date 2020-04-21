@@ -25,10 +25,12 @@ void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo d
 {// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
-	if (curFrame == 3)
+	int curFrame1 = animation_set->at(1)->getCurrentFrame();
+	if (curFrame == 3 || curFrame1 == 3)
 	{
 		isFinish = true;
 	}
+
 
 	if (level == 0)// kiểm tra sai frame ko
 	{ 
@@ -37,7 +39,15 @@ void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo d
 			animation_set->at(0)->setCurrentFrame(-1);
 		}
 	}
+
 	
+	if (level == 1)
+	{
+		if (curFrame1 >= 3) // tới frame 3 thì quay lại 0
+		{
+			animation_set->at(1)->setCurrentFrame(-1);
+		}
+	}
 }
 
 void MorningStar::Create(float simonX, float simonY, int simonNx)
@@ -49,6 +59,11 @@ void MorningStar::Create(float simonX, float simonY, int simonNx)
 	if (level == 0)
 	{
 		animation_set->at(0)->setCurrentFrame(-1);
+	}
+
+	if (level == 1)
+	{
+		animation_set->at(1)->setCurrentFrame(-1);
 	}
 }
 
@@ -74,17 +89,33 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 			left = x + 80;
 			top = y + 15;
 			right = x + MORNINGSTAR_FRAMEWEIGHT - 30;
-			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 35;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
 		else
 		{
 			left = x + 30;
 			top = y + 15;
 			right = x + MORNINGSTAR_FRAMEWEIGHT - 85;
-			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 35;
-
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
+	}
 
+	if (level == 1)
+	{
+		if (nx == 1)
+		{
+			left = x + 80;
+			top = y + 15;
+			right = x + MORNINGSTAR_FRAMEWEIGHT - 30;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
+		}
+		else
+		{
+			left = x + 30;
+			top = y + 15;
+			right = x + MORNINGSTAR_FRAMEWEIGHT - 85;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
+		}
 	}
 
 }
@@ -122,4 +153,11 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 			}
 		}
 	}
+}
+
+void MorningStar::UpgradeLevel()
+{
+	if (level >= 2)
+		return;
+	level++;
 }

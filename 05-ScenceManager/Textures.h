@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CTEXTURES_H
+#define CTEXTURES_H
 #include <unordered_map>
 #include <d3dx9.h>
 
@@ -21,3 +22,4 @@ public:
 	void Clear();
 	static CTextures * GetInstance();
 };
+#endif

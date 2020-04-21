@@ -1,7 +1,6 @@
 ﻿#include "Map.h"
 
 
-
 Map::Map(LPCWSTR texPath1, LPCWSTR txtPath1)
 {
 	texPath = texPath1;
@@ -43,16 +42,11 @@ void Map::LoadMap()
 
 	TileSprite = CSprites::GetInstance()->Get(ID_SPRITE_TILEMAP);// ID TEXTURE 30, ID SPRITE 50001
 
-	MapWidth = (frameHeight)*(ColumnMatrix);  // Chiều dài của MAP
-	MapHeight = (frameHeight)*(RowMatrix* +1); //  chiều cao của MAP
-
+	MapWidth = frameWidth * ColumnMatrix; // chiều dài của map
+	MapHeight = frameHeight * RowMatrix; //  chiều cao của map
 
 	ScreenColumn = Window_Width / frameWidth;
 	ScreenRow = Window_Height / frameHeight;
-
-
-
-
 }
 
 void Map::ReadMapTXT(LPCWSTR filename)

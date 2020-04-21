@@ -43,7 +43,7 @@ public:
 
 	virtual void SetPosition(float X, float Y);
 	virtual void UpdatePositionFitSimon();
-	int GetFinish();
+	bool GetFinish();
 	void SetFinish(bool b);
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 	void RenderBoundingBox();

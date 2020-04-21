@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CSPRITE_H
+#define CSPRITE_H
 #include <Windows.h>
 #include <d3dx9.h>
 #include <unordered_map>
@@ -47,4 +48,4 @@ public:
 };
 
 
-
+#endif

@@ -50,6 +50,12 @@
 70003	320	0	480	68	50
 70004	480	0	540	68	50
 
+# upgradeMorningstar
+70005	0	68	160	136	50
+70006	160	68	320	136	50
+70007	320	68	480	136	50
+70008	480	68	540	136	50
+
 #UpgradeMorningStar
 71000	0	0	32	32	70
 
@@ -84,6 +90,9 @@
 # =======MorningStar======
 801	70001	90	70002	90	70003	90	70004	90
 
+#==morningstar 1====
+802	70005	90	70006	90	70007	90	70008	90
+
 #========upgradeMorningStar=======
 809	71000	100
 
@@ -103,13 +112,14 @@
 33	701
 
 # MORNINGSTAR
-44	801
+44	801	802
 
 #LARGEHEART
 45	901
 
 #UpgradeMorningStar
 46	809
+
 
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type
