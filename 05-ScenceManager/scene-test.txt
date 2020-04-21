@@ -7,6 +7,7 @@
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
 70	textures\castle\item\3.png	255	0	255
+80	textures\castle\blackboard.png	255	0	255
 
 
 # id	left	top	right	bottom	texture_id
@@ -39,6 +40,7 @@
 
 #Title Map, l, t, r, b se dc set lai
 50001	1	1	1	1	30
+50002	0	0	520	80	80
 
 #TORCH
 60001	0	0	32	64	40

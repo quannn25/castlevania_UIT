@@ -233,8 +233,17 @@ void CPlayScene::Load()
 	f.close();
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	LoadResources();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+void CPlayScene::LoadResources()
+{
+	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
+	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
+	itemManager = ItemManager::GetInstance();
+	boardGame = new Board(0, 0);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -242,8 +251,6 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
-	if(grid == NULL)
-		grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
 	
 	grid->ResetTake(objects); // set lai trang thai onCam
 	
@@ -255,7 +262,7 @@ void CPlayScene::Update(DWORD dt)
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	itemManager = ItemManager::GetInstance();
+	
 	for (int i = 0; i < itemManager->ListItem.size(); i++) // update các Item
 	{
 		itemManager->ListItem[i]->Update(dt, &coObjects);
@@ -279,6 +286,8 @@ void CPlayScene::Render()
 {
 	
 	tileMap->DrawMap(Camera::GetInstance(), player);
+
+	boardGame->Render();
 
 	for (int i = 0; i < coObjects.size(); i++)
 	{

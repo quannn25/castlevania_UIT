@@ -120,6 +120,9 @@
     <ClCompile Include="UpgradeMorningStar.cpp">
       <Filter>Object\weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="UpgradeMorningStar.h">
       <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

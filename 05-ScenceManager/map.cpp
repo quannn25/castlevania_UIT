@@ -56,7 +56,7 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 	if (fileIn)
 	{
-		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame >> AutoFit;
+		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame >> heightBoard;
 		for (int i = 0; i < RowMatrix; i++)
 		{
 			for (int j = 0; j < ColumnMatrix; j++)
@@ -94,7 +94,7 @@ void Map::DrawMap(Camera *camera, Simon *simon)
 				r.right = r.left + frameWidth;
 				r.bottom = r.top + frameHeight;
 
-				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + AutoFit); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
+				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + heightBoard); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
 			}
 
 		}

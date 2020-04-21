@@ -6,8 +6,8 @@ LargeHeart::LargeHeart()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(LARGEHEART_ANI_SET_ID);
-	type = eID::LARGEHEART;
 	SetAnimationSet(ani_set);
+	type = eID::LARGEHEART;
 
 }
 

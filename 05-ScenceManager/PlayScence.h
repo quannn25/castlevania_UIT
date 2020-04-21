@@ -8,6 +8,7 @@
 #include "Simon.h"
 #include "map.h"
 #include "grid.h"
+#include "Board.h"
 
 class CPlayScene: public CScene
 {
@@ -23,6 +24,8 @@ protected:
 
 	ItemManager *itemManager;
 
+	Board *boardGame; //unload()???
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -32,6 +35,7 @@ protected:
 public: 
 	CPlayScene(int id, LPCWSTR filePath);
 
+	virtual void LoadResources();
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
