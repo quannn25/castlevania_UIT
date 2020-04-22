@@ -6,6 +6,9 @@
 #include "define.h"
 #include "Animations.h"
 
+#define FONT_FRAMEWEIGHT 15
+#define FONT_FRAMEHEIGHT 14
+
 
 class Font
 {

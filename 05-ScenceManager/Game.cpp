@@ -186,6 +186,10 @@ void CGame::ProcessKeyboard()
 
 	keyHandler->KeyState((BYTE *)&keyStates);
 
+	//if (keyHandler)
+	//	keyHandler->KeyState((BYTE *)&keyStates);
+	//else
+	//	DebugOut(L"[ERROR] keyHandler->KeyState");
 
 
 	// Collect all buffered events

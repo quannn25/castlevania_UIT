@@ -1,4 +1,4 @@
-#include "Font.h"
+﻿#include "Font.h"
 
 Font::Font()
 {
@@ -15,23 +15,22 @@ Font::~Font()
 
 void Font::Draw(float x, float y, string s)
 {
-	//for (int i = 0; i < s.size(); i++)
-	//{
-	//	if (s[i] == ' ')
-	//		continue;
-	//	if (s[i] >= 'A' && s[i] <= 'Z')
-	//	{
-	//		_sprite->SelectIndex(s[i] - 'A');
-	//	}
-	//	else
-	//		if (s[i] >= '0' && s[i] <= '9')
-	//		{
-	//			_sprite->SelectIndex(s[i] - '0' + 26);
-	//		}
-	//		else
-	//			_sprite->SelectIndex(36);
-	//	_sprite->Draw(x + i * _texture->FrameWidth, y);
-	//}
-	animation_set->at(16)->Render(x, y);
-	animation_set->at(15)->Render(x+15, y);
+	int a;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == ' ')
+			continue;
+		if (s[i] >= 'A' && s[i] <= 'Z')
+		{
+			a = s[i] - 'A'; // vd A = 95, C = 97, sC - 'A' = 2 thì chọn thứ tự là 2 trong ani_set chính là C
+		}
+		else
+			if (s[i] >= '0' && s[i] <= '9')
+			{
+				a = s[i] - '0' + 26;
+			}
+			else
+				a = 36;
+		animation_set->at(a)->Render(x + i * FONT_FRAMEWEIGHT, y);
+	}
 }
