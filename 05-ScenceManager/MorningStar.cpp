@@ -137,7 +137,7 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 
 
 
-	for (int i = 0; i < listObj->size(); i++)
+	for (UINT i = 0; i < listObj->size(); i++)
 	{
 		if (listObj->at(i)->GetHealth() > 0 && dynamic_cast<Torch *>(listObj->at(i)))
 		{

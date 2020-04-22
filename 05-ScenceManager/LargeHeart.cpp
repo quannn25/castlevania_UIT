@@ -39,7 +39,7 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
-	for (int i = 0; i < listObject->size(); i++)
+	for (UINT i = 0; i < listObject->size(); i++)
 	{
 		if(dynamic_cast<CBrick *>(listObject->at(i)))
 			listObject_Brick.push_back(listObject->at(i));

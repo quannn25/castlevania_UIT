@@ -25,11 +25,8 @@ public:
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* listObject = NULL);
 	virtual void Render();
-	//virtual void SetPosition(float X, float Y);
-	//void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 	virtual void SetReward() = 0; // update điểm or máu cho player
-	//eID GetType();
-	//void RenderBoundingBox();
+	
 	bool GetFinish();
 	void SetFinish(bool f);
 };

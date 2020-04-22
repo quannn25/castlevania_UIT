@@ -1,6 +1,6 @@
 #include "Board.h"
 
-Board::Board(int x1, int y1)
+Board::Board(float x1, float y1)
 {
 	BoardSprite = CSprites::GetInstance()->Get(ID_SPRITE_BOARDGAME);
 	x = x1;

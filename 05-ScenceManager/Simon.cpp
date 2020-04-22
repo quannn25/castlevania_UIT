@@ -49,10 +49,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	// Không cho lọt khỏi camera 
-	if (x < -12)
-		x = -12;
+	if (x < -12) // -12 do sprite render to hơn bbox 12
+		x = -12.0f;
 	if (x + SIMON_BBOX_WIDTH > MapWidth)
-		x = MapWidth - SIMON_BBOX_WIDTH;
+		x = float(MapWidth - SIMON_BBOX_WIDTH);
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -62,7 +62,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	vector<LPGAMEOBJECT> coBrick;
 	coBrick.clear();
-	for (int i = 0; i < coObjects->size(); i++)
+	for (UINT i = 0; i < coObjects->size(); i++)
 	{
 		if(dynamic_cast<CBrick *>(coObjects->at(i)) || dynamic_cast<CPortal *>(coObjects->at(i))) // tutu xu ly portal
 			coBrick.push_back(coObjects->at(i));
@@ -157,7 +157,7 @@ void Simon::Render()
 
 	RenderBoundingBox();
 	// render weapon
-	for (int i = 0; i < ListWeapon.size(); i++)
+	for (UINT i = 0; i < ListWeapon.size(); i++)
 	{
 		if (ListWeapon[i]->GetFinish() == false)
 		{
@@ -389,7 +389,7 @@ void Simon::CollisionWithItem()
 	rect.right = r;
 	rect.bottom = b;
 
-	for (int i = 0; i < ListItem->ListItem.size(); i++) // check trước bằng AABB xem có va chạm không?
+	for (UINT i = 0; i < ListItem->ListItem.size(); i++) // simon có thể đã va chạm item rồi?
 	{
 		ListItem->ListItem.at(i)->GetBoundingBox(l1, t1, r1, b1);
 		rect1.left = l1;
@@ -405,7 +405,7 @@ void Simon::CollisionWithItem()
 
 
 
-	for (int i = 0; i < ListItem->ListItem.size(); i++)
+	for (UINT i = 0; i < ListItem->ListItem.size(); i++)
 	{
 		if (ListItem->ListItem[i]->GetFinish() == false) // chưa kết thúc thì xét
 		{

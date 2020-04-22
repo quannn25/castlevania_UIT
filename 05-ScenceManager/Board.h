@@ -11,10 +11,10 @@ class Board
 private:
 	CSprite * BoardSprite;
 	Font font;
-	int x, y;
+	float x, y;
 	string information;
 public:
-	Board(int X, int Y);
+	Board(float x, float y);
 	void Render();
 	~Board();
 };

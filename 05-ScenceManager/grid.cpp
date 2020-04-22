@@ -34,9 +34,10 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 
 
 	for (int row = rowTop; row <= rowBottom; row++)
+	{
 		for (int col = colLeft; col <= colRight; col++)
 		{
-			for (int i = 0; i < cells[row + GRID_BASE][col + GRID_BASE].size(); i++)
+			for (UINT i = 0; i < cells[row + GRID_BASE][col + GRID_BASE].size(); i++)
 			{
 				if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->GetHealth() > 0) // còn sống thì thêm vào
 				{
@@ -48,6 +49,7 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 				}
 			}
 		}
+	}
 }
 
 
@@ -55,7 +57,7 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 
 void Grid::ResetTake(vector<LPGAMEOBJECT>& ListObj) // list obj bao gom simon, but ko duyet qua simon
 {
-	for (int i = 1; i < ListObj.size(); i++) // i = 0 = Simon
+	for (UINT i = 1; i < ListObj.size(); i++) // i = 0 = Simon
 	{
 		ListObj[i]->onCam = false;
 	}

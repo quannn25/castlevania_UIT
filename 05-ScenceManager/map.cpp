@@ -76,10 +76,11 @@ void Map::ReadMapTXT(LPCWSTR filename)
 void Map::DrawMap(Camera *camera, Simon *simon)
 {
 	row = int(camera->Gety()) / frameHeight;
-	column = int(camera->Getx()) / frameHeight;
+	column = int(camera->Getx()) / frameWidth; // vẽ ngay cột đang đứng để ko mất frame
 
-	x = (-(int(camera->Getx()) % frameHeight)) +camera->Getx();
-	y = -(int(camera->Gety()) % frameHeight) +camera->Gety();
+	x = -(int(camera->Getx()) % frameWidth) + camera->Getx();
+	y = -(int(camera->Gety()) % frameHeight) + camera->Gety();
+	//DebugOut(L"x , y = %d %d\n", x,y);
 	for (int i = 0; i < ScreenRow; i++)
 	{
 		for (int j = 0; j < ScreenColumn + 1; j++)

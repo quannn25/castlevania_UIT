@@ -1,5 +1,5 @@
-﻿#pragma once
-
+﻿#ifndef GAME_H
+#define GAME_H
 #include <unordered_map>
 
 #include <Windows.h>
@@ -86,4 +86,4 @@ public:
 	~CGame();
 };
 
-
+#endif

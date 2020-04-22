@@ -263,7 +263,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	
-	for (int i = 0; i < itemManager->ListItem.size(); i++) // update các Item
+	for (UINT i = 0; i < itemManager->ListItem.size(); i++) // update các Item
 	{
 		itemManager->ListItem[i]->Update(dt, &coObjects);
 	}
@@ -287,12 +287,12 @@ void CPlayScene::Render()
 	
 	tileMap->DrawMap(Camera::GetInstance(), player);
 
-	for (int i = 0; i < coObjects.size(); i++)
+	for (UINT i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Render();
 	}
 
-	for (int i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
+	for (UINT i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
 	{
 		itemManager->ListItem[i]->Render();
 	}
