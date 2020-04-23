@@ -149,7 +149,7 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 			if (CGame::GetInstance()->AABBCheck(rect, rect1))
 			{
 				listObj->at(i)->beAttacked(1);
-				ItemManager::GetInstance()->ListItem.push_back(Weapon::GetNewItem(listObj->at(i)->id, listObj->at(i)->GetType(), listObj->at(i)->x, listObj->at(i)->y));
+				//ItemManager::GetInstance()->ListItem.push_back(Weapon::GetNewItem(listObj->at(i)->id, listObj->at(i)->GetType(), listObj->at(i)->x, listObj->at(i)->y));
 			}
 		}
 	}

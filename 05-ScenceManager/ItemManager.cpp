@@ -13,7 +13,7 @@ ItemManager * ItemManager::GetInstance()
 ItemManager::ItemManager()
 {
 	ListItem.clear();
-	HeartCollect = 0;
+	HeartCollected = 0;
 }
 
 

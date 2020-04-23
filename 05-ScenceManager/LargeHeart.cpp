@@ -79,9 +79,8 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 
 void LargeHeart::SetReward()
 {
-
-	ItemManager::GetInstance()->HeartCollect += 5;
-	DebugOut(L"[ITEM] +5 Heart. Tong = %d \n", ItemManager::GetInstance()->HeartCollect);
+	//ItemManager::GetInstance()->HeartCollected += 5;
+	//DebugOut(L"[ITEM] +5 Heart. Tong = %d \n", ItemManager::GetInstance()->HeartCollect);
 }
 
 LargeHeart::~LargeHeart()

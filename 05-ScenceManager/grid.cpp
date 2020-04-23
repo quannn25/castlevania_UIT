@@ -24,7 +24,6 @@ void Grid::LoadGrid(vector<LPGAMEOBJECT> ListObj)// list tong playScence, tru Si
 void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 {
 	ListObj.clear(); // clear list
-	//ResetTake(); // goi o noi dung luon
 
 	int rowBottom = floor((camera->Gety() + camera->GetScreenHeight()) / (float)GRID_CELL_HEIGHT);
 	int rowTop = floor((camera->Gety()) / (float)GRID_CELL_HEIGHT);
@@ -37,14 +36,14 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 	{
 		for (int col = colLeft; col <= colRight; col++)
 		{
-			for (UINT i = 0; i < cells[row + GRID_BASE][col + GRID_BASE].size(); i++)
+			for (UINT i = 0; i < cells[row][col].size(); i++)
 			{
-				if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->GetHealth() > 0) // còn sống thì thêm vào
+				if (cells[row][col].at(i)->GetHealth() > 0) // còn sống thì thêm vào
 				{
-					if (cells[row + GRID_BASE][col + GRID_BASE].at(i)->onCam == false) // nếu 1 obj có onCam rồi thì bỏ qua, vì 1 obj có thể nằm nhiều grid
+					if (cells[row][col].at(i)->onCam == false) // nếu 1 obj có onCam rồi thì bỏ qua, vì 1 obj có thể nằm nhiều grid
 					{ // nếu thêm obj 2 lần thì có thể nó bị đánh 2 lần ????
-						ListObj.push_back(cells[row + GRID_BASE][col + GRID_BASE].at(i));
-						cells[row + GRID_BASE][col + GRID_BASE].at(i)->onCam = true;
+						ListObj.push_back(cells[row][col].at(i));
+						cells[row][col].at(i)->onCam = true;
 					}
 				}
 			}
@@ -73,11 +72,11 @@ void Grid::Insert(LPGAMEOBJECT dtObj, float x, float y, float w, float h)
 
 	dtObj->onCam = false;
 
-	for (int row = Top; row <= Bottom; row++)
+	for (int row = Top; row <= Bottom; row++) // 1 Obj có thể ở 2 hàng
 	{
-		for (int col = Left; col <= Right; col++)
+		for (int col = Left; col <= Right; col++) // 1 Obj có thể ở 2 cột
 		{
-			cells[row + GRID_BASE][col + GRID_BASE].push_back(dtObj);
+			cells[row][col].push_back(dtObj); // ở mỗi "ô" (hàng r cột l) thì có 1 vector Obj tương ứng
 		}
 	}
 

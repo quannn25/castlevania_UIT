@@ -242,7 +242,7 @@ void CPlayScene::LoadResources()
 {
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
 	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
-	itemManager = ItemManager::GetInstance();
+	//itemManager = ItemManager::GetInstance(); // listItem.clear();
 	boardGame = new Board(0, 0);
 }
 
@@ -263,10 +263,10 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	
-	for (UINT i = 0; i < itemManager->ListItem.size(); i++) // update các Item
-	{
-		itemManager->ListItem[i]->Update(dt, &coObjects);
-	}
+	//for (UINT i = 0; i < itemManager->ListItem.size(); i++) // update các Item
+	//{
+	//	itemManager->ListItem[i]->Update(dt, &coObjects);
+	//}
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -292,10 +292,10 @@ void CPlayScene::Render()
 		coObjects[i]->Render();
 	}
 
-	for (UINT i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
-	{
-		itemManager->ListItem[i]->Render();
-	}
+	//for (UINT i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
+	//{
+	//	itemManager->ListItem[i]->Render();
+	//}
 
 	boardGame->Render();
 
@@ -321,8 +321,8 @@ void CPlayScene::Unload()
 	delete grid;
 	grid = NULL;
 
-	delete itemManager;
-	itemManager = NULL;
+	//delete itemManager;
+	//itemManager = NULL;
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// sua doi is jumping, sitting... thành state hết

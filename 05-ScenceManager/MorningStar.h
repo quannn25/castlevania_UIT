@@ -1,10 +1,7 @@
 #ifndef MORNINGSTAR_H
 #define MORNINGSTAR_H
 
-
-
 #include "Weapon.h"
-#include "ItemManager.h"
 #include "LargeHeart.h"
 #include "Torch.h"
 
@@ -26,7 +23,5 @@ public:
 	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj);
 	void UpgradeLevel();
 };
-
-
 
 #endif

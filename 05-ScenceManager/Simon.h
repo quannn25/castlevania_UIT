@@ -9,14 +9,11 @@
 
 #define SIMON_BBOX_SITTING_HEIGHT 48
 
-
-
 #define SIMON_GRAVITY 0.005f
 
 #define SIMON_WALKING_SPEED 0.15f 
 #define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
-
 
 #define SIMON_STATE_IDLE			0
 #define SIMON_STATE_WALKING_RIGHT	100
@@ -27,8 +24,6 @@
 #define SIMON_STATE_RIGHT			3
 #define SIMON_STATE_LEFT			4
 #define SIMON_STATE_STOP			5
-
-
 
 #define SIMON_ANI_WALKING 1
 
@@ -51,7 +46,7 @@
 #include "MorningStar.h"
 class Simon : public CGameObject
 {
-public:
+private:
 
 	bool isWalking;
 	bool isJumping;
@@ -59,23 +54,22 @@ public:
 
 	bool isAttacking;
 
-	vector<Weapon*> ListWeapon;
-
 	int level; // mario 123
+
+	int heartCollected;
+
 	int untouchable;
 	DWORD untouchable_start;
 
+public:
+	vector<Weapon*> ListWeapon;
 
 public:
 	Simon();
 	~Simon();
-
-
-
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-
 
 	virtual void Render();
 
@@ -84,12 +78,8 @@ public:
 	void CollisionWithBrick(vector<LPGAMEOBJECT> *coObjects = NULL);
 	void Attack(Weapon *w);
 	void CollisionWithItem();
+	void SetHeartCollected(int h);
+	int GetHeartCollected();
 
 };
-
-
-
-
-
-
 #endif

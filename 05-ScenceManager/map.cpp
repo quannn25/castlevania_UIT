@@ -78,14 +78,14 @@ void Map::DrawMap(Camera *camera, Simon *simon)
 	row = int(camera->Gety()) / frameHeight;
 	column = int(camera->Getx()) / frameWidth; // vẽ ngay cột đang đứng để ko mất frame
 
-	x = -(int(camera->Getx()) % frameWidth) + camera->Getx();
-	y = -(int(camera->Gety()) % frameHeight) + camera->Gety();
-	//DebugOut(L"x , y = %d %d\n", x,y);
+	x = column * frameWidth; // x = n lần frameWidth, n = column
+	y = row * frameHeight;
+	//DebugOut(L"x , y = %d %d\n", x,column);
 	for (int i = 0; i < ScreenRow; i++)
 	{
 		for (int j = 0; j < ScreenColumn + 1; j++)
 		{
-			if (!(row + i < 0 || row + i>RowMatrix || j + column < 0 || j + column > ColumnMatrix))
+			if (!(row + i < 0 || row + i > RowMatrix || j + column < 0 || j + column > ColumnMatrix)) // cam đã kiểm tra chuyện này?
 			{
 				int index = TileMap[row + i][column + j];
 

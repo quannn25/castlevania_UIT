@@ -1,7 +1,6 @@
 #ifndef LARGEHEART_H
 #define LARGEHEART_H
 #include "Item.h"
-#include "ItemManager.h"
 
 #define LARGEHEART_GRAVITY 0.25f
 

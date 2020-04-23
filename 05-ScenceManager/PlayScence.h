@@ -22,7 +22,7 @@ protected:
 
 	Grid *grid;
 
-	ItemManager *itemManager;
+	//ItemManager *itemManager;
 
 	Board *boardGame; //unload()???
 
