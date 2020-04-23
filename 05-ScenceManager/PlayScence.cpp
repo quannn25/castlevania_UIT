@@ -242,8 +242,8 @@ void CPlayScene::LoadResources()
 {
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
 	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
-	//itemManager = ItemManager::GetInstance(); // listItem.clear();
 	boardGame = new Board(0, 0);
+	listItem.clear();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -255,6 +255,7 @@ void CPlayScene::Update(DWORD dt)
 	grid->ResetTake(objects); // set lai trang thai onCam
 	
 	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
+	DebugOut(L"[Grid] ListObject by Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
 	for (size_t i = 0; i < coObjects.size(); i++)
@@ -262,11 +263,12 @@ void CPlayScene::Update(DWORD dt)
 		coObjects[i]->Update(dt, &coObjects);
 	}
 
-	
-	//for (UINT i = 0; i < itemManager->ListItem.size(); i++) // update các Item
-	//{
-	//	itemManager->ListItem[i]->Update(dt, &coObjects);
-	//}
+	for (size_t i = 0; i < listItem.size(); i++)
+	{
+		listItem[i]->Update(dt, &coObjects);
+	}
+
+	CheckCollision();
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -284,18 +286,15 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	
 	tileMap->DrawMap(Camera::GetInstance(), player);
 
-	for (UINT i = 0; i < coObjects.size(); i++)
+	for (int i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Render();
 	}
 
-	//for (UINT i = 0; i < itemManager->ListItem.size(); i++) // Draw các item
-	//{
-	//	itemManager->ListItem[i]->Render();
-	//}
+	for (int i = 0; i < listItem.size(); i++)
+		listItem[i]->Render();
 
 	boardGame->Render();
 
@@ -321,11 +320,9 @@ void CPlayScene::Unload()
 	delete grid;
 	grid = NULL;
 
-	//delete itemManager;
-	//itemManager = NULL;
 }
 
-void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// sua doi is jumping, sitting... thành state hết
+void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
@@ -356,6 +353,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CGame *game = CGame::GetInstance();
 	Simon *simon = ((CPlayScene*)scence)->player;
 
+	if (simon->isJumping && simon->isWalking)
+		return;
 	// disable control key when Mario die 
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
@@ -373,14 +372,106 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else 
 		simon->SetState(SIMON_STATE_STOP);
+
+	if (simon->isJumping)
+		return;
 	if(game->IsKeyDown(DIK_RIGHT))
 	{
+		if (simon->isAttacking)
+		{
+			float vx, vy;
+			simon->GetSpeed(vx, vy);
+			simon->SetSpeed(0, vy);
+			return;
+		}
 		simon->SetState(SIMON_STATE_WALKING_RIGHT);
 	}
-	else if(game->IsKeyDown(DIK_LEFT))
+	else if (game->IsKeyDown(DIK_LEFT))
+	{
+		if (simon->isAttacking)
+		{
+			float vx, vy;
+			simon->GetSpeed(vx, vy);
+			simon->SetSpeed(0, vy);
+			return;
+		}
 		simon->SetState(SIMON_STATE_WALKING_LEFT);
+	}
 	else
 	{
 		simon->SetState(SIMON_STATE_STOP);
 	}
+}
+
+
+void CPlayScene::CheckCollision()
+{
+	if (player->ListWeapon[0]->GetFinish() == false)
+		CheckCollisionWeapon();
+
+	CheckCollisionSimonWithItem();
+}
+
+void CPlayScene::CheckCollisionWeapon()
+{
+	for (UINT i = 0; i < coObjects.size(); i++)
+	{
+		if (dynamic_cast<Torch *>(coObjects[i]))
+		{
+			if (player->ListWeapon[0]->isCollision(coObjects[i]) == true)
+			{
+				Torch *ObjTorch = dynamic_cast<Torch *>(coObjects[i]);
+				ObjTorch->beAttacked(1);
+				listItem.push_back(GetNewItem(ObjTorch->GetId(), eID::TORCH, ObjTorch->GetX(), ObjTorch->GetY()));
+			}
+		}
+	}
+}
+
+void CPlayScene::CheckCollisionSimonWithItem()
+{
+	for (UINT i = 0; i < listItem.size(); i++)
+	{
+		if (listItem[i]->GetFinish() == false)
+		{
+			if (player->isCollisionWithItem(listItem[i]) == true) // có va chạm
+			{
+				switch (listItem[i]->GetType())
+				{
+				case eID::LARGEHEART:
+				{
+					player->SetHeartCollected(player->GetHeartCollected() + 5);
+					listItem[i]->SetFinish(true);
+					break;
+				}
+				case eID::UPGRADEMORNINGSTAR:
+				{
+					MorningStar * objMorningStar = dynamic_cast<MorningStar*>(player->ListWeapon[0]);
+					objMorningStar->UpgradeLevel(); // Nâng cấp vũ khí roi
+					listItem[i]->SetFinish(true);
+					break;
+				}
+				default:
+					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
+					break;
+				}
+
+			}
+		}
+	}
+}
+
+Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
+{
+	if (type == eID::TORCH)
+	{
+		if (id == 99 || id == 102)
+			return new LargeHeart(x, y);
+
+		if (id == 100 || id == 101)
+			return new UpgradeMorningStar(x, y);
+
+	}
+
+	return new LargeHeart(x, y);
 }

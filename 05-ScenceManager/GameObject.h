@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -79,6 +80,8 @@ public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
+	float GetX() { return x; }
+	float GetY() { return y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
@@ -112,10 +115,14 @@ public:
 	int GetHealth();
 	void SetNx(int Nx);
 	void SetId(int ID);
+	int GetId() { return id; }
 	void SetType(eID t) { this->type = t; }
 	eID GetType() { return type; }
+	bool GetOnCam() { return onCam; }
+	void SetOnCam(int a) { onCam = a; }
 
 
 	~CGameObject();
 };
 
+#endif

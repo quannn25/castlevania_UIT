@@ -48,12 +48,6 @@ class Simon : public CGameObject
 {
 private:
 
-	bool isWalking;
-	bool isJumping;
-	bool isSitting;
-
-	bool isAttacking;
-
 	int level; // mario 123
 
 	int heartCollected;
@@ -63,6 +57,11 @@ private:
 
 public:
 	vector<Weapon*> ListWeapon;
+
+	bool isWalking;
+	bool isJumping;
+	bool isSitting;
+	bool isAttacking;
 
 public:
 	Simon();
@@ -77,7 +76,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void CollisionWithBrick(vector<LPGAMEOBJECT> *coObjects = NULL);
 	void Attack(Weapon *w);
-	void CollisionWithItem();
+	bool isCollisionWithItem(Item * objItem);
 	void SetHeartCollected(int h);
 	int GetHeartCollected();
 

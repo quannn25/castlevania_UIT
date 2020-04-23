@@ -5,7 +5,7 @@
 #include "LargeHeart.h"
 #include "Torch.h"
 
-#define MORNINGSTAR_FRAMEWEIGHT 160
+#define MORNINGSTAR_FRAMEWIDTH 160
 #define MORNINGSTAR_FRAMEHEIGHT 68
 
 class MorningStar : public Weapon
@@ -20,7 +20,7 @@ public:
 	virtual void Create(float simonX, float simonY, int simonTrend);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void UpdatePositionFitSimon();
-	void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj);
+	bool isCollision(LPGAMEOBJECT obj);
 	void UpgradeLevel();
 };
 

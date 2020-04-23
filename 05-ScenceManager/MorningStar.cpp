@@ -4,9 +4,7 @@
 
 MorningStar::MorningStar()
 {
-	// quản lý sprite chạy từ 0 => 3 bằng cách set StateChange trong hàm Render
 	//tạo animationSet trong file txt luôn cho MorningStar (tạo 4 sprite) aniMationSet_id = 44
-	//
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
@@ -82,20 +80,20 @@ void MorningStar::UpdatePositionFitSimon()
 
 void MorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom) // danh toi frame 2 bi dung dot ngot
 {
-	if (level == 0) // 160 weight_ 68 height define lại
+	if (level == 0) // 160 width_ 68 height define lại
 	{
 		if (nx == 1)
 		{
 			left = x + 80;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWEIGHT - 30;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 30;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
 		else
 		{
 			left = x + 30;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWEIGHT - 85;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 85;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
 	}
@@ -106,24 +104,28 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 		{
 			left = x + 80;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWEIGHT - 30;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 30;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
 		else
 		{
 			left = x + 30;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWEIGHT - 85;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 85;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
 	}
 
 }
 
-void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
+bool MorningStar::isCollision(LPGAMEOBJECT obj)
 {
 	if (animation_set->at(0)->getCurrentFrame() != 2)
-		return;
+		return false;
+
+	CGameObject *gameObj = dynamic_cast<CGameObject*>(obj);
+	if (gameObj->GetHealth() <= 0)
+		return false;
 
 	RECT rect, rect1;
 	float l, t, r, b;
@@ -135,24 +137,12 @@ void MorningStar::CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj)
 	rect.right = r;
 	rect.bottom = b;
 
-
-
-	for (UINT i = 0; i < listObj->size(); i++)
-	{
-		if (listObj->at(i)->GetHealth() > 0 && dynamic_cast<Torch *>(listObj->at(i)))
-		{
-			listObj->at(i)->GetBoundingBox(l1, t1, r1, b1);
-			rect1.left = l1;
-			rect1.top = t1;
-			rect1.right = r1;
-			rect1.bottom = b1;
-			if (CGame::GetInstance()->AABBCheck(rect, rect1))
-			{
-				listObj->at(i)->beAttacked(1);
-				//ItemManager::GetInstance()->ListItem.push_back(Weapon::GetNewItem(listObj->at(i)->id, listObj->at(i)->GetType(), listObj->at(i)->x, listObj->at(i)->y));
-			}
-		}
-	}
+	gameObj->GetBoundingBox(l1, t1, r1, b1);
+	rect1.left = l1;
+	rect1.top = t1;
+	rect1.right = r1;
+	rect1.bottom = b1;
+	return CGame::GetInstance()->AABBCheck(rect, rect1);
 }
 
 void MorningStar::UpgradeLevel()

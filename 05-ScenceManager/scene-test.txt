@@ -1,3 +1,4 @@
+#====================[TEXTURES]===================================
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
@@ -11,6 +12,7 @@
 90	textures\castle\font\1.png	255	0	255
 
 
+#====================[SPRITES]===================================
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # SIMON 480 198
@@ -108,6 +110,7 @@
 80001	0	0	24	20	60
 
 
+#====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # ==== SIMON =========
@@ -183,8 +186,10 @@
 1035	51035	100
 1036	51036	100
 
+# =======BOARD========
+1100	50002	100
 
-#
+#====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
 [ANIMATION_SETS]
@@ -208,8 +213,11 @@
 #FONT
 47	1000	1001	1002	1003	1004	1005	1006	1007	1008	1009	1010	1011	1012	1013	1014	1015	1016	1017	1018	1019	1020	1021	1022	1023	1024	1025	1026	1027	1028	1029	1030	1031	1032	1033	1034	1035	1036
 
+#BOARD
+48	1100
 
 
+#====================[OBJECTS]===================================
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type
 
@@ -336,6 +344,8 @@
 # type	l	t	ani_set_id	id	r	b	scene_id
 50	1	1	0	999	148	1	1
 
+
+#====================[TILEMAP]===================================
 [TILEMAP]
 #TILEMAP
 # filepath	mapTXT

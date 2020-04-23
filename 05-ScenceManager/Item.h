@@ -31,27 +31,4 @@ public:
 	void SetFinish(bool f);
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif
-
-
-
-

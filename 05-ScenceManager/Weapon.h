@@ -1,4 +1,4 @@
-#ifndef WEAPON_H
+﻿#ifndef WEAPON_H
 #define	WEAPON_H
 
 #include "define.h"
@@ -48,12 +48,8 @@ public:
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 	void RenderBoundingBox();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
-	virtual void CollisionWithObject(DWORD dt, vector<LPGAMEOBJECT>* listObj) = 0;
+	virtual bool isCollision(LPGAMEOBJECT obj) = 0; // kt va chạm với từng Obj
 
 	eID GetType();
-	static Item * GetNewItem(int id, eID type, float x, float y);
 };
-
-
-
 #endif

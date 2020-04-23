@@ -3,11 +3,9 @@
 
 #include <vector>
 #include <stdlib.h>
-#include <iostream>
-#include <fstream>
 #include <iomanip>
 #include "Game.h" 
-#include "Sprites.h" 
+#include "Sprites.h"
 #include "Map.h"
 #include "Brick.h"
 #include "define.h"
@@ -22,7 +20,6 @@ using namespace std;
 
 class Grid
 {
-
 private:
 	vector<LPGAMEOBJECT> cells[500][500];
 public:

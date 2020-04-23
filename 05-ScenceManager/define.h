@@ -7,20 +7,15 @@
 #include <d3dx9.h>
 #include <map> 
 #include "Utils.h"
+#include <fstream>
+#include <iostream>
 using namespace std;
-
-#define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)  
-#define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f) 
-
-
-#define SHOWBOX_PINK 0
 
 
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 448
 
 #define ID_SPRITE_TILEMAP	50001
-#define ID_SPRITE_BOARDGAME 50002
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
@@ -40,7 +35,8 @@ using namespace std;
 #define MORNINGSTAR_ANI_SET_ID 44
 #define LARGEHEART_ANI_SET_ID 45
 #define UPGRADEMORNINGSTAR_ANI_SET_ID 46
-#define FONT_ANNI_SET_ID 47
+#define FONT_ANI_SET_ID 47
+#define BOARD_ANI_SET_ID 48
 
 extern int Window_Width;
 extern int Window_Height;
@@ -73,29 +69,4 @@ enum eID
 
 };
 
-
-
-typedef D3DXVECTOR3 GVector3;
-typedef D3DXVECTOR2 GVector2;
-#define VECTOR2ZERO GVector2(0.0f, 0.0f)
-
-
-
-
-
-
-
-
-
-#ifndef SAFE_DELETE
-
-#define SAFE_DELETE(ptr) \
-if(ptr) \
-{\
-	delete (ptr); \
-	ptr = nullptr; \
-} \
-
-#endif // !SAFE_DELETE
-
-#endif // !_DEFINE_H__
+#endif

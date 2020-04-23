@@ -5,7 +5,6 @@
 #include "Utils.h"
 
 #include "Game.h"
-
 #include "Goomba.h"
 #include "Portal.h"
 
@@ -69,8 +68,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 
-	CollisionWithItem();
-
 	if (isAttacking == true) 
 	{
 		if (ListWeapon[0]->GetFinish() == false) 
@@ -80,7 +77,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			ListWeapon[0]->Update();
 			if (ListWeapon[0]->GetFinish() == true) 
 				isAttacking = false;
-			ListWeapon[0]->CollisionWithObject(dt, coObjects); // kiểm tra va chạm với các object khác
 		}
 	}
 }
@@ -361,89 +357,51 @@ void Simon::Attack(Weapon * w)
 	w->Create(this->x, this->y, this->nx); // set vị trí weapon theo simon
 }
 
-void Simon::CollisionWithItem()
+bool Simon::isCollisionWithItem(Item * objItem)
 {
-	//ItemManager *ListItem = ItemManager::GetInstance();
-	//vector<LPGAMEOBJECT> listObj;
-	//listObj.clear();
+	if (objItem->GetFinish() == true)
+		return false;
+	
+	RECT rect, rect1;
+	float l, t, r, b;
+	float l1, t1, r1, b1;
+
+	this->GetBoundingBox(l, t, r, b);  // BOX của simon
+	rect.left = l;
+	rect.top = t;
+	rect.right = r;
+	rect.bottom = b;
+
+	objItem->GetBoundingBox(l1, t1, r1, b1); //BBox Obj
+	rect1.left = l1;
+	rect1.top = t1;
+	rect1.right = r1;
+	rect1.bottom = b1;
+
+	if (CGame::GetInstance()->AABBCheck(rect, rect1) == true)
+	{
+		return true;
+	}
 
 
-	///*Xóa những Item đã kết thúc*/
-	//vector<Item*>::iterator it;
-	//for (it = ListItem->ListItem.begin(); it != ListItem->ListItem.end(); ) // stackoverlow remove obj vector c++
-	//{
-	//	if ((*it)->GetFinish() == true)
-	//	{
-	//		it = ListItem->ListItem.erase(it);
-	//	}
-	//	else
-	//		++it;
-	//}
+	vector<LPGAMEOBJECT> listObj;
+	listObj.clear();
 
-	//float l, t, r, b; // bbox simon
-	//float l1, t1, r1, b1;
-	//RECT rect, rect1;
-	//GetBoundingBox(l, t, r, b);
-	//rect.left = l;
-	//rect.top = t;
-	//rect.right = r;
-	//rect.bottom = b;
+	listObj.push_back(objItem); // thêm object Item này để kt
 
-	//for (UINT i = 0; i < ListItem->ListItem.size(); i++) // simon có thể đã va chạm item rồi?
-	//{
-	//	ListItem->ListItem.at(i)->GetBoundingBox(l1, t1, r1, b1);
-	//	rect1.left = l1;
-	//	rect1.top = t1;
-	//	rect1.right = r1;
-	//	rect1.bottom = b1;
-	//	if (CGame::GetInstance()->AABBCheck(rect, rect1) == true)
-	//	{
-	//		ListItem->ListItem.at(i)->SetReward();
-	//		ListItem->ListItem.at(i)->SetFinish(true);
-	//	}
-	//}
+	vector<LPCOLLISIONEVENT> coEvents;
 
+	coEvents.clear();
+	CalcPotentialCollisions(&listObj, coEvents); // Lấy danh sách các va chạm
 
+	int countCollision = (int)coEvents.size();
 
-	//for (UINT i = 0; i < ListItem->ListItem.size(); i++)
-	//{
-	//	if (ListItem->ListItem[i]->GetFinish() == false) // chưa kết thúc thì xét
-	//	{
-	//		listObj.push_back(ListItem->ListItem[i]);
-	//	}
-	//}
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		delete coEvents[i];
+	}
 
-
-	//vector<LPCOLLISIONEVENT> coEvents;
-	//vector<LPCOLLISIONEVENT> coEventsResult;
-
-	//coEvents.clear();
-
-	//CalcPotentialCollisions(&listObj, coEvents); // Lấy danh sách các va chạm
-
-	//											 // No collision occured, proceed normally
-	//if (coEvents.size() != 0)
-	//{
-	//	float min_tx, min_ty, nx = 0, ny;
-	//	float rdx = 0;
-	//	float rdy = 0;
-
-	//	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-	//	for (UINT i = 0; i < coEventsResult.size(); i++) // xử lý
-	//	{
-	//		LPCOLLISIONEVENT e = coEventsResult[i];
-	//		Item *item = dynamic_cast<Item *>(e->obj); 
-
-	//		item->SetReward();
-	//		item->SetFinish(true);
-
-	//	}
-	//}
-
-	//for (UINT i = 0; i < coEvents.size(); i++)
-	//	delete coEvents[i];
-
+	return (countCollision > 0);
 }
 
 void Simon::SetHeartCollected(int h)

@@ -1,20 +1,12 @@
 ﻿#ifndef MAP_H
 #define MAP_H
 
-
 #include <stdio.h>
-
 #include "Textures.h"
 #include "Sprites.h"
 #include "define.h"
-
 #include "camera.h"
 #include "Simon.h"
-
-#include <fstream>
-#include <iostream>
-
-
 
 class Map
 {
@@ -52,7 +44,6 @@ public:
 
 	void SetTexPath(LPCWSTR path) { this->texPath = path; }
 	void SetTxtPath(LPCWSTR path) { this->txtPath = path; }
-
 
 	void loadFrameWidthHeight();
 

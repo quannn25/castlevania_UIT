@@ -3,7 +3,7 @@
 Font::Font()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
-	LPANIMATION_SET ani_set = animation_sets->Get(FONT_ANNI_SET_ID);
+	LPANIMATION_SET ani_set = animation_sets->Get(FONT_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
 }
@@ -27,10 +27,10 @@ void Font::Draw(float x, float y, string s)
 		else
 			if (s[i] >= '0' && s[i] <= '9')
 			{
-				a = s[i] - '0' + 26;
+				a = s[i] - '0' + 26;// 26 chữ cái
 			}
 			else
 				a = 36;
-		animation_set->at(a)->Render(x + i * FONT_FRAMEWEIGHT, y);
+		animation_set->at(a)->Render(x + i * FONT_FRAMEWIDTH, y);
 	}
 }

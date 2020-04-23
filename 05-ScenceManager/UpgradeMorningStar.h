@@ -5,14 +5,12 @@
 
 #define UPGRADEMORNINGSTAR_TIMEDISPLAYMAX 3000
 
-#define UPGRADEMORNINGSTAR_FRAMEWEIGHT 32
+#define UPGRADEMORNINGSTAR_FRAMEWIDTH 32
 #define UPGRADEMORNINGSTAR_FRAMEHEIGHT 32
 
 #include "Item.h"
 class UpgradeMorningStar : public Item
 {
-
-
 public:
 	UpgradeMorningStar();
 	UpgradeMorningStar(float X, float Y);

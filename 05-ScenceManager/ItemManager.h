@@ -1,7 +1,6 @@
 #ifndef itemM_h
 #define itemM_h
 
-
 #include "define.h"
 #include "Item.h"
 

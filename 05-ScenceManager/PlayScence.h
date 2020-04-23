@@ -22,9 +22,9 @@ protected:
 
 	Grid *grid;
 
-	//ItemManager *itemManager;
-
 	Board *boardGame; //unload()???
+
+	vector <Item*> listItem;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -40,6 +40,12 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	void CheckCollision();
+	void CheckCollisionWeapon();
+	void CheckCollisionSimonWithItem();
+
+	Item * GetNewItem(int id, eID type, float x, float y);
 
 	friend class CPlayScenceKeyHandler;
 };

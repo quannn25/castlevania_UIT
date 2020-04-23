@@ -22,5 +22,4 @@ public:
 	~LargeHeart();
 };
 
-
 #endif 

@@ -24,7 +24,7 @@ void UpgradeMorningStar::GetBoundingBox(float & left, float & top, float & right
 {
 	left = x;
 	top = y;
-	right = x + UPGRADEMORNINGSTAR_FRAMEWEIGHT;
+	right = x + UPGRADEMORNINGSTAR_FRAMEWIDTH;
 	bottom = y + UPGRADEMORNINGSTAR_FRAMEHEIGHT;
 }
 

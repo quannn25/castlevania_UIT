@@ -14,7 +14,7 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;
 	stateChange = 1;
-	health = 1; // alive
+	health = 1;
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)

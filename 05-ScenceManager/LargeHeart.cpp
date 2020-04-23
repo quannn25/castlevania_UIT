@@ -63,7 +63,7 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		float rdx = 0;
 		float rdy = 0;
 
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx,rdy);
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		y += min_ty * dy + ny * 0.4f;
 

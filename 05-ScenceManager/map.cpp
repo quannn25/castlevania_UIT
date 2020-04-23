@@ -67,10 +67,6 @@ void Map::ReadMapTXT(LPCWSTR filename)
 		fileIn.close();
 	}
 
-
-
-
-
 }
 
 void Map::DrawMap(Camera *camera, Simon *simon)
@@ -95,7 +91,7 @@ void Map::DrawMap(Camera *camera, Simon *simon)
 				r.right = r.left + frameWidth;
 				r.bottom = r.top + frameHeight;
 
-				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + heightBoard); // hàm vẽ thêm tham số index và tham số frameHeight, frameWeight từ đây
+				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + heightBoard); // hàm vẽ thêm tham số index và tham số frameHeight, framewidth từ đây
 			}
 
 		}

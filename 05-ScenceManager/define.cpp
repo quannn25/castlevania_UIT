@@ -1,9 +1,5 @@
 #include "define.h"
 
-
-
-
-
 int Window_Width = SCREEN_WIDTH;
 int Window_Height = SCREEN_HEIGHT;
 
