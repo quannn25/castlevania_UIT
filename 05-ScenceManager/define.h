@@ -67,8 +67,21 @@ enum eID
 
 	UPGRADEMORNINGSTAR = 53,
 
-	DAGGERITEM = 54
+	DAGGERITEM = 54,
+
+	DAGGER = 55
 
 };
+
+#ifndef SAFE_DELETE
+
+#define SAFE_DELETE(ptr) \
+if(ptr) \
+{\
+	delete (ptr); \
+	ptr = nullptr; \
+} \
+
+#endif // !SAFE_DELETE
 
 #endif

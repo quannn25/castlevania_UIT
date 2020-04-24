@@ -12,7 +12,6 @@ class MorningStar : public Weapon
 {
 protected:
 	int level;
-	float xBackup, yBackup;
 public:
 	MorningStar();
 	~MorningStar();

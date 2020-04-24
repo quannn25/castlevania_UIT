@@ -56,7 +56,8 @@ private:
 	DWORD untouchable_start;
 
 public:
-	vector<Weapon*> ListWeapon;
+	Weapon * mainWeapon;
+	Weapon* subWeapon;
 
 	bool isWalking;
 	bool isJumping;

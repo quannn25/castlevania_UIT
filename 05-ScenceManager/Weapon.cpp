@@ -12,16 +12,6 @@ Weapon::~Weapon()
 {
 }
 
-int Weapon::GetNx()
-{
-	return nx;
-}
-
-void Weapon::SetNx(int nx1)
-{
-	this->nx = nx1;
-}
-
 void Weapon::Update()
 {
 
@@ -45,12 +35,6 @@ void Weapon::Render()
 	RenderBoundingBox();
 }
 
-void Weapon::SetPosition(float X, float Y)
-{
-	this->x = X;
-	this->y = Y;
-}
-
 void Weapon::UpdatePositionFitSimon()
 {
 }
@@ -63,27 +47,4 @@ bool Weapon::GetFinish()
 void Weapon::SetFinish(bool f)
 {
 	isFinish = f;
-}
-
-eID Weapon::GetType()
-{
-	return Type;
-}
-
-void Weapon::RenderBoundingBox()
-{
-
-	RECT rect;
-	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);
-
-	float l, t, r, b;
-
-	GetBoundingBox(l, t, r, b);
-	rect.left = 0;
-	rect.top = 0;
-	rect.right = (int)r - (int)l;
-	rect.bottom = (int)b - (int)t;
-
-	CGame::GetInstance()->Draw(l, t, bbox, rect.left, rect.top, rect.right, rect.bottom, 92);
-
 }
