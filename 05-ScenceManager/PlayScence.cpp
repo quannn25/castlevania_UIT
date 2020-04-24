@@ -255,7 +255,7 @@ void CPlayScene::Update(DWORD dt)
 	grid->ResetTake(objects); // set lai trang thai onCam
 	
 	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
-	DebugOut(L"[Grid] ListObject by Camera = %d\n", coObjects.size());
+	//DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
 	for (size_t i = 0; i < coObjects.size(); i++)
@@ -342,7 +342,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		break;
 	}
 
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
@@ -452,7 +452,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					break;
 				}
 				default:
-					DebugOut(L"[CheckCollisionSimonWithItem] Khong nhan dang duoc loai Item!\n");
+					DebugOut(L"[CheckCollisionSimonWithItem] ko xac nhan dc iTem!\n");
 					break;
 				}
 
@@ -465,8 +465,8 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 {
 	if (type == eID::TORCH)
 	{
-		if (id == 99 || id == 102)
-			return new LargeHeart(x, y);
+		if (id == 99)
+			return new DaggerItem(x, y);
 
 		if (id == 100 || id == 101)
 			return new UpgradeMorningStar(x, y);

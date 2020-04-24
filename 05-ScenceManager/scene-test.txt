@@ -10,6 +10,7 @@
 70	textures\castle\item\3.png	255	0	255
 80	textures\castle\blackboard.png	255	0	255
 90	textures\castle\font\1.png	255	0	255
+100	textures\castle\item\4.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -103,12 +104,19 @@
 70007	320	68	480	136	50
 70008	480	68	540	136	50
 
+# MorningStar LV2
+70009	0	136	160	204	50
+70010	160	136	320	204	50
+70011	320	136	480	204	50
+70012	480	136	540	204	50
+
 #UpgradeMorningStar
 71000	0	0	32	32	70
 
 #large_heart
 80001	0	0	24	20	60
 
+#Dagger
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -140,6 +148,9 @@
 
 #==morningstar 1====
 802	70005	90	70006	90	70007	90	70008	90
+
+#=========MorningStar LV2=========
+803	70009	90	70010	90	70011	90	70012	90
 
 #========upgradeMorningStar=======
 809	71000	100
@@ -202,7 +213,7 @@
 33	701
 
 # MORNINGSTAR
-44	801	802
+44	801	802	803
 
 #LARGEHEART
 45	901

@@ -14,6 +14,9 @@ Item::~Item()
 
 void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
+	this->dt = dt;
+	dx = vx * dt;
+	dy = vy * dt;
 }
 
 void Item::Render()

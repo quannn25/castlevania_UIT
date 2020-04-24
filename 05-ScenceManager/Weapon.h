@@ -12,7 +12,7 @@
 #include "LargeHeart.h"
 #include "UpgradeMorningStar.h"
 
-class Weapon
+class Weapon : public CGameObject
 {
 protected:
 	eID Type;
@@ -37,7 +37,7 @@ public:
 	void SetNx(int nx1);
 
 	virtual void Update();
-	virtual void Create(float simonX, float simonY, int simonTrend);
+	virtual void Create(float simonX, float simonY, int simonNx);
 	virtual void Render();
 
 

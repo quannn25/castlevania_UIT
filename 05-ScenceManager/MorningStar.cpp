@@ -24,27 +24,32 @@ void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo d
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
 	int curFrame1 = animation_set->at(1)->getCurrentFrame();
-	if (curFrame == 3 || curFrame1 == 3)
+	int curFrame2 = animation_set->at(2)->getCurrentFrame();
+	if ((curFrame == 3 && level == 0) || (curFrame1 == 3 && level == 1) || (curFrame2 == 3 && level == 2))
 	{
 		isFinish = true;
 	}
 
-
-	if (level == 0)// kiểm tra sai frame ko
-	{ 
+	switch (level)
+	{
+	case 0:
 		if (curFrame >= 3) // tới frame 3 thì quay lại 0
 		{
 			animation_set->at(0)->setCurrentFrame(-1);
 		}
-	}
-
-	
-	if (level == 1)
-	{
+		break;
+	case 1:
 		if (curFrame1 >= 3) // tới frame 3 thì quay lại 0
 		{
 			animation_set->at(1)->setCurrentFrame(-1);
 		}
+		break;
+	case 2:
+		if (curFrame2 >= 3) // tới frame 3 thì quay lại 0
+		{
+			animation_set->at(2)->setCurrentFrame(-1);
+		}
+		break;
 	}
 }
 
@@ -54,14 +59,17 @@ void MorningStar::Create(float simonX, float simonY, int simonNx)
 
 	UpdatePositionFitSimon();
 
-	if (level == 0)
+	switch (level)
 	{
+	case 0:
 		animation_set->at(0)->setCurrentFrame(-1);
-	}
-
-	if (level == 1)
-	{
+		break;
+	case 1:
 		animation_set->at(1)->setCurrentFrame(-1);
+		break;
+	case 2:
+		animation_set->at(2)->setCurrentFrame(-1);
+		break;
 	}
 }
 
@@ -80,11 +88,13 @@ void MorningStar::UpdatePositionFitSimon()
 
 void MorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom) // danh toi frame 2 bi dung dot ngot
 {
-	if (level == 0) // 160 width_ 68 height define lại
+	switch (level)
+	{
+	case 0:
 	{
 		if (nx == 1)
 		{
-			left = x + 80;
+			left = x + 78;
 			top = y + 15;
 			right = x + MORNINGSTAR_FRAMEWIDTH - 30;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
@@ -93,16 +103,17 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 		{
 			left = x + 30;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWIDTH - 85;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 80;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
-		}
-	}
 
-	if (level == 1)
+		}
+		break;
+	}
+	case 1:
 	{
 		if (nx == 1)
 		{
-			left = x + 80;
+			left = x + 78;
 			top = y + 15;
 			right = x + MORNINGSTAR_FRAMEWIDTH - 30;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
@@ -111,16 +122,46 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 		{
 			left = x + 30;
 			top = y + 15;
-			right = x + MORNINGSTAR_FRAMEWIDTH - 85;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 80;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
+
+		}
+		break;
+	}
+	case 2:
+	{
+		if (nx == 1)
+		{
+			left = x + 78;
+			top = y + 15;
+			right = x + MORNINGSTAR_FRAMEWIDTH;
 			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
 		}
+		else
+		{
+			left = x;
+			top = y + 15;
+			right = x + MORNINGSTAR_FRAMEWIDTH - 80;
+			bottom = y + MORNINGSTAR_FRAMEHEIGHT - 30;
+
+		}
+		break;
+	}
+	default:
+		break;
 	}
 
 }
 
 bool MorningStar::isCollision(LPGAMEOBJECT obj)
 {
-	if (animation_set->at(0)->getCurrentFrame() != 2)
+	if (level == 0 && animation_set->at(0)->getCurrentFrame() != 2)
+		return false;
+
+	if (level == 1 && animation_set->at(1)->getCurrentFrame() != 2)
+		return false;
+
+	if (level == 2 && animation_set->at(2)->getCurrentFrame() != 2)
 		return false;
 
 	CGameObject *gameObj = dynamic_cast<CGameObject*>(obj);

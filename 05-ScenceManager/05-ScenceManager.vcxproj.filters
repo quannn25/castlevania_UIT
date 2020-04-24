@@ -40,48 +40,27 @@
     <Filter Include="Object\Item">
       <UniqueIdentifier>{752c9d82-5eed-48ef-b497-6793bea48434}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Animation">
+      <UniqueIdentifier>{667f0f40-a93a-4cf0-8652-c63abd86b7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Head">
+      <UniqueIdentifier>{ebe9e815-f257-47b8-b1c9-5b992a8a389a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Scence">
+      <UniqueIdentifier>{ea7c9736-e960-4a25-9d75-ed549c3fc730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Ground">
+      <UniqueIdentifier>{38de8759-c217-4c7f-a519-9ecaff5929d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Animations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Koopas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Simon.cpp">
@@ -99,9 +78,6 @@
     <ClCompile Include="grid.cpp">
       <Filter>Framework\grid</Filter>
     </ClCompile>
-    <ClCompile Include="Torch.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>Object\weapon</Filter>
     </ClCompile>
@@ -114,60 +90,66 @@
     <ClCompile Include="LargeHeart.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemManager.cpp">
-      <Filter>Object\Item</Filter>
+    <ClCompile Include="Animations.cpp">
+      <Filter>Framework\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="UpgradeMorningStar.cpp">
-      <Filter>Object\weapon</Filter>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Framework\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Framework\Head</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Framework\Head</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Scence.cpp">
+      <Filter>Framework\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Torch.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScence.cpp">
+      <Filter>Framework\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="DaggerItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Dagger.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="UpgradeMorningStar.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Animations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Koopas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Simon.h">
@@ -185,9 +167,6 @@
     <ClInclude Include="grid.h">
       <Filter>Framework\grid</Filter>
     </ClInclude>
-    <ClInclude Include="Torch.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Object\weapon</Filter>
     </ClInclude>
@@ -200,17 +179,56 @@
     <ClInclude Include="LargeHeart.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemManager.h">
-      <Filter>Object\Item</Filter>
+    <ClInclude Include="Animations.h">
+      <Filter>Framework\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="UpgradeMorningStar.h">
-      <Filter>Object\weapon</Filter>
+    <ClInclude Include="Sprites.h">
+      <Filter>Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Framework\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
+      <Filter>Framework\Head</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Header Files</Filter>
+      <Filter>Framework\Head</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Scence.h">
+      <Filter>Framework\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Torch.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScence.h">
+      <Filter>Framework\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="DaggerItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Dagger.h">
+      <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="UpgradeMorningStar.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

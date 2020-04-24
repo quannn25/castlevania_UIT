@@ -9,6 +9,7 @@
 #include "map.h"
 #include "grid.h"
 #include "Board.h"
+#include "DaggerItem.h"
 
 class CPlayScene: public CScene
 {

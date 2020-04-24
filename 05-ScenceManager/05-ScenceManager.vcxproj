@@ -128,11 +128,12 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="Dagger.cpp" />
+    <ClCompile Include="DaggerItem.cpp" />
     <ClCompile Include="define.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
     <ClCompile Include="map.cpp" />
@@ -158,11 +159,12 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="Dagger.h" />
+    <ClInclude Include="DaggerItem.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="LargeHeart.h" />
     <ClInclude Include="map.h" />

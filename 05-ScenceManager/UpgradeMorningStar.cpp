@@ -37,10 +37,7 @@ void UpgradeMorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		isFinish = true;
 		return;
 	}
-
-
-	dy = vy * dt;
-
+	Item::Update(dt);
 
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
@@ -82,12 +79,6 @@ void UpgradeMorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		delete coEvents[i];
 
 }
-
-void UpgradeMorningStar::SetReward()
-{
-	
-}
-
 
 UpgradeMorningStar::~UpgradeMorningStar()
 {

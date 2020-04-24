@@ -1,29 +1,29 @@
-﻿#include "LargeHeart.h"
+﻿#include "DaggerItem.h"
 
 
 
-LargeHeart::LargeHeart(float x, float y)
+DaggerItem::DaggerItem(float x, float y)
 {
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
-	LPANIMATION_SET ani_set = animation_sets->Get(LARGEHEART_ANI_SET_ID);
-	SetAnimationSet(ani_set);
-	type = eID::LARGEHEART;
-	this->x = x;
-	this->y = y;
-	vy = LARGEHEART_GRAVITY;
-	TimeDisplayMax = LARGEHEART_TIMEDISPLAYMAX; // set time hiển thị tối đa
-	TimeDisplayed = 0;
+	//_texture = new GTexture("Resources\\item\\4.png");
+	//_sprite = new GSprite(_texture, 0);
+	//type = eID::DaggerItem;
+
+	//this->x = X;
+	//this->y = Y;
+	//vy = ITEMDAGGER_GRAVITY;
+	//TimeDisplayMax = ITEMDAGGER_TIMEDISPLAYMAX;
+	//TimeDisplayed = 0;
 }
 
-void LargeHeart::GetBoundingBox(float & left, float & top, float & right, float & bottom)
+void DaggerItem::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	left = x;
-	top = y;
-	right = x + LARGEHEART_FRAMEWIDTH;
-	bottom = y + LARGEHEART_FRAMEHEIGHT;
+	//left = x;
+	//top = y;
+	//right = x + _texture->FrameWidth;
+	//bottom = y + _texture->FrameHeight /*- 18*/;
 }
 
-void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
+void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
 {
 	TimeDisplayed += dt;
 	if (TimeDisplayed >= TimeDisplayMax)
@@ -31,13 +31,15 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 		isFinish = true;
 		return;
 	}
+
 	Item::Update(dt);
+
 
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
 	for (UINT i = 0; i < listObject->size(); i++)
 	{
-		if(dynamic_cast<CBrick *>(listObject->at(i)))
+		if (dynamic_cast<CBrick*>(listObject->at(i)))
 			listObject_Brick.push_back(listObject->at(i));
 	}
 
@@ -45,13 +47,13 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-	
+
 	CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm
-	
-														  // No collision occured, proceed normally
+
 	if (coEvents.size() == 0)
 	{
 		y += dy;
+
 	}
 	else
 	{
@@ -70,9 +72,15 @@ void LargeHeart::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 	}
 
 	for (UINT i = 0; i < coEvents.size(); i++)
+	{
 		delete coEvents[i];
+	}
+
 }
 
-LargeHeart::~LargeHeart()
+
+
+
+DaggerItem::~DaggerItem()
 {
 }

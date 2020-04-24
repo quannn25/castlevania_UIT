@@ -11,13 +11,10 @@
 class LargeHeart : public Item
 {
 public:
-	LargeHeart();
-	LargeHeart(float X, float Y);
-
+	LargeHeart(float x = 0.0f, float y = 0.0f);
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* listObject);
-	virtual void SetReward();
 
 	~LargeHeart();
 };
