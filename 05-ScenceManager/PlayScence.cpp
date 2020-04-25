@@ -434,7 +434,9 @@ void CPlayScene::CheckCollisionWeapon()
 				if (player->mainWeapon->isCollision(coObjects[i]) == true)
 				{
 					CGameObject *gameObjTorch = dynamic_cast<Torch*>(coObjects[i]);
+
 					gameObjTorch->beAttacked(1);
+
 					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX(), gameObjTorch->GetY()));
 				}
 			}
@@ -454,7 +456,7 @@ void CPlayScene::CheckCollisionWeapon()
 
 					gameObjTorch->beAttacked(1);
 
-					player->subWeapon->SetFinish(true);   // cây kiếm trúng object thì tắt luôn
+					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
 
 					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX(), gameObjTorch->GetY()));
 				}

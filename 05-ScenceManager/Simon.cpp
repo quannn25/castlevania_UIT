@@ -19,7 +19,7 @@ Simon::Simon() : CGameObject()
 	health = 16;
 	live = 5;
 	score = 0;
-	heartCollected = 5;
+	heartCollected = 500;
 
 	mainWeapon = new MorningStar();
 	subWeapon = NULL;
@@ -385,27 +385,6 @@ bool Simon::isCollisionWithItem(Item * objItem)
 {
 	if (objItem->GetFinish() == true)
 		return false;
-	
-	RECT rect, rect1;
-	float l, t, r, b;
-	float l1, t1, r1, b1;
-
-	this->GetBoundingBox(l, t, r, b);  // BOX của simon
-	rect.left = l;
-	rect.top = t;
-	rect.right = r;
-	rect.bottom = b;
-
-	objItem->GetBoundingBox(l1, t1, r1, b1); //BBox Obj
-	rect1.left = l1;
-	rect1.top = t1;
-	rect1.right = r1;
-	rect1.bottom = b1;
-
-	if (CGame::GetInstance()->AABBCheck(rect, rect1) == true)
-	{
-		return true;
-	}
 
 	return isCollitionObjectWithObject(objItem);
 }

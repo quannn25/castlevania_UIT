@@ -30,7 +30,6 @@ void Item::Render()
 	else
 		isLeft = true;
 
-	DebugOut(L"nx = %d", nx);
 	animation_set->at(0)->Render(x, y, 255, isLeft);
 	RenderBoundingBox();
 }

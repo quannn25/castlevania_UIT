@@ -47,27 +47,12 @@ bool Dagger::isCollision(LPGAMEOBJECT obj)
 	if (gameObj->GetHealth() <= 0)
 		return false;
 
-	RECT rect, rect1;
-	float l, t, r, b;
-	float l1, t1, r1, b1;
-
-	GetBoundingBox(l, t, r, b);
-	rect.left = l;
-	rect.top = t;
-	rect.right = r;
-	rect.bottom = b;
-
-	gameObj->GetBoundingBox(l1, t1, r1, b1);
-	rect1.left = l1;
-	rect1.top = t1;
-	rect1.right = r1;
-	rect1.bottom = b1;
-	return CGame::GetInstance()->AABBCheck(rect, rect1);
+	return isCollitionObjectWithObject(gameObj);
 }
 
 void Dagger::Render()
 {
-	if (x - Camera::GetInstance()->Getx() < 0 || x - Camera::GetInstance()->Getx() > Camera::GetInstance()->GetScreenWidth())
+	if (x - Camera::GetInstance()->Getx() + DAGGER_FRAMEWIDTH < 0 || x - Camera::GetInstance()->Getx() > Camera::GetInstance()->GetScreenWidth())
 	{
 		isFinish = true;
 		return;
