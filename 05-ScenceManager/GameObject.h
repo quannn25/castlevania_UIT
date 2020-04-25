@@ -102,6 +102,7 @@ public:
 		float &ny, 
 		float &rdx, 
 		float &rdy);
+	bool isCollitionObjectWithObject(LPGAMEOBJECT obj); // kt doi voi Obj xac dinh
 
 	CGameObject();
 

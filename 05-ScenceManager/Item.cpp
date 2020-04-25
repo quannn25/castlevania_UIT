@@ -24,7 +24,14 @@ void Item::Render()
 	if (isFinish == true)
 		return;
 
-	animation_set->at(0)->Render(x, y, 255);
+	bool isLeft;
+	if (nx > 0)
+		isLeft = false;
+	else
+		isLeft = true;
+
+	DebugOut(L"nx = %d", nx);
+	animation_set->at(0)->Render(x, y, 255, isLeft);
 	RenderBoundingBox();
 }
 

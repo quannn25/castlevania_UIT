@@ -5,6 +5,8 @@
 
 #define ITEMDAGGER_TIMEDISPLAYMAX 3000
 #define ITEMDAGGER_GRAVITY 0.25f
+#define DAGGER_FRAMEWIDTH 32
+#define DAGGER_FRAMEHEIGHT 32
 
 
 class DaggerItem : public Item

@@ -20,7 +20,12 @@ MorningStar::~MorningStar()
 }
 
 void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects) // sẽ chạy cùng simonUpdate để đảm bảo dt
-{// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
+{
+	this->dt = dt;
+	this->dx = vx * dt;
+	this->dy = vy * dt;
+	
+	// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
 	int curFrame1 = animation_set->at(1)->getCurrentFrame();
@@ -168,22 +173,7 @@ bool MorningStar::isCollision(LPGAMEOBJECT obj)
 	if (gameObj->GetHealth() <= 0)
 		return false;
 
-	RECT rect, rect1;
-	float l, t, r, b;
-	float l1, t1, r1, b1;
-
-	GetBoundingBox(l, t, r, b);
-	rect.left = l;
-	rect.top = t;
-	rect.right = r;
-	rect.bottom = b;
-
-	gameObj->GetBoundingBox(l1, t1, r1, b1);
-	rect1.left = l1;
-	rect1.top = t1;
-	rect1.right = r1;
-	rect1.bottom = b1;
-	return CGame::GetInstance()->AABBCheck(rect, rect1);
+	return isCollitionObjectWithObject(gameObj);
 }
 
 void MorningStar::UpgradeLevel()

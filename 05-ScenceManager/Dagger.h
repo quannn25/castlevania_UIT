@@ -4,6 +4,8 @@
 #include "Weapon.h"
 
 #define DAGGER_SPEED 0.35f
+#define DAGGER_FRAMEWIDTH 32
+#define DAGGER_FRAMEHEIGHT 32
 
 class Dagger : public Weapon
 {

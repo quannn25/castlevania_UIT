@@ -37,6 +37,7 @@ using namespace std;
 #define UPGRADEMORNINGSTAR_ANI_SET_ID 46
 #define FONT_ANI_SET_ID 47
 #define BOARD_ANI_SET_ID 48
+#define DAGGER_ANI_SET_ID 49
 
 extern int Window_Width;
 extern int Window_Height;

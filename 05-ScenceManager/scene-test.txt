@@ -10,7 +10,7 @@
 70	textures\castle\item\3.png	255	0	255
 80	textures\castle\blackboard.png	255	0	255
 90	textures\castle\font\1.png	255	0	255
-100	textures\castle\item\4.png	255	0	255
+100	textures\castle\weapon\1.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -117,6 +117,8 @@
 80001	0	0	24	20	60
 
 #Dagger
+81000	0	0	32	32	100
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -200,6 +202,9 @@
 # =======BOARD========
 1100	50002	100
 
+#========dagger=========
+1110	81000	100
+
 #====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
@@ -226,6 +231,9 @@
 
 #BOARD
 48	1100
+
+#DAGGER
+49	1110
 
 
 #====================[OBJECTS]===================================

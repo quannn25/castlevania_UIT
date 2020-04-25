@@ -96,9 +96,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 
-	//set vi tri weapon
+	//reset vi tri weapon
 	mainWeapon->SetPosition(this->x, this->y);
 	mainWeapon->UpdatePositionFitSimon();
+	// reset de kt va cham
+	mainWeapon->SetSpeed(vx, vy);
 
 }
 
@@ -405,25 +407,7 @@ bool Simon::isCollisionWithItem(Item * objItem)
 		return true;
 	}
 
-
-	vector<LPGAMEOBJECT> listObj;
-	listObj.clear();
-
-	listObj.push_back(objItem); // thêm object Item này để kt
-
-	vector<LPCOLLISIONEVENT> coEvents;
-
-	coEvents.clear();
-	CalcPotentialCollisions(&listObj, coEvents); // Lấy danh sách các va chạm
-
-	int countCollision = (int)coEvents.size();
-
-	for (UINT i = 0; i < coEvents.size(); i++)
-	{
-		delete coEvents[i];
-	}
-
-	return (countCollision > 0);
+	return isCollitionObjectWithObject(objItem);
 }
 
 void Simon::SetHeartCollected(int h)

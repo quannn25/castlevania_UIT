@@ -311,7 +311,12 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+
+	for (int i = 0; i < coObjects.size(); i++)
+		delete coObjects[i];
+
 	coObjects.clear();
+
 	player = NULL;
 
 	delete tileMap;

@@ -1,4 +1,4 @@
-#include <d3dx9.h>
+﻿#include <d3dx9.h>
 #include <algorithm>
 
 
@@ -113,6 +113,34 @@ void CGameObject::FilterCollision(
 
 	if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
 	if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);
+}
+
+
+bool CGameObject::isCollitionObjectWithObject(LPGAMEOBJECT obj)	// kiểm tra bằng AABB và Sweept AABB
+{
+	RECT rect, rect1;
+	float l, t, r, b;
+	float l1, t1, r1, b1;
+	this->GetBoundingBox(l, t, r, b);
+	obj->GetBoundingBox(l1, t1, r1, b1);
+
+	rect.left = l;
+	rect.top = t;
+	rect.right = r;
+	rect.bottom = b;
+
+	rect1.left = l1;
+	rect1.top = t1;
+	rect1.right = r1;
+	rect1.bottom = b1;
+
+	if (CGame::GetInstance()->AABBCheck(rect, rect1)) // kiểm tra va chạm bằng AABB trước
+		return true;
+
+	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va chạm giữa 2 object bằng sweptAABB
+	bool res = e->t > 0 && e->t <= 1.0f; // ĐK va chạm
+	SAFE_DELETE(e);
+	return res;
 }
 
 

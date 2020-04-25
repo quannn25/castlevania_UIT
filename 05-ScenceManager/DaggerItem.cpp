@@ -2,25 +2,27 @@
 
 
 
-DaggerItem::DaggerItem(float x, float y)
+DaggerItem::DaggerItem(float x1, float y1)
 {
-	//_texture = new GTexture("Resources\\item\\4.png");
-	//_sprite = new GSprite(_texture, 0);
-	//type = eID::DaggerItem;
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(DAGGER_ANI_SET_ID);
 
-	//this->x = X;
-	//this->y = Y;
-	//vy = ITEMDAGGER_GRAVITY;
-	//TimeDisplayMax = ITEMDAGGER_TIMEDISPLAYMAX;
-	//TimeDisplayed = 0;
+	SetAnimationSet(ani_set);
+
+	type = eID::DAGGERITEM;
+	this->x = x1;
+	this->y = y1;
+	vy = ITEMDAGGER_GRAVITY;
+	TimeDisplayMax = ITEMDAGGER_TIMEDISPLAYMAX;
+	TimeDisplayed = 0;
 }
 
 void DaggerItem::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	//left = x;
-	//top = y;
-	//right = x + _texture->FrameWidth;
-	//bottom = y + _texture->FrameHeight /*- 18*/;
+	left = x;
+	top = y;
+	right = x + DAGGER_FRAMEWIDTH;
+	bottom = y + DAGGER_FRAMEHEIGHT;
 }
 
 void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
