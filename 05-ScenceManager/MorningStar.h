@@ -15,7 +15,8 @@ protected:
 public:
 	MorningStar();
 	~MorningStar();
-	virtual void Update();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
+	virtual void Render();
 	virtual void Create(float simonX, float simonY, int simonTrend);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void UpdatePositionFitSimon();

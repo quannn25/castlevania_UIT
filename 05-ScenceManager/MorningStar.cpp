@@ -10,7 +10,7 @@ MorningStar::MorningStar()
 	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
-	Type = eID::MORNINGSTAR;
+	type = eID::MORNINGSTAR;
 	this->level = 0;
 }
 
@@ -19,7 +19,7 @@ MorningStar::~MorningStar()
 {
 }
 
-void MorningStar::Update() // sẽ chạy cùng simonUpdate để đảm bảo dt
+void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects) // sẽ chạy cùng simonUpdate để đảm bảo dt
 {// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
 	// mang dt vào render luôn??
 	int curFrame = animation_set->at(0)->getCurrentFrame();
@@ -191,4 +191,26 @@ void MorningStar::UpgradeLevel()
 	if (level >= 2)
 		return;
 	level++;
+}
+
+void MorningStar::Render()
+{
+	bool isLeft = true;
+	if (nx > 0)
+		isLeft = false;
+
+	switch (level)
+	{
+	case 0:
+		animation_set->at(0)->Render(x, y, 255, isLeft);
+		break;
+	case 1:
+		animation_set->at(1)->Render(x, y, 255, isLeft);
+		break;
+	case 2:
+		animation_set->at(2)->Render(x, y, 255, isLeft);
+		break;
+	}
+
+	RenderBoundingBox();
 }

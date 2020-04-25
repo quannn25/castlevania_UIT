@@ -15,7 +15,11 @@ Simon::Simon() : CGameObject()
 	isJumping = 0;// sua doi is jumping, sitting... thành state hết
 	isSitting = 0;// sua doi is jumping, sitting... thành state hết
 	isAttacking = 0;
+
 	health = 16;
+	live = 5;
+	score = 0;
+	heartCollected = 5;
 
 	mainWeapon = new MorningStar();
 	subWeapon = NULL;
@@ -54,14 +58,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (x + SIMON_BBOX_WIDTH > MapWidth)
 		x = float(MapWidth - SIMON_BBOX_WIDTH);
 
-
-
-
-
-
-
-
-
 	if (isAttacking == true)
 	{
 		if (mainWeapon->GetFinish() == false) // nếu MorningStar đang đánh
@@ -74,7 +70,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (subWeapon != NULL)
 			{
-				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == index_end || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == index_endOfFram);
+				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == 2);
 			}
 		}
 	}
@@ -83,16 +79,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		subWeapon->Update(dt);
 	}
-
-
-
-
-
-
-
-
-
-
 
 
 	// Calculate dx, dy 
@@ -110,32 +96,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 
+	//set vi tri weapon
 	mainWeapon->SetPosition(this->x, this->y);
 	mainWeapon->UpdatePositionFitSimon();
 
-	if (isAttacking == true) 
-	{
-		if (mainWeapon->GetFinish() == false) 
-		{
-			mainWeapon->SetPosition(this->x, this->y);
-			mainWeapon->UpdatePositionFitSimon();
-			mainWeapon->Update();
-			if (mainWeapon->GetFinish() == true)
-				isAttacking = false;
-		}
-		else
-		{
-			if (subWeapon != NULL)
-			{
-				isAttacking = !(SIMON_ANI_SITTING_ATTACKING_END + 1 == _sprite->GetIndex() || SIMON_ANI_STANDING_ATTACKING_END + 1 == _sprite->GetIndex());
-			}
-		}
-	}
-
-	if (subWeapon != NULL && subWeapon->GetFinish() == false)
-	{
-		subWeapon->Update(dt);
-	}
 }
 
 
@@ -211,10 +175,10 @@ void Simon::Render()
 	RenderBoundingBox();
 	// render weapon
 	if (mainWeapon->GetFinish() == false)
-		mainWeapon->Render(); // không cần xét hướng, vì Draw của lớp Weapon đã xét khi vẽ
+		mainWeapon->Render();
 
 	if (subWeapon != NULL && subWeapon->GetFinish() == false)
-		subWeapon->Render(); // không cần xét hướng, vì Draw của lớp Weapon đã xét khi vẽ
+		subWeapon->Render();
 }
 
 void Simon::SetState(int state)
@@ -408,6 +372,9 @@ void Simon::Attack(Weapon * w)
 	if (isAttacking == true && dynamic_cast<MorningStar*>(w) != NULL)
 		return;
 
+	animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);// fix?
+	animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1);
+
 	isAttacking = true; // set trang thái tấn công
 	w->Create(this->x, this->y, this->nx); // set vị trí weapon theo simon
 }
@@ -467,4 +434,24 @@ void Simon::SetHeartCollected(int h)
 int Simon::GetHeartCollected()
 {
 	return heartCollected;
+}
+
+int Simon::GetLive()
+{
+	return live;
+}
+
+void Simon::SetLive(int l)
+{
+	live = l;
+}
+
+int Simon::GetScore()
+{
+	return score;
+}
+
+void Simon::SetScore(int s)
+{
+	score = s;
 }

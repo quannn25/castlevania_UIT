@@ -1,5 +1,5 @@
-﻿#ifndef DAGGER_H
-#define DAGGER_H
+﻿#ifndef DAGGERITEM_H
+#define DAGGERITEM_H
 
 #include "Item.h"
 

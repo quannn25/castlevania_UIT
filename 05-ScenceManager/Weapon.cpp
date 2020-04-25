@@ -12,7 +12,7 @@ Weapon::~Weapon()
 {
 }
 
-void Weapon::Update()
+void Weapon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 
 }

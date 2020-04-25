@@ -22,7 +22,7 @@ public:
 	Weapon();
 	~Weapon();
 
-	virtual void Update();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Create(float simonX, float simonY, int simonNx);
 	virtual void Render();
 

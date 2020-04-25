@@ -50,6 +50,9 @@ private:
 
 	int level; // mario 123
 
+	int live;
+	int score;
+
 	int heartCollected;
 
 	int untouchable;
@@ -78,8 +81,13 @@ public:
 	void CollisionWithBrick(vector<LPGAMEOBJECT> *coObjects = NULL);
 	void Attack(Weapon *w);
 	bool isCollisionWithItem(Item * objItem);
+
 	void SetHeartCollected(int h);
 	int GetHeartCollected();
+	int GetLive();
+	void SetLive(int l);
+	int GetScore();
+	void SetScore(int s);
 
 };
 #endif

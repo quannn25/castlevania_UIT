@@ -20,9 +20,6 @@ public:
 	bool isCollision(LPGAMEOBJECT obj);
 
 	void Render();
-
-
-
 };
 
 #endif
