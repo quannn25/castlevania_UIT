@@ -296,7 +296,7 @@ void CPlayScene::Render()
 	for (int i = 0; i < listItem.size(); i++)
 		listItem[i]->Render();
 
-	boardGame->Render();
+	boardGame->Render(player, 1);
 
 	player->Render();
 

@@ -9,6 +9,7 @@
 #include "Utils.h"
 #include <fstream>
 #include <iostream>
+#include <string>
 using namespace std;
 
 
@@ -38,6 +39,7 @@ using namespace std;
 #define FONT_ANI_SET_ID 47
 #define BOARD_ANI_SET_ID 48
 #define DAGGER_ANI_SET_ID 49
+#define BOARDHEALTH_ANI_SET_ID 50
 
 extern int Window_Width;
 extern int Window_Height;

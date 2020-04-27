@@ -11,6 +11,7 @@
 80	textures\castle\blackboard.png	255	0	255
 90	textures\castle\font\1.png	255	0	255
 100	textures\castle\weapon\1.png	255	0	255
+101	textures\castle\heal.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -44,7 +45,12 @@
 
 #Title Map, l, t, r, b se dc set lai
 50001	1	1	1	1	30
+# blackoard
 50002	0	0	520	80	80
+#boardHealth
+50003	0	0	11	18	101
+50004	11	0	22	18	101
+50005	22	0	33	18	101
 
 #FONT
 
@@ -201,6 +207,10 @@
 
 # =======BOARD========
 1100	50002	100
+#=======BoardHealth=====
+1101	50003	100
+1102	50004	100
+1103	50005	100
 
 #========dagger=========
 1110	81000	100
@@ -235,6 +245,8 @@
 #DAGGER
 49	1110
 
+#boardHealth
+50	1101	1102	1103
 
 #====================[OBJECTS]===================================
 [OBJECTS]

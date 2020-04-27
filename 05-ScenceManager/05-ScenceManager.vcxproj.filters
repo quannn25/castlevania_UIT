@@ -141,6 +141,9 @@
     <ClCompile Include="UpgradeMorningStar.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="BoardHealth.cpp">
+      <Filter>Framework\Head</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="UpgradeMorningStar.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardHealth.h">
+      <Filter>Framework\Head</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
