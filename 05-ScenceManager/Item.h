@@ -13,8 +13,10 @@
 class Item : public CGameObject
 {
 protected:
-	int TimeDisplayMax; // thgian tối đa cho phép hiển thị
-	int TimeDisplayed; // thgian đã hiển thị
+	DWORD TimeDisplayMax; // thgian tối đa cho phép hiển thị
+	DWORD TimeDisplayed; // thgian đã hiển thị
+	DWORD TimeWaited; // Thời gian đã chờ trước khi hiển thị
+	DWORD TimeWaitMax;// Thời gian tối đa phải chờ trước khi hiển thị
 
 	bool isFinish; // đã kết thúc chưa?
 
@@ -28,6 +30,7 @@ public:
 	
 	bool GetFinish();
 	void SetFinish(bool f);
+	virtual bool isWaitingDisplay(); // đang chờ object hiển thi? - simon chưa được ăn
 };
 
 #endif

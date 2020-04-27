@@ -11,6 +11,9 @@
 #include "Board.h"
 #include "DaggerItem.h"
 #include "Dagger.h"
+#include "Effect.h"
+#include "Fire.h"
+#include "Hit.h"
 
 class CPlayScene: public CScene
 {
@@ -27,6 +30,8 @@ protected:
 	Board *boardGame; //unload()???
 
 	vector <Item*> listItem;
+
+	vector <Effect*> listEffect;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

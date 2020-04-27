@@ -132,8 +132,11 @@
     <ClCompile Include="Dagger.cpp" />
     <ClCompile Include="DaggerItem.cpp" />
     <ClCompile Include="define.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="grid.cpp" />
+    <ClCompile Include="Hit.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
@@ -164,8 +167,11 @@
     <ClInclude Include="Dagger.h" />
     <ClInclude Include="DaggerItem.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="grid.h" />
+    <ClInclude Include="Hit.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="LargeHeart.h" />

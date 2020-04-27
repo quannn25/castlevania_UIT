@@ -1,23 +1,21 @@
 ﻿#include "UpgradeMorningStar.h"
 
 
-
-UpgradeMorningStar::UpgradeMorningStar()
+UpgradeMorningStar::UpgradeMorningStar(float x1, float y1)
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(UPGRADEMORNINGSTAR_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
 	type = eID::UPGRADEMORNINGSTAR;
-}
 
-UpgradeMorningStar::UpgradeMorningStar(float X, float Y) : UpgradeMorningStar()
-{
-	this->x = X;
-	this->y = Y;
+	this->x = x1;
+	this->y = y1;
 	vy = UPGRADEMORNINGSTAR_GRAVITY;
 	TimeDisplayMax = UPGRADEMORNINGSTAR_TIMEDISPLAYMAX; // set time hiển thị tối đa
-
+	TimeDisplayed = 0;
+	TimeWaited = 0;
+	TimeWaitMax = UPGRADEMORNINGSTAR_TIMEWAITMAX;
 }
 
 void UpgradeMorningStar::GetBoundingBox(float & left, float & top, float & right, float & bottom)
@@ -30,6 +28,11 @@ void UpgradeMorningStar::GetBoundingBox(float & left, float & top, float & right
 
 void UpgradeMorningStar::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
+	if (TimeWaited < TimeWaitMax) // chưa hiển thị thì out
+	{
+		TimeWaited += dt;
+		return;
+	}
 
 	TimeDisplayed += dt;
 	if (TimeDisplayed >= TimeDisplayMax)

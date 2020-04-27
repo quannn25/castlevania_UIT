@@ -15,6 +15,8 @@ DaggerItem::DaggerItem(float x1, float y1)
 	vy = ITEMDAGGER_GRAVITY;
 	TimeDisplayMax = ITEMDAGGER_TIMEDISPLAYMAX;
 	TimeDisplayed = 0;
+	TimeWaited = 0;
+	TimeWaitMax = DAGGERITEM_TIMEWAITMAX;
 }
 
 void DaggerItem::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -27,6 +29,12 @@ void DaggerItem::GetBoundingBox(float &left, float &top, float &right, float &bo
 
 void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
 {
+	if (TimeWaited < TimeWaitMax) // chưa xuất hiện thì out ko update
+	{
+		TimeWaited += dt;
+		return;
+	}
+
 	TimeDisplayed += dt;
 	if (TimeDisplayed >= TimeDisplayMax)
 	{

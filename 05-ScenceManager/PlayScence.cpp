@@ -243,7 +243,9 @@ void CPlayScene::LoadResources()
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
 	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
 	boardGame = new Board(0, 0);
+
 	listItem.clear();
+	listEffect.clear();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -258,6 +260,7 @@ void CPlayScene::Update(DWORD dt)
 	//DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
+
 	for (size_t i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Update(dt, &coObjects);
@@ -265,7 +268,14 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < listItem.size(); i++)
 	{
-		listItem[i]->Update(dt, &coObjects);
+		if (listItem[i]->GetFinish() == false)
+			listItem[i]->Update(dt, &coObjects);
+	}
+
+	for (int i = 0; i < listEffect.size(); i++)
+	{
+		if (listEffect[i]->GetFinish() == false)
+			listEffect[i]->Update();
 	}
 
 	CheckCollision();
@@ -294,7 +304,16 @@ void CPlayScene::Render()
 	}
 
 	for (int i = 0; i < listItem.size(); i++)
-		listItem[i]->Render();
+	{
+		if (listItem[i]->GetFinish() == false)
+			listItem[i]->Render();
+	}
+
+	for (int i = 0; i < listEffect.size(); i++)
+	{
+		if (listEffect[i]->GetFinish() == false)
+			listEffect[i]->Render();
+	}
 
 	boardGame->Render(player, 1);
 
@@ -324,6 +343,16 @@ void CPlayScene::Unload()
 
 	delete grid;
 	grid = NULL;
+
+	for (int i = 0; i < listItem.size(); i++)
+		delete listItem[i];
+
+	listItem.clear();
+
+	for (int i = 0; i < listEffect.size(); i++)
+		delete listEffect[i];
+
+	listEffect.clear();
 
 }
 
@@ -437,7 +466,9 @@ void CPlayScene::CheckCollisionWeapon()
 
 					gameObjTorch->beAttacked(1);
 
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX(), gameObjTorch->GetY()));
+					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
 				}
 			}
 		}
@@ -458,7 +489,9 @@ void CPlayScene::CheckCollisionWeapon()
 
 					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
 
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX(), gameObjTorch->GetY()));
+					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
 				}
 			}
 		}
@@ -469,7 +502,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 {
 	for (UINT i = 0; i < listItem.size(); i++)
 	{
-		if (listItem[i]->GetFinish() == false)
+		if (listItem[i]->GetFinish() == false && listItem[i]->isWaitingDisplay() == false) // chưa kết thúc và False => "KHÔNG" đang chờ để hiển thị
 		{
 			if (player->isCollisionWithItem(listItem[i]) == true) // có va chạm
 			{

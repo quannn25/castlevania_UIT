@@ -5,6 +5,9 @@
 Item::Item()
 {
 	TimeDisplayed = 0;
+	TimeWaitMax = 0;
+	TimeDisplayMax = 0;
+	TimeWaited = 0;
 }
 
 
@@ -21,8 +24,10 @@ void Item::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 
 void Item::Render()
 {
-	if (isFinish == true)
+	if (TimeWaited < TimeWaitMax)
+	{
 		return;
+	}
 
 	bool isLeft;
 	if (nx > 0)
@@ -42,4 +47,9 @@ bool Item::GetFinish()
 void Item::SetFinish(bool f)
 {
 	isFinish = f;
+}
+
+bool Item::isWaitingDisplay()
+{
+	return TimeWaited < TimeWaitMax;
 }

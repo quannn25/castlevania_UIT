@@ -7,6 +7,7 @@
 #define ITEMDAGGER_GRAVITY 0.25f
 #define DAGGER_FRAMEWIDTH 32
 #define DAGGER_FRAMEHEIGHT 25 //18 // buggggggggggggggggggg
+#define DAGGERITEM_TIMEWAITMAX 300
 
 
 class DaggerItem : public Item

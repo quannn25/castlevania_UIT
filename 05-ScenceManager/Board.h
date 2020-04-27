@@ -1,8 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Sprites.h"
-#include "Textures.h"
 #include "camera.h"
 #include "Font.h"
 #include "Animations.h"
