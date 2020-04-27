@@ -156,6 +156,9 @@
     <ClCompile Include="Hit.cpp">
       <Filter>Framework\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="GameTime.cpp">
+      <Filter>Framework\Head</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="Hit.h">
       <Filter>Framework\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTime.h">
+      <Filter>Framework\Head</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

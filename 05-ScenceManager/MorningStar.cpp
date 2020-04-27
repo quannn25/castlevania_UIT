@@ -204,3 +204,7 @@ void MorningStar::Render()
 
 	RenderBoundingBox();
 }
+
+void MorningStar::RenderIcon(float x1, float y1)
+{
+}

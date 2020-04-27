@@ -244,6 +244,9 @@ void CPlayScene::LoadResources()
 	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
 	boardGame = new Board(0, 0);
 
+	gameTime = GameTime::GetInstance();
+	gameTime->SetTime(0);
+
 	listItem.clear();
 	listEffect.clear();
 }
@@ -252,6 +255,13 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+
+	if (gameTime->GetTime() >= GAMETIME_SCENE_1)
+	{
+		return;
+	}
+	else
+		gameTime->Update();
 
 	
 	grid->ResetTake(objects); // set lai trang thai onCam
@@ -315,7 +325,7 @@ void CPlayScene::Render()
 			listEffect[i]->Render();
 	}
 
-	boardGame->Render(player, 1);
+	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
 
 	player->Render();
 

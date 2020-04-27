@@ -17,10 +17,16 @@ public:
 	~MorningStar();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
+	void RenderIcon(float x1, float y1);
+
 	virtual void Create(float simonX, float simonY, int simonTrend);
+
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+
 	virtual void UpdatePositionFitSimon();
+
 	bool isCollision(LPGAMEOBJECT obj);
+
 	void UpgradeLevel();
 };
 

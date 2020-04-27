@@ -50,10 +50,10 @@ private:
 
 	int level; // mario 123
 
-	int live;
+	int live; // mạng sống
 	int score;
 
-	int heartCollected;
+	int heartCollected; // mana
 
 	int untouchable;
 	DWORD untouchable_start;

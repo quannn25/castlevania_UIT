@@ -59,3 +59,8 @@ void Dagger::Render()
 	}
 	Weapon::Render();
 }
+
+void Dagger::RenderIcon(float x1, float y1)
+{
+	animation_set->at(0)->Render(x1, y1, 255);
+}

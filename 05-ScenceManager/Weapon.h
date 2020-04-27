@@ -27,9 +27,13 @@ public:
 	virtual void Render();
 
 	virtual void UpdatePositionFitSimon();
+
 	bool GetFinish();
 	void SetFinish(bool b);
+
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
+	virtual void RenderIcon(float x1, float y1) = 0;
+
 	virtual bool isCollision(LPGAMEOBJECT obj) = 0; // kt va chạm với từng Obj
 
 };

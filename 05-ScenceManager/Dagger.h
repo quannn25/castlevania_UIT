@@ -22,6 +22,8 @@ public:
 	bool isCollision(LPGAMEOBJECT obj);
 
 	void Render();
+
+	void RenderIcon(float x1, float y1);
 };
 
 #endif

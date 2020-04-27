@@ -135,6 +135,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="Hit.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="GameTime.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="Hit.h" />
     <ClInclude Include="Item.h" />

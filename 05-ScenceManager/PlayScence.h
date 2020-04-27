@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Game.h"
 #include "Textures.h"
 #include "Scence.h"
@@ -14,6 +14,7 @@
 #include "Effect.h"
 #include "Fire.h"
 #include "Hit.h"
+#include "GameTime.h"
 
 class CPlayScene: public CScene
 {
@@ -27,11 +28,13 @@ protected:
 
 	Grid *grid;
 
-	Board *boardGame; //unload()???
+	Board *boardGame; //unload()??? hay truyền
 
 	vector <Item*> listItem;
 
 	vector <Effect*> listEffect;
+
+	GameTime * gameTime; //unload()??? hay truyền
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
