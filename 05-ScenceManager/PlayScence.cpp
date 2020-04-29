@@ -390,6 +390,42 @@ void CPlayScene::Unload()
 
 }
 
+void CPlayScene::UnloadToReset()
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<Simon*>(objects[i]))
+			continue;
+		delete objects[i];
+	}
+
+	objects.clear();
+
+	coObjects.clear();
+
+	//player = NULL;
+
+	delete tileMap;
+	tileMap = NULL;
+
+	delete grid;
+	grid = NULL;
+
+	delete boardGame;
+	boardGame = NULL;
+
+	for (int i = 0; i < listItem.size(); i++)
+		delete listItem[i];
+
+	listItem.clear();
+
+	for (int i = 0; i < listEffect.size(); i++)
+		delete listEffect[i];
+
+	listEffect.clear();
+
+}
+
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
@@ -608,7 +644,7 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 
 void CPlayScene::ResetResource() // ko dùng cách xóa các reSource đc...
 {
-	Unload();
+	UnloadToReset();
 
 	LoadAgain();
 }
