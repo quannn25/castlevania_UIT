@@ -73,8 +73,6 @@ public:
 
 	bool onCam;
 	
-	int stateChange; // true thì đã đổi trạng thái nên set frame lại từ đầu, false là tiếp tục trạng thái cũ - tăng currentFrame lên
-	// stateChange dùng để quản lý currentFrame trong mỗi CAnimation, thay cho index của của texture đc chia hàng và cột
 
 public: 
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
@@ -85,7 +83,6 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
-	int GetStateChange() { return this->stateChange; }
 
 	void RenderBoundingBox();
 
@@ -110,7 +107,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
-	virtual void SetStateChange(int stateChange) { this->stateChange = stateChange; }
 
 	void beAttacked(int damage);
 	int GetHealth();

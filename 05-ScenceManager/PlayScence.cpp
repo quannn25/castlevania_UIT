@@ -130,9 +130,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
-		if (player!=NULL) 
+		if (player!=NULL)  // reset
 		{
 			DebugOut(L"[ERROR] MARIO object was created before! ");
+			objects.push_back(player); // add lai
 			return;
 		}
 		obj = new Simon(); 
@@ -233,6 +234,7 @@ void CPlayScene::Load()
 	f.close();
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+
 	LoadResources();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
@@ -247,6 +249,8 @@ void CPlayScene::LoadResources()
 	gameTime = GameTime::GetInstance();
 	gameTime->SetTime(0);
 
+	player->SetPositionBackup(SIMON_POSITION_DEFAULT);
+
 	listItem.clear();
 	listEffect.clear();
 }
@@ -256,8 +260,24 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
+	//DebugOut(L"[Grid] Object = %d\n", objects.size());
+
+	if (player->GetFreeze() == true)
+	{
+		player->UpdateFreeze(dt);
+		if (player->GetFreeze() == true)
+			return;
+	}
+
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1)
 	{
+		if (player->GetLive() == 0) // xử lý...
+			return;
+		bool result = player->LoseLife();
+		if (result == true) // còn mạng để chơi tiếp, giảm mạng reset máu xong
+		{
+			ResetResource(); // reset lại game
+		}
 		return;
 	}
 	else
@@ -337,22 +357,26 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<Simon*>(objects[i]))
+			continue;
 		delete objects[i];
+	}
 
 	objects.clear();
 
-	for (int i = 0; i < coObjects.size(); i++)
-		delete coObjects[i];
-
 	coObjects.clear();
 
-	player = NULL;
+	//player = NULL;
 
 	delete tileMap;
 	tileMap = NULL;
 
 	delete grid;
 	grid = NULL;
+
+	delete boardGame;
+	boardGame = NULL;
 
 	for (int i = 0; i < listItem.size(); i++)
 		delete listItem[i];
@@ -371,6 +395,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	Simon *simon = ((CPlayScene*)scence)->player;
+
+	if (simon->GetFreeze() == true) // Đang bóng băng thì không quan tâm phím
+	{
+		return;
+	}
+
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -396,12 +426,18 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
-{}
+{
+}
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	Simon *simon = ((CPlayScene*)scence)->player;
+
+	if (simon->GetFreeze() == true) // Đang bóng băng thì không quan tâm phím
+	{
+		return;
+	}
 
 	if (simon->isJumping && simon->isWalking)
 		return;
@@ -529,6 +565,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					MorningStar * objMorningStar = dynamic_cast<MorningStar*>(player->mainWeapon);
 					objMorningStar->UpgradeLevel(); // Nâng cấp vũ khí roi
 					listItem[i]->SetFinish(true);
+					player->SetFreeze(true);
 					break;
 				}
 				case eID::DAGGERITEM:
@@ -561,4 +598,58 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 	}
 
 	return new LargeHeart(x, y);
+}
+
+void CPlayScene::ResetResource() // ko dùng cách xóa các reSource đc...
+{
+	Unload();
+
+	LoadAgain();
+}
+
+
+void CPlayScene::LoadAgain()
+{
+	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+
+	ifstream f;
+	f.open(sceneFilePath);
+
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;
+
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE))
+	{
+		string line(str);
+
+		if (line[0] == '#') continue;	// skip comment lines	
+
+		if (line == "[TEXTURES]") continue;
+		if (line == "[SPRITES]") continue;
+		if (line == "[ANIMATIONS]") continue;
+		if (line == "[ANIMATION_SETS]") continue;
+		if (line == "[TILEMAP]") {
+			section = SCENE_SECTION_TILEMAP; continue;
+		}
+		if (line == "[OBJECTS]") {
+			section = SCENE_SECTION_OBJECTS; continue;
+		}
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+		//
+		// data section
+		//
+		switch (section)
+		{
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP(line); break;
+		}
+	}
+
+	f.close();
+
+	LoadResources();
+
+	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }

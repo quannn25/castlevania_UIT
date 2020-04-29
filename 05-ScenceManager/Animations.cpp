@@ -20,7 +20,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 }
 
 // NOTE: sometimes Animation object is NULL ??? HOW ??? 
-void CAnimation::Render(float x, float y, int alpha, bool isLeft, int stateChange)
+void CAnimation::Render(float x, float y, int alpha, bool isLeft, bool isFreeze)
 {
 
 	DWORD now = GetTickCount();
@@ -31,15 +31,6 @@ void CAnimation::Render(float x, float y, int alpha, bool isLeft, int stateChang
 	}
 	else
 	{
-		/*if (stateChange == 1)
-		{
-			currentFrame = 0;
-			lastFrameTime = now;
-		}
-		if (stateChange == 1)
-		{
-			DebugOut(L"[ERR] Invalid object type: %d\n", stateChange);
-		}*/
 		DWORD t = frames[currentFrame]->GetTime();
 		if (now - lastFrameTime > t)
 		{
@@ -49,10 +40,20 @@ void CAnimation::Render(float x, float y, int alpha, bool isLeft, int stateChang
 		}
 	}
 
-	if(isLeft)
-		frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
-	else // neu ben phai thi sao, ham drawFlipX
-		frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+	if (isFreeze)
+	{
+		if (isLeft)
+			frames[currentFrame]->GetSprite()->DrawRandomColor(x, y, alpha);
+		else // neu ben phai thi sao, ham drawFlipX
+			frames[currentFrame]->GetSprite()->DrawRandomColorFlipX(x, y, alpha);
+	}
+	else
+	{
+		if (isLeft)
+			frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+		else // neu ben phai thi sao, ham drawFlipX
+			frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+	}
 }
 
 CAnimations * CAnimations::__instance = NULL;

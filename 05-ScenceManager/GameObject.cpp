@@ -13,7 +13,6 @@ CGameObject::CGameObject()
 	x = y = 0;
 	vx = vy = 0;
 	nx = 1;
-	stateChange = 1;
 	health = 1;
 }
 

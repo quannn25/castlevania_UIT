@@ -16,8 +16,8 @@ Simon::Simon() : CGameObject()
 	isSitting = 0;// sua doi is jumping, sitting... thành state hết
 	isAttacking = 0;
 
-	health = 16;
-	live = 5;
+	health = SIMON_DEFAULT_HEALTH;
+	live = SIMON_DEFAULT_HEARTCOLLECT;
 	score = 0;
 	heartCollected = 500;
 
@@ -171,8 +171,17 @@ void Simon::Render()
 	if (nx > 0)
 		isLeft = false;
 
-	animation_set->at(ani)->Render(x, y, alpha, isLeft, GetStateChange()); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
-	// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
+	//animation_set->at(ani)->Render(x, y, alpha, isLeft); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
+	//// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
+
+	if (this->GetFreeze() == true)
+	{
+		animation_set->at(ani)->Render(x, y, alpha, isLeft, true);
+	}
+	else
+	{
+		animation_set->at(ani)->Render(x, y, alpha, isLeft);
+	}
 
 	RenderBoundingBox();
 	// render weapon
@@ -185,23 +194,6 @@ void Simon::Render()
 
 void Simon::SetState(int state)
 {
-
-	int stateChange = CGameObject::GetStateChange();
-	int LastState = CGameObject::GetState();
-	if (LastState != state) // kiểm tra nếu trạng thái thay đổi so với hiện tại thì set stateChange
-	{
-		stateChange = 1;
-	}
-	else
-		stateChange = 0;
-	/*if (stateChange == 1)
-	{
-		DebugOut(L"[ERR] Invalid object type: %d\n", state);
-		DebugOut(L"[ERR] Invalid LASTTT: %d\n", LastState);
-	}
-	else
-		DebugOut(L"[ERR] Invalid object type: %d\n", 0);*/
-	CGameObject::SetStateChange(stateChange);
 	CGameObject::SetState(state);
 
 	switch (state)
@@ -417,4 +409,61 @@ int Simon::GetScore()
 void Simon::SetScore(int s)
 {
 	score = s;
+}
+
+bool Simon::LoseLife()
+{
+	if (live - 1 < 0)
+		return false;
+	health = SIMON_DEFAULT_HEALTH;
+	live = live - 1;
+	heartCollected = SIMON_DEFAULT_HEARTCOLLECT;
+	SAFE_DELETE(mainWeapon);
+	SAFE_DELETE(subWeapon);
+	mainWeapon = new MorningStar();
+	subWeapon = NULL;
+
+	isAttacking = 0;
+	isJumping = 1;
+	isSitting = 0;
+	isWalking = 0;
+	isFreeze = 0;
+
+	nx = 1;
+
+
+	x = xBackup;
+	y = yBackup;
+
+	vx = 0; vy = 0;
+	SetState(SIMON_STATE_IDLE);
+
+	return true;
+}
+
+void Simon::SetPositionBackup(float x1, float y1)
+{
+	xBackup = x1;
+	yBackup = y1;
+}
+
+bool Simon::GetFreeze()
+{
+	return isFreeze;
+}
+
+void Simon::SetFreeze(int f)
+{
+	isFreeze = f;
+	TimeFreeze = 0; // thời gian đã đóng băng
+}
+
+void Simon::UpdateFreeze(DWORD dt)
+{
+	if (TimeFreeze + dt >= TIME_FREEZE_MAX)
+	{
+		SetFreeze(false); // kết thúc đóng băng
+	}
+	else
+		TimeFreeze += dt;
 }

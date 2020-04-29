@@ -33,7 +33,7 @@ public:
 	int getCurrentFrame() { return currentFrame; }
 	void setCurrentFrame(int curFrame) { this->currentFrame = curFrame; }
 	int getFramesSize() { return frames.size(); }
-	void Render(float x, float y, int alpha = 255, bool isLeft = true, int stateChange = 1);
+	void Render(float x, float y, int alpha = 255, bool isLeft = true, bool isFreeze = false);
 };
 
 typedef CAnimation *LPANIMATION;

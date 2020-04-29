@@ -156,13 +156,6 @@ void CMario::Render()
 
 void CMario::SetState(int state)
 {
-	int LastState = CGameObject::GetState();
-	if (LastState != state) // kiểm tra nếu trạng thái thay đổi so với hiện tại thì set stateChange
-	{
-		stateChange = true;
-	}
-	else
-		stateChange = false;
 	CGameObject::SetState(state);
 
 	switch (state)

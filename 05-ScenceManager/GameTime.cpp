@@ -24,7 +24,6 @@ void GameTime::Update()
 	DWORD now = GetTickCount();
 	DWORD dt = now - frameStart;
 
-	DebugOut(L"dt time = %d \n", dt);
 
 	if (accumulationTime + dt < 1000)
 	{

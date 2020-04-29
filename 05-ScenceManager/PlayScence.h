@@ -22,13 +22,13 @@ protected:
 	Simon *player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> coObjects; // unLoad() ko cần delete
 
 	Map *tileMap;
 
 	Grid *grid;
 
-	Board *boardGame; //unload()??? hay truyền
+	Board *boardGame;
 
 	vector <Item*> listItem;
 
@@ -47,6 +47,7 @@ public:
 
 	virtual void LoadResources();
 	virtual void Load();
+	virtual void LoadAgain();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
@@ -54,6 +55,8 @@ public:
 	void CheckCollision();
 	void CheckCollisionWeapon();
 	void CheckCollisionSimonWithItem();
+
+	void ResetResource(); // reset lai resource khi simon mất 1 mạng
 
 	Item * GetNewItem(int id, eID type, float x, float y);
 

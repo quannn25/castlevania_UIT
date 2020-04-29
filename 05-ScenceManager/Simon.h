@@ -2,7 +2,7 @@
 #define SIMON_H
 
 
-#define SIMON_POSITION_DEFAULT  50.0f, 0
+#define SIMON_POSITION_DEFAULT  50.0f, 0.0f
 
 #define SIMON_BBOX_WIDTH 60
 #define SIMON_BBOX_HEIGHT 66
@@ -38,6 +38,10 @@
 
 #define SIMON_UNTOUCHABLE_TIME 5000
 
+#define SIMON_DEFAULT_HEALTH 16
+#define SIMON_DEFAULT_HEARTCOLLECT 5
+
+#define TIME_FREEZE_MAX 500
 
 
 
@@ -57,6 +61,12 @@ private:
 
 	int untouchable;
 	DWORD untouchable_start;
+
+	float xBackup;
+	float yBackup;
+
+	bool isFreeze; // trạng thái đóng băng chóp chóp
+	DWORD TimeFreeze; // thời gian đã đóng băng
 
 public:
 	Weapon * mainWeapon;
@@ -88,6 +98,13 @@ public:
 	void SetLive(int l);
 	int GetScore();
 	void SetScore(int s);
+
+	bool LoseLife();
+	void SetPositionBackup(float x, float y);  // sau khi chết thì hồi sinh tại vị trí này
+
+	bool GetFreeze();
+	void SetFreeze(int f);
+	void UpdateFreeze(DWORD dt);
 
 };
 #endif
