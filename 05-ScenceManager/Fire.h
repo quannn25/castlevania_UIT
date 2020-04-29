@@ -10,7 +10,7 @@ class Fire : public Effect
 
 
 public:
-	Fire(int x = 0, int y = 0);
+	Fire(float x = 0, float y = 0);
 	~Fire();
 
 	void Update();

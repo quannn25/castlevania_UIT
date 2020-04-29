@@ -159,6 +159,9 @@
     <ClCompile Include="GameTime.cpp">
       <Filter>Framework\Head</Filter>
     </ClCompile>
+    <ClCompile Include="Monney.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="GameTime.h">
       <Filter>Framework\Head</Filter>
+    </ClInclude>
+    <ClInclude Include="Monney.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

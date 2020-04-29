@@ -12,6 +12,7 @@ GameTime::GameTime()
 {
 	this->accumulationTime = 0;
 	frameStart = GetTickCount();
+	SetTime(0);
 }
 
 

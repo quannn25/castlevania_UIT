@@ -110,6 +110,7 @@ public:
 
 	void beAttacked(int damage);
 	int GetHealth();
+	void SetHealth(int h);
 	int GetNx() { return nx; }
 	void SetNx(int Nx);
 	void SetId(int ID);

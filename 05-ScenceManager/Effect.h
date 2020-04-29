@@ -11,8 +11,8 @@ class Effect
 protected:
 	LPANIMATION_SET animation_set;
 
-	int x;
-	int y;
+	float x;
+	float y;
 	bool isFinish;
 
 public:

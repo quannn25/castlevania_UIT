@@ -6,7 +6,7 @@
 class Hit : public Effect
 {
 public:
-	Hit(int x = 0, int y = 0);
+	Hit(float x = 0, float y = 0);
 	~Hit();
 
 	void Update();

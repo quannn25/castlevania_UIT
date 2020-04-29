@@ -15,6 +15,7 @@
 #include "Fire.h"
 #include "Hit.h"
 #include "GameTime.h"
+#include "Monney.h"
 
 class CPlayScene: public CScene
 {

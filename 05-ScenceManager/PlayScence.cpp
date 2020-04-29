@@ -575,6 +575,12 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
+				case eID::MONNEY:
+				{
+					listItem[i]->SetFinish(true);
+
+					break;
+				}
 				default:
 					DebugOut(L"[CheckCollisionSimonWithItem] ko xac nhan dc iTem!\n");
 					break;
@@ -597,7 +603,7 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 
 	}
 
-	return new LargeHeart(x, y);
+	return new Monney(x, y);
 }
 
 void CPlayScene::ResetResource() // ko dùng cách xóa các reSource đc...

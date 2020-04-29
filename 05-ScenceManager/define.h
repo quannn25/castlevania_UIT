@@ -42,6 +42,7 @@ using namespace std;
 #define BOARDHEALTH_ANI_SET_ID 50
 #define FIREEFFECT_ANI_SET_ID 51
 #define HITEFFECT_ANI_SET_ID 52
+#define	MONNEY_ANI_SET_ID 53
 
 extern int Window_Width;
 extern int Window_Height;
@@ -78,7 +79,9 @@ enum eID
 
 	FIRE = 56,
 
-	HIT = 57
+	HIT = 57,
+
+	MONNEY = 58
 
 };
 

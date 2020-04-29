@@ -167,6 +167,11 @@ int CGameObject::GetHealth()
 	return health;
 }
 
+void CGameObject::SetHealth(int h)
+{
+	health = h;
+}
+
 void CGameObject::SetNx(int nx1)
 {
 	nx = nx1;

@@ -1,6 +1,6 @@
 ﻿#include "Hit.h"
 
-Hit::Hit(int x1, int y1)
+Hit::Hit(float x1, float y1)
 {
 	this->x = x1;
 	this->y = y1;

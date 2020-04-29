@@ -1,6 +1,6 @@
 ﻿#include "Fire.h"
 
-Fire::Fire(int x1, int y1)
+Fire::Fire(float x1, float y1)
 {
 	this->x = x1;
 	this->y = y1;
