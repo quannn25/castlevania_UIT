@@ -262,13 +262,6 @@ void CPlayScene::Update(DWORD dt)
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
 
-	if (player->GetFreeze() == true)
-	{
-		player->UpdateFreeze(dt);
-		if (player->GetFreeze() == true)
-			return;
-	}
-
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1)
 	{
 		if (player->GetLive() == 0) // xử lý...
@@ -282,6 +275,14 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else
 		gameTime->Update();
+
+
+	if (player->GetFreeze() == true)
+	{
+		player->UpdateFreeze(dt);
+		if (player->GetFreeze() == true)
+			return;
+	}
 
 	
 	grid->ResetTake(objects); // set lai trang thai onCam
@@ -355,42 +356,6 @@ void CPlayScene::Render()
 	Unload current scene
 */
 void CPlayScene::Unload()
-{
-	for (int i = 0; i < objects.size(); i++)
-	{
-		if (dynamic_cast<Simon*>(objects[i]))
-			continue;
-		delete objects[i];
-	}
-
-	objects.clear();
-
-	coObjects.clear();
-
-	//player = NULL;
-
-	delete tileMap;
-	tileMap = NULL;
-
-	delete grid;
-	grid = NULL;
-
-	delete boardGame;
-	boardGame = NULL;
-
-	for (int i = 0; i < listItem.size(); i++)
-		delete listItem[i];
-
-	listItem.clear();
-
-	for (int i = 0; i < listEffect.size(); i++)
-		delete listEffect[i];
-
-	listEffect.clear();
-
-}
-
-void CPlayScene::UnloadToReset()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -644,7 +609,7 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 
 void CPlayScene::ResetResource() // ko dùng cách xóa các reSource đc...
 {
-	UnloadToReset();
+	Unload();
 
 	LoadAgain();
 }

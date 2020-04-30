@@ -52,7 +52,6 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	virtual void UnloadToReset();
 
 	void CheckCollision();
 	void CheckCollisionWeapon();
