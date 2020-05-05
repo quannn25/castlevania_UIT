@@ -6,7 +6,6 @@
 #include "Animations.h"
 #include "define.h"
 #include "Textures.h"
-#include "Game.h"
 #include "GameObject.h"
 #include "Item.h"
 #include "LargeHeart.h"

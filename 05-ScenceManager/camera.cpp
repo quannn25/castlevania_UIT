@@ -16,11 +16,12 @@ Camera::Camera(int w, int h)
 
 void Camera::Update()
 {
-	if (x < 0)
-		x = 0;
 
 	if (x > MapWidth - Window_Width)
 		x = MapWidth - Window_Width;
+
+	if (x < 0)
+		x = 0;
 
 }
 

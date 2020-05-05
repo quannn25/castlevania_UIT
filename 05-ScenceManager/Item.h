@@ -6,7 +6,6 @@
 #include "Textures.h"
 #include "GameObject.h"
 #include "define.h"
-#include "Game.h"
 #include "Brick.h"
 
 

@@ -12,7 +12,7 @@ Simon::Simon() : CGameObject()
 {
 
 	isWalking = 0; // sua doi is jumping, sitting... thành state hết
-	isJumping = 0;// sua doi is jumping, sitting... thành state hết
+	isJumping = 1;// sua doi is jumping, sitting... thành state hết
 	isSitting = 0;// sua doi is jumping, sitting... thành state hết
 	isAttacking = 0;
 
@@ -318,41 +318,14 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			{
-				//CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-				//// jump on top >> kill Goomba and deflect a bit 
-				//if (e->ny < 0)
-				//{
-				//	if (goomba->GetState() != GOOMBA_STATE_DIE)
-				//	{
-				//		goomba->SetState(GOOMBA_STATE_DIE);
-				//		vy = -MARIO_JUMP_DEFLECT_SPEED;
-				//	}
-				//}
-				//else if (e->nx != 0)
-				//{
-				//	if (untouchable == 0)
-				//	{
-				//		if (goomba->GetState() != GOOMBA_STATE_DIE)
-				//		{
-				//			if (level > MARIO_LEVEL_SMALL)
-				//			{
-				//				level = MARIO_LEVEL_SMALL;
-				//				StartUntouchable();
-				//			}
-				//			else
-				//				SetState(MARIO_STATE_DIE);
-				//		}
-				//	}
-				//}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
+			if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				DebugOut(L"[INFO] Switching to scene %d", p->GetSceneId());
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				CGame::GetInstance()->SwitchScene(p->GetSceneId()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
+
+				for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+				return;
 			}
 		}
 	}
