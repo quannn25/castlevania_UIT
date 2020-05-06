@@ -524,7 +524,7 @@ void CPlayScene::CheckCollisionWeapon()
 	{
 		for (UINT i = 0; i < coObjects.size(); i++)
 		{
-			if (dynamic_cast<Torch *>(coObjects[i]))
+			if (dynamic_cast<Torch *>(coObjects[i])) // Torch
 			{
 				if (player->mainWeapon->isCollision(coObjects[i]) == true)
 				{
@@ -535,6 +535,19 @@ void CPlayScene::CheckCollisionWeapon()
 					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
 					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
 					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
+				}
+			}
+
+			if (dynamic_cast<Candle *>(coObjects[i])) // Candle
+			{
+				if (player->mainWeapon->isCollision(coObjects[i]) == true)
+				{
+					CGameObject *gameObjCandle = dynamic_cast<Candle *>(coObjects[i]);
+
+					gameObjCandle->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eID::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
 				}
 			}
 		}
@@ -560,6 +573,21 @@ void CPlayScene::CheckCollisionWeapon()
 					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
 				}
 			}
+
+			if (dynamic_cast<Candle *>(coObjects[i])) // Candle
+			{
+				if (player->subWeapon->isCollision(coObjects[i]) == true)
+				{
+					CGameObject *gameObjCandle = dynamic_cast<Candle *>(coObjects[i]);
+
+					gameObjCandle->beAttacked(1);
+
+					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+
+					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eID::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
+				}
+			}
 		}
 	}
 }
@@ -580,6 +608,13 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
+				case eID::SMALLHEART:
+				{
+					player->SetHeartCollected(player->GetHeartCollected() + 1);
+					listItem[i]->SetFinish(true);
+					break;
+				}
+
 				case eID::UPGRADEMORNINGSTAR:
 				{
 					MorningStar * objMorningStar = dynamic_cast<MorningStar*>(player->mainWeapon);
@@ -621,6 +656,11 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 		if (id == 100 || id == 101)
 			return new UpgradeMorningStar(x, y);
 
+	}
+
+	if (type == eID::CANDLE)
+	{
+		return new SmallHeart(x, y);
 	}
 
 	return new Monney(x, y);

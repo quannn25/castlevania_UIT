@@ -168,6 +168,9 @@
     <ClCompile Include="Candle.cpp">
       <Filter>Object\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="SmallHeart.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Candle.h">
       <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallHeart.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

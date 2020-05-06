@@ -44,6 +44,7 @@ using namespace std;
 #define FIREEFFECT_ANI_SET_ID 51
 #define HITEFFECT_ANI_SET_ID 52
 #define	MONNEY_ANI_SET_ID 53
+#define SMALLHEART_ANI_SET_ID 54
 
 extern int Window_Width;
 extern int Window_Height;
@@ -84,7 +85,9 @@ enum eID
 
 	MONNEY = 58,
 
-	CANDLE = 59
+	CANDLE = 59,
+
+	SMALLHEART = 60
 
 };
 

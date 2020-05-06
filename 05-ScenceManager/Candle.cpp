@@ -5,10 +5,10 @@
 
 void Candle::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	left = x;
-	top = y;
-	right = x + CANDLE_FRAMEWIDTH;
-	bottom = y + CANDLE_FRAMEHEIGHT;
+	left = x - 5;
+	top = y - 5;
+	right = x + CANDLE_FRAMEWIDTH + 5;
+	bottom = y + CANDLE_FRAMEHEIGHT + 5;
 
 }
 
