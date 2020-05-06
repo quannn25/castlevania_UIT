@@ -163,6 +163,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Torch();
 		obj->SetType(eID::TORCH);
 		break;
+	case OBJECT_TYPE_CANDLE:
+		obj = new Candle();
+		obj->SetType(eID::CANDLE);
+		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());

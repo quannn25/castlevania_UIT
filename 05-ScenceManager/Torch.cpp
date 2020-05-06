@@ -1,9 +1,6 @@
 #include "Torch.h"
 
 
-
-
-
 void Torch::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	left = x;
@@ -12,7 +9,6 @@ void Torch::GetBoundingBox(float & left, float & top, float & right, float & bot
 	bottom = y + TORCH_BBOX_HEIGHT;
 
 }
-
 
 void Torch::Render()
 {

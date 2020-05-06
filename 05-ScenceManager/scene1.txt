@@ -15,6 +15,7 @@
 102	textures\castle\other\1.png	255	0	255
 103	textures\castle\other\0.png	255	0	255
 104	textures\castle\item\2.png	255	0	255
+105	textures\castle\ground\1.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -101,6 +102,10 @@
 60001	0	0	32	64	40
 60002	32	0	64	64	40
 
+#CANDLE
+60003	0	0	16	32	105
+60004	16	0	32	32	105
+
 # morningStar
 70001	0	0	160	68	50
 70002	160	0	320	68	50
@@ -168,6 +173,9 @@
 
 # === TORCH ====
 701	60001	100	60002	100
+
+#===CANDLE=====
+702	60003	100	60004	100
 
 # =======MorningStar======
 801	70001	90	70002	90	70003	90	70004	90
@@ -256,6 +264,9 @@
 # TORCH
 33	701
 
+#CANDLE
+34	702
+
 # MORNINGSTAR
 44	801	802	803
 
@@ -293,7 +304,7 @@
 
 #id: simon 0, portal 1, 2 <= brick < 1000, 1000 <= torch < 1200, 1200 <= ghost < 1300...
 
-# type: 0 = Mario , 1 = Brick, 2 = torch, 50 = portal
+# type: 0 = Mario , 1 = Brick, 2 = torch, candle = 3, 50 = portal,
 
 # MARIO
 0	17	115	1	0
@@ -317,7 +328,9 @@
 1	480	432	22	17
 
 
+#CANDLE
 
+3	256	400	34	18
 
 
 

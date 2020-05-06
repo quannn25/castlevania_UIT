@@ -165,6 +165,9 @@
     <ClCompile Include="MainSimon.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="Candle.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="MainSimon.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle.h">
+      <Filter>Object\Ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

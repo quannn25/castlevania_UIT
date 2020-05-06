@@ -29,6 +29,7 @@ using namespace std;
 #define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
+#define OBJECT_TYPE_CANDLE	3
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
@@ -81,7 +82,9 @@ enum eID
 
 	HIT = 57,
 
-	MONNEY = 58
+	MONNEY = 58,
+
+	CANDLE = 59
 
 };
 
