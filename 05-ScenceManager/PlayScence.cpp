@@ -130,14 +130,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
-		if (player!=NULL)  // reset
+		if (MainSimon::GetInstance()->GetSimon() != NULL)  // reset
 		{
-			DebugOut(L"[ERROR] MARIO object was created before! ");
+			DebugOut(L"[ERROR] MARIO object was created before! \n");
+			player = MainSimon::GetInstance()->GetSimon();
+
+			player->SetPosition(x, y);
+			player->SetId(id);
+
+			// reset các ani_set của các Obj đc truyền qua
+			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id); // ani_set Simon
+			player->SetAnimationSet(ani_set);
+			player->mainWeapon->ReSetAniSetSwitchScene(); // weapon
+			if(player->subWeapon != NULL) // subWeapon
+				player->subWeapon->ReSetAniSetSwitchScene();
+
+
 			objects.push_back(player); // add lai
 			return;
 		}
 		obj = new Simon(); 
 		obj->SetType(eID::SIMON);
+
+		MainSimon::GetInstance()->SetSimon((Simon*)obj);
 		player = (Simon*)obj;
 		break;
 	case OBJECT_TYPE_BRICK:

@@ -64,3 +64,12 @@ void Dagger::RenderIcon(float x1, float y1)
 {
 	animation_set->at(0)->Render(x1, y1, 255);
 }
+
+void Dagger::ReSetAniSetSwitchScene()
+{
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(DAGGER_ANI_SET_ID);
+
+	SetAnimationSet(ani_set);
+}
+

@@ -18,6 +18,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render();
 	void RenderIcon(float x1, float y1);
+	virtual void ReSetAniSetSwitchScene();
 
 	virtual void Create(float simonX, float simonY, int simonTrend);
 

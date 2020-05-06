@@ -11,9 +11,9 @@
 Simon::Simon() : CGameObject()
 {
 
-	isWalking = 0; // sua doi is jumping, sitting... thành state hết
-	isJumping = 1;// sua doi is jumping, sitting... thành state hết
-	isSitting = 0;// sua doi is jumping, sitting... thành state hết
+	isWalking = 0;
+	isJumping = 0;
+	isSitting = 0;
 	isAttacking = 0;
 
 	health = SIMON_DEFAULT_HEALTH;

@@ -24,6 +24,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Create(float simonX, float simonY, int simonNx);
 	virtual void Render();
+	virtual void ReSetAniSetSwitchScene() = 0;
 
 	virtual void UpdatePositionFitSimon();
 

@@ -24,6 +24,8 @@ public:
 	void Render();
 
 	void RenderIcon(float x1, float y1);
+
+	virtual void ReSetAniSetSwitchScene();
 };
 
 #endif

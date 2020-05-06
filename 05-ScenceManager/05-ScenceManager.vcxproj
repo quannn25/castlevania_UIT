@@ -141,6 +141,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
+    <ClCompile Include="MainSimon.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Monney.cpp" />
     <ClCompile Include="MorningStar.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="LargeHeart.h" />
+    <ClInclude Include="MainSimon.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="Monney.h" />
     <ClInclude Include="MorningStar.h" />

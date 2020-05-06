@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Torch.h"
-#include "Simon.h"
+#include "MainSimon.h"
 #include "map.h"
 #include "grid.h"
 #include "Board.h"

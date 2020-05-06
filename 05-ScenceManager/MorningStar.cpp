@@ -14,6 +14,14 @@ MorningStar::MorningStar()
 	this->level = 0;
 }
 
+void MorningStar::ReSetAniSetSwitchScene()
+{
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
+
+	SetAnimationSet(ani_set);
+}
+
 
 MorningStar::~MorningStar()
 {

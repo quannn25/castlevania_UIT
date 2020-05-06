@@ -162,6 +162,9 @@
     <ClCompile Include="Monney.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="MainSimon.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="Monney.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MainSimon.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
