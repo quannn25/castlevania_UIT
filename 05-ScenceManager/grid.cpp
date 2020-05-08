@@ -25,11 +25,11 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 {
 	ListObj.clear(); // clear list
 
-	int rowBottom = floor((camera->Gety() + camera->GetScreenHeight() -1) / (float)GRID_CELL_HEIGHT);
+	int rowBottom = floor((camera->Gety() + camera->GetScreenHeight()) / (float)GRID_CELL_HEIGHT);
 	int rowTop = floor((camera->Gety()) / (float)GRID_CELL_HEIGHT);
 
 	int colLeft = floor((camera->Getx()) / (float)GRID_CELL_WIDTH);// fun -5??
-	int colRight = floor((camera->Getx() + camera->GetScreenWidth() -1) / (float)GRID_CELL_WIDTH);
+	int colRight = floor((camera->Getx() + camera->GetScreenWidth()) / (float)GRID_CELL_WIDTH);
 
 
 	for (int row = rowTop; row <= rowBottom; row++)

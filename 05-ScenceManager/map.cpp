@@ -56,7 +56,7 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 	if (fileIn)
 	{
-		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> CountTileFrame >> heightBoard;
+		fileIn >> RowMatrix >> ColumnMatrix >> ColTile >> RowTile >> heightBoard;
 		for (int i = 0; i < RowMatrix; i++)
 		{
 			for (int j = 0; j < ColumnMatrix; j++)

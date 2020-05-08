@@ -27,7 +27,6 @@ private:
 
 	int ColTile; // số lượng cột tile trong texture // d f
 	int RowTile;// số lượng dòng tile trong texture // d f
-	int CountTileFrame; // tổng số lương tile trong texture  // d f
 	int TileMap[500][500];
 
 	int row; // dòng hiện tại camera đang đứng

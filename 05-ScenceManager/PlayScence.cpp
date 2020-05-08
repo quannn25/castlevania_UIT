@@ -318,7 +318,7 @@ void CPlayScene::Update(DWORD dt)
 	grid->ResetTake(objects); // set lai trang thai onCam
 	
 	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
-	//DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
+	DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
 
