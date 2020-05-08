@@ -88,29 +88,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isWalking == true)
 		{
 
-			DoCaoDiDuoc += abs(vy) * 10.0f;
+			walkHeight += abs(vy) * 10.0f;
 
-			float k = 8.3f;
+			float k = 8.0f;
 
-			if (DoCaoDiDuoc >= k)
+			if (walkHeight >= k)
 			{
-				DoCaoDiDuoc -= k;
-
-
-				if (vy < 0) // ddang ddi len
-				{
-					x -= DoCaoDiDuoc;
-					y += DoCaoDiDuoc;
-
-				}
-				else
-				{
-					x += DoCaoDiDuoc;
-					y -= DoCaoDiDuoc;
-				}
-
-
-				DoCaoDiDuoc = 0;
+				walkHeight = 0;
 
 				isWalkingOnStair++;
 			}

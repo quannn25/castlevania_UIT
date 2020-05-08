@@ -83,7 +83,7 @@ public:
 
 	bool isOnStair;
 	int isWalkingOnStair;  // có 2 giai đoạn 
-	float DoCaoDiDuoc = 0;//
+	float walkHeight = 0;//
 
 public:
 	Simon();

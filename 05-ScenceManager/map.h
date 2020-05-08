@@ -40,7 +40,7 @@ public:
 	void load();
 	void LoadMap();
 	void ReadMapTXT(LPCWSTR filename);
-	void DrawMap(Camera * camera, Simon * simon);
+	void DrawMap(Camera * camera);
 
 	void SetTexPath(LPCWSTR path) { this->texPath = path; }
 	void SetTxtPath(LPCWSTR path) { this->txtPath = path; }

@@ -357,7 +357,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	tileMap->DrawMap(Camera::GetInstance(), player);
+	tileMap->DrawMap(Camera::GetInstance());
 
 	for (int i = 0; i < coObjects.size(); i++)
 	{
@@ -477,9 +477,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
 
-	if (game->IsKeyDown(DIK_UP) && simon->isWalkingOnStair == 0) // nhấn lên, và nó đang ko xử lí việc đi trên cầu thang
+	if (game->IsKeyDown(DIK_UP) && simon->isWalkingOnStair == 0) // nhấn lên, và nó đang ko xử lí việc đi trên cầu thang, nếu ko kt isWalkingOnStair thì vào Else bên trong bị gán = 1 hoài
 	{
-		if (simon->isOnStair == false)
+		if (simon->isOnStair == false) // nếu đang ko trên thang thì kt va chạm với Obj thang ẩn, ko va chạm thì đi bt
 		{
 			for (UINT i = 0; i < _coObjects.size(); i++)
 			{
@@ -489,14 +489,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 
 					simon->isOnStair = 1;
-					simon->DoCaoDiDuoc = 0;
+					simon->walkHeight = 0;
 
 					DebugOut(L"VA cham cau thang\n");
 					break;
 				}
 			}
 		}
-		else
+		else // nếu đang trên thang rồi thì bật xử lý, walking = 1
 		{
 			simon->isWalking = 1;
 
@@ -515,7 +515,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			simon->isWalking = 0;
 		}
 
-
 	}
 
 
@@ -525,10 +524,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		{
 			if (simon->isWalkingOnStair == 0) // nếu không có xử lí gì về cầu thang
 			{
-				simon->SetSpeed(-simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * -SIMON_SPEED_ONSTAIR); // ngược vận tốc
+				simon->SetSpeed(-simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
 				simon->isWalking = 1;
 				simon->isWalkingOnStair = 1;
-				simon->DoCaoDiDuoc = 0;
+				simon->walkHeight = 0;
 				return;
 			}
 

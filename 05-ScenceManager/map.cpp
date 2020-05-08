@@ -69,7 +69,7 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 }
 
-void Map::DrawMap(Camera *camera, Simon *simon)
+void Map::DrawMap(Camera *camera)
 {
 	row = int(camera->Gety()) / frameHeight;
 	column = int(camera->Getx()) / frameWidth; // vẽ ngay cột đang đứng để ko mất frame
