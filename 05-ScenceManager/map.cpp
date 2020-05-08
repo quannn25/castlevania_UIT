@@ -77,7 +77,7 @@ void Map::DrawMap(Camera *camera, Simon *simon)
 	x = column * frameWidth; // x = n lần frameWidth, n = column
 	y = row * frameHeight;
 	//DebugOut(L"x , y = %d %d\n", x,column);
-	for (int i = 0; i < ScreenRow; i++)
+	for (int i = 0; i < ScreenRow + 1; i++)
 	{
 		for (int j = 0; j < ScreenColumn + 1; j++)
 		{
