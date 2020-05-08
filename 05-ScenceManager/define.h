@@ -30,6 +30,7 @@ using namespace std;
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_CANDLE	3
+#define OBJECT_TYPE_STAIR	4
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
@@ -87,19 +88,13 @@ enum eID
 
 	CANDLE = 59,
 
-	SMALLHEART = 60
+	SMALLHEART = 60,
+
+	STAIR_UP = 61,
+
+	STAIR_DOWN = 62
 
 };
 
-#ifndef SAFE_DELETE
-
-#define SAFE_DELETE(ptr) \
-if(ptr) \
-{\
-	delete (ptr); \
-	ptr = nullptr; \
-} \
-
-#endif // !SAFE_DELETE
 
 #endif

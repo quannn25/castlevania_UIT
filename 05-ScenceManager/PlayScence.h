@@ -18,12 +18,13 @@
 #include "GameTime.h"
 #include "Monney.h"
 #include "SmallHeart.h"
+#include "Stair.h"
 
 class CPlayScene: public CScene
 {
 protected: 
 	Simon *player;					// A play scene has to have player, right? 
-
+	
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // unLoad() ko cần delete
 

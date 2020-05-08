@@ -11,7 +11,7 @@
 
 #define SIMON_GRAVITY 0.005f
 
-#define SIMON_WALKING_SPEED 0.15f 
+#define SIMON_WALKING_SPEED 0.45f 
 #define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
 
@@ -35,6 +35,8 @@
 #define SIMON_ANI_DIE 4
 #define SIMON_ANI_SIT_ATTACK	5
 #define SIMON_ANI_STAND_ATTACK	6
+#define SIMON_ANI_STAIR1	7
+#define SIMON_ANI_STAIR2	8
 
 #define SIMON_UNTOUCHABLE_TIME 5000
 
@@ -42,6 +44,8 @@
 #define SIMON_DEFAULT_HEARTCOLLECT 5
 
 #define TIME_FREEZE_MAX 500
+
+#define SIMON_SPEED_ONSTAIR 0.09f
 
 
 
@@ -77,6 +81,10 @@ public:
 	bool isSitting;
 	bool isAttacking;
 
+	bool isOnStair;
+	int isWalkingOnStair;  // có 2 giai đoạn 
+	float DoCaoDiDuoc = 0;//
+
 public:
 	Simon();
 	~Simon();
@@ -105,6 +113,8 @@ public:
 	bool GetFreeze();
 	void SetFreeze(int f);
 	void UpdateFreeze(DWORD dt);
+
+	void GoUpStair();
 
 };
 #endif

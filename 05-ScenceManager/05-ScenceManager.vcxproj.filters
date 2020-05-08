@@ -171,6 +171,9 @@
     <ClCompile Include="SmallHeart.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="SmallHeart.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Object\Ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

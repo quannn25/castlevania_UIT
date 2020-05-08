@@ -138,7 +138,12 @@ bool CGameObject::isCollitionObjectWithObject(LPGAMEOBJECT obj)	// kiểm tra b�
 
 	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va chạm giữa 2 object bằng sweptAABB
 	bool res = e->t > 0 && e->t <= 1.0f; // ĐK va chạm
-	SAFE_DELETE(e);
+	if (e)
+	{
+		delete e;
+		e = NULL;
+	}
+
 	return res;
 }
 

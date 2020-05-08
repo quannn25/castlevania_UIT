@@ -103,7 +103,7 @@ LPANIMATION_SET CAnimationSets::Get(unsigned int id)
 {
 	LPANIMATION_SET ani_set = animation_sets[id];
 	if (ani_set == NULL)
-		DebugOut(L"[ERROR] Failed to find animation set id (portal?): %d\n",id);
+		DebugOut(L"[ERROR] Failed to find animation set id (portal, stair?): %d\n",id);
 	 
 	return ani_set;
 }

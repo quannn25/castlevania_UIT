@@ -3,7 +3,7 @@
 
 #include "define.h"
 
-#define GAMETIME_SCENE_1 15
+#define GAMETIME_SCENE_1 300
 
 class GameTime
 {

@@ -167,6 +167,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Candle();
 		obj->SetType(eID::CANDLE);
 		break;
+	case OBJECT_TYPE_STAIR:
+		{
+		int t = atof(tokens[5].c_str()); //t vi tri thang
+		obj = new Stair(x, y, t);
+		if (t = 1)
+			obj->SetType(eID::STAIR_UP);
+		else
+			obj->SetType(eID::STAIR_DOWN);
+		}
+		break;
+	
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -453,8 +464,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	Simon *simon = ((CPlayScene*)scence)->player;
+	vector<LPGAMEOBJECT> _coObjects = ((CPlayScene*)scence)->coObjects;
 
-	if (simon->GetFreeze() == true) // Đang bóng băng thì không quan tâm phím
+	if (simon->GetFreeze() == true) // dang bóng băng
 	{
 		return;
 	}
@@ -464,20 +476,88 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	// disable control key when Mario die 
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
+
+	if (game->IsKeyDown(DIK_UP) && simon->isWalkingOnStair == 0) // nhấn lên, và nó đang ko xử lí việc đi trên cầu thang
+	{
+		if (simon->isOnStair == false)
+		{
+			for (UINT i = 0; i < _coObjects.size(); i++)
+			{
+				if (_coObjects[i]->GetType() == eID::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
+				{
+					simon->SetPosition(_coObjects[i]->GetX() - 25, simon->GetY());// chỉnh lại vị trí simon
+
+
+					simon->isOnStair = 1;
+					simon->DoCaoDiDuoc = 0;
+
+					DebugOut(L"VA cham cau thang\n");
+					break;
+				}
+			}
+		}
+		else
+		{
+			simon->isWalking = 1;
+
+			simon->isWalkingOnStair = 1;
+
+			simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
+			return;
+		}
+
+	}
+	else
+	{
+		if (simon->isOnStair == true && simon->isWalkingOnStair == 0)
+		{
+			simon->SetSpeed(0, 0);
+			simon->isWalking = 0;
+		}
+
+
+	}
+
+
 	if (game->IsKeyDown(DIK_DOWN))
 	{
-		simon->SetState(SIMON_STATE_SITTING);
+		if (simon->isOnStair) // ĐANG TRÊN cầu thang
+		{
+			if (simon->isWalkingOnStair == 0) // nếu không có xử lí gì về cầu thang
+			{
+				simon->SetSpeed(-simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * -SIMON_SPEED_ONSTAIR); // ngược vận tốc
+				simon->isWalking = 1;
+				simon->isWalkingOnStair = 1;
+				simon->DoCaoDiDuoc = 0;
+				return;
+			}
 
-		if (game->IsKeyDown(DIK_RIGHT))
-			simon->SetState(SIMON_STATE_RIGHT);
+		}
+		else // trường hợp bt
+		{
+			simon->SetState(SIMON_STATE_SITTING);
 
-		if (game->IsKeyDown(DIK_LEFT))
-			simon->SetState(SIMON_STATE_LEFT);
+			if (game->IsKeyDown(DIK_RIGHT))
+				simon->SetState(SIMON_STATE_RIGHT);
 
-		return;
+			if (game->IsKeyDown(DIK_LEFT))
+				simon->SetState(SIMON_STATE_LEFT);
+
+			return;
+		}
+
 	}
-	else 
+	else
+	{
+		if (simon->isOnStair == true && simon->isWalkingOnStair == 0) // đang trên cầu thang, và không xử lí 
+		{
+			simon->SetSpeed(0, 0);
+			simon->isWalking = 0;
+			return;
+		}
+
 		simon->SetState(SIMON_STATE_STOP);
+	}
 
 	if (simon->isJumping)
 		return;
@@ -625,7 +705,11 @@ void CPlayScene::CheckCollisionSimonWithItem()
 				}
 				case eID::DAGGERITEM:
 				{
-					SAFE_DELETE(player->subWeapon);
+					if (player->subWeapon)
+					{
+						delete player->subWeapon;
+						player->subWeapon = NULL;
+					}
 					player->subWeapon = new Dagger();
 					listItem[i]->SetFinish(true);
 					break;

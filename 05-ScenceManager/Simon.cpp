@@ -15,6 +15,7 @@ Simon::Simon() : CGameObject()
 	isJumping = 0;
 	isSitting = 0;
 	isAttacking = 0;
+	isWalkingOnStair = 0;
 
 	health = SIMON_DEFAULT_HEALTH;
 	live = SIMON_DEFAULT_HEARTCOLLECT;
@@ -81,11 +82,70 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 
+	if (isOnStair)
+	{
+
+		if (isWalking == true)
+		{
+
+			DoCaoDiDuoc += abs(vy) * 10.0f;
+
+			float k = 8.3f;
+
+			if (DoCaoDiDuoc >= k)
+			{
+				DoCaoDiDuoc -= k;
+
+
+				if (vy < 0) // ddang ddi len
+				{
+					x -= DoCaoDiDuoc;
+					y += DoCaoDiDuoc;
+
+				}
+				else
+				{
+					x += DoCaoDiDuoc;
+					y -= DoCaoDiDuoc;
+				}
+
+
+				DoCaoDiDuoc = 0;
+
+				isWalkingOnStair++;
+			}
+
+		}
+
+
+		if (isWalkingOnStair == 3)
+		{
+			isWalkingOnStair = 0;
+			vx = 0; vy = 0;
+
+
+			x = round(x / 16) * 16; // làm tròn, đứng đúng vị trí ô gạch cầu thang
+			y = round(y / 16) * 16;
+
+
+			isWalking = false;
+		}
+
+	}
+
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	// Simple fall down
-	vy += SIMON_GRAVITY * dt;
+	if (isOnStair == false)
+		vy += SIMON_GRAVITY * dt;// Simple fall down
+	else
+	{
+		this->dt = dt;
+		dx = vx * 10;
+		dy = vy * 10;
+	}
+
 
 	vector<LPGAMEOBJECT> coBrick;
 	coBrick.clear();
@@ -113,57 +173,85 @@ void Simon::Render()
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE;
 
-	if (isSitting == true)
+	//======================================================================================================================
+
+	if (isOnStair)
 	{
-		if (isAttacking == true) // tấn công
+
+		if (isWalking == true)
 		{
-			ani = SIMON_ANI_SIT_ATTACK;
-			int curFrame = animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame();
-			if (curFrame > 2 || curFrame < 0) // bị lỗi vũ khí render tốn time nên kết thúc đánh ở frame 1 còn frame 2 chưa render nên hàm này ko vào dc => lần đánh sau đủ sẽ bắt đầu render frame 2 dù mới bắt đầu đánh
+			if (isWalkingOnStair == 1) // nếu ở giai đoạn 1
 			{
-				animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+				ani = SIMON_ANI_STAIR1;
+			}
+
+			if (isWalkingOnStair == 2) // nếu ở giai đoạn 2
+			{
+				ani = SIMON_ANI_STAIR2;
 			}
 		}
 		else
-			ani = SIMON_ANI_SITTING;
-	}
-	else // standing
-	{
-		if (isAttacking == true)
 		{
-			ani = SIMON_ANI_STAND_ATTACK;
-			int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
-			if (curFrame > 2 || curFrame < 0)
-			{
-				animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);
-			}
+			ani = SIMON_ANI_STAIR1;
 		}
-		else if (isWalking == true)
+
+	}
+	else
+	{
+		if (isSitting == true)
 		{
-			if (isJumping == false) 
+			if (isAttacking == true) // tấn công
 			{
-				ani = SIMON_ANI_WALKING;
+				ani = SIMON_ANI_SIT_ATTACK;
+				int curFrame = animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame();
+				if (curFrame > 2 || curFrame < 0) // bị lỗi vũ khí render tốn time nên kết thúc đánh ở frame 1 còn frame 2 chưa render nên hàm này ko vào dc => lần đánh sau đủ sẽ bắt đầu render frame 2 dù mới bắt đầu đánh
+				{
+					animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+				}
+			}
+			else
+				ani = SIMON_ANI_SITTING;
+		}
+		else // standing
+		{
+			if (isAttacking == true)
+			{
+				ani = SIMON_ANI_STAND_ATTACK;
+				int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
+				if (curFrame > 2 || curFrame < 0)
+				{
+					animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);
+				}
+			}
+			else if (isWalking == true)
+			{
+				if (isJumping == false)
+				{
+					ani = SIMON_ANI_WALKING;
+
+				}
+				else
+				{
+					ani = SIMON_ANI_JUMPING;
+				}
 
 			}
 			else
 			{
-				ani = SIMON_ANI_JUMPING;
-			}
+				if (isJumping == true) // nếu ko đi mà chỉ nhảy
+				{
+					ani = SIMON_ANI_JUMPING;
+				}
+				else
+				{
+					ani = SiMON_ANI_IDLE;		// SIMON đứng yên
 
-		}
-		else
-		{
-			if (isJumping == true) // nếu ko đi mà chỉ nhảy
-			{
-				ani = SIMON_ANI_JUMPING;
-			}
-			else
-			{
-				ani = SiMON_ANI_IDLE;		// SIMON đứng yên
-
+				}
 			}
 		}
 	}
+
+	
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -199,6 +287,8 @@ void Simon::SetState(int state)
 	switch (state)
 	{
 	case SIMON_STATE_WALKING_RIGHT:
+		if (isOnStair == true)
+			return;
 		if (isAttacking == true)
 			return;
 		vx = SIMON_WALKING_SPEED;
@@ -206,6 +296,8 @@ void Simon::SetState(int state)
 		isWalking = 1;
 		break;
 	case SIMON_STATE_WALKING_LEFT:
+		if (isOnStair == true)
+			return;
 		if (isAttacking == true)
 			return;
 		vx = -SIMON_WALKING_SPEED;
@@ -213,6 +305,8 @@ void Simon::SetState(int state)
 		isWalking = 1;
 		break;
 	case SIMON_STATE_SITTING:
+		if (isOnStair == true)
+			return;
 		vx = 0;
 		isWalking = 0;
 
@@ -222,6 +316,8 @@ void Simon::SetState(int state)
 		isSitting = 1;
 		break;
 	case SIMON_STATE_JUMPING:
+		if (isOnStair == true)
+			return;
 		if (isSitting == true)
 			return;
 		if (isAttacking == true)
@@ -236,12 +332,18 @@ void Simon::SetState(int state)
 		vx = 0;
 		break;
 	case SIMON_STATE_RIGHT:
+		if (isOnStair == true)
+			return;
 		nx = 1;
 		break;
 	case SIMON_STATE_LEFT:
+		if (isOnStair == true)
+			return;
 		nx = -1;
 		break;
 	case SIMON_STATE_STOP:
+		if (isOnStair == true)
+			return;
 		if (isAttacking == true)
 			return;
 
@@ -270,6 +372,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 	// turn off collision when die 
 	//if (state != SIMON_STATE_DIE)
+	if (isOnStair == false) // ko trên thang thì check
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
@@ -324,14 +427,16 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 				DebugOut(L"[INFO] Switching to scene %d", p->GetSceneId());
 				CGame::GetInstance()->SwitchScene(p->GetSceneId()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
 
-				for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+				for (UINT i = 0; i < coEvents.size(); i++)
+					delete coEvents[i];
 				return;
 			}
 		}
 	}
 
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void Simon::Attack(Weapon * w)
@@ -391,8 +496,16 @@ bool Simon::LoseLife()
 	health = SIMON_DEFAULT_HEALTH;
 	live = live - 1;
 	heartCollected = SIMON_DEFAULT_HEARTCOLLECT;
-	SAFE_DELETE(mainWeapon);
-	SAFE_DELETE(subWeapon);
+	if (mainWeapon)
+	{
+		delete mainWeapon;
+		mainWeapon = NULL;
+	}
+	if (subWeapon)
+	{
+		delete subWeapon;
+		subWeapon = NULL;
+	}
 	mainWeapon = new MorningStar();
 	subWeapon = NULL;
 
@@ -439,4 +552,14 @@ void Simon::UpdateFreeze(DWORD dt)
 	}
 	else
 		TimeFreeze += dt;
+}
+
+
+
+void Simon::GoUpStair()
+{
+	isOnStair = true;
+	vx = nx * 0.5f;
+	vy = -1 * 0.5f;
+
 }
