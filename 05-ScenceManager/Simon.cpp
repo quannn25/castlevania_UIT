@@ -87,32 +87,38 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (isWalking == true)
 		{
-
-			walkHeight += abs(vy) * 10.0f;
-
 			float k = 8.0f;
 
-			if (walkHeight >= k)
+			walkHeight = walkHeight + abs(vy) * 16.0f;
+
+			if (walkHeight >= 8.0f && isWalkingOnStair == 1)
+				isWalkingOnStair++;
+
+			if (walkHeight >= 16.0f)
 			{
+				isWalkingOnStair++;
 				walkHeight = 0;
 
-				isWalkingOnStair++;
 			}
 
-		}
 
+		}
 
 		if (isWalkingOnStair == 3)
 		{
 			isWalkingOnStair = 0;
+
+			x = x + vx * 16;
+			y = y + vy * 16;
+
 			vx = 0; vy = 0;
 
 
-			x = round(x / 16) * 16; // làm tròn, đứng đúng vị trí ô gạch cầu thang
-			y = round(y / 16) * 16;
 
+			walkHeight = 0;
 
 			isWalking = false;
+			return;
 		}
 
 	}
@@ -126,8 +132,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		this->dt = dt;
-		dx = vx * 10;
-		dy = vy * 10;
+		dx = vx * 16;
+		dy = vy * 16;
+
+		x = x + dx;
+		y = y + dy;
+
+		return;
 	}
 
 
@@ -166,17 +177,26 @@ void Simon::Render()
 		{
 			if (isWalkingOnStair == 1) // nếu ở giai đoạn 1
 			{
-				ani = SIMON_ANI_STAIR1;
+				if (vy<0)
+					ani = SIMON_ANI_STAIR_UP_1;
+				else
+					ani = SIMON_ANI_STAIR_DOWN_1;
 			}
 
 			if (isWalkingOnStair == 2) // nếu ở giai đoạn 2
 			{
-				ani = SIMON_ANI_STAIR2;
+				if (vy<0)
+					ani = SIMON_ANI_STAIR_UP_2;
+				else
+					ani = SIMON_ANI_STAIR_DOWN_2;
 			}
 		}
 		else
 		{
-			ani = SIMON_ANI_STAIR1;
+			if (this->nx == 1)
+				ani = SIMON_ANI_STAIR_UP_1;
+			else
+				ani = SIMON_ANI_STAIR_DOWN_1;
 		}
 
 	}

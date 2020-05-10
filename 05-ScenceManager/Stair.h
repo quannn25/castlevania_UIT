@@ -10,7 +10,7 @@ private:
 	int t; // 1 ở dưới, 2 ở trên
 
 public:
-	Stair(float x1, float y1, int t1);
+	Stair(float x1, float y1, int t1, int nx1 = 1);
 	~Stair();
 
 

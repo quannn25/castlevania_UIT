@@ -30,6 +30,7 @@ void Map::loadFrameWidthHeight() // lấy đc frameWidth-Height
 
 	frameWidth = info.Width / ColTile;
 	frameHeight = info.Height / RowTile;
+	//DebugOut(L"frameWidth = %f\n", frameWidth);
 
 }
 
@@ -71,12 +72,12 @@ void Map::ReadMapTXT(LPCWSTR filename)
 
 void Map::DrawMap(Camera *camera)
 {
-	row = int(camera->Gety()) / frameHeight;
-	column = int(camera->Getx()) / frameWidth; // vẽ ngay cột đang đứng để ko mất frame
+	row = int(camera->Gety() / frameHeight);
+	column = int(camera->Getx() / frameWidth); // vẽ ngay cột đang đứng để ko mất frame
 
-	x = column * frameWidth; // x = n lần frameWidth, n = column
-	y = row * frameHeight;
-	//DebugOut(L"x , y = %d %d\n", x,column);
+	x = (float)(column * frameWidth); // x = n lần frameWidth, n = column
+	y = (float)row * frameHeight;
+	//DebugOut(L"x = %d\n", x);
 	for (int i = 0; i < ScreenRow + 1; i++)
 	{
 		for (int j = 0; j < ScreenColumn + 1; j++)
@@ -90,8 +91,9 @@ void Map::DrawMap(Camera *camera)
 				r.top = (index / ColTile)*(frameHeight);
 				r.right = r.left + frameWidth;
 				r.bottom = r.top + frameHeight;
-
+				
 				TileSprite->DrawWithRect(r, x + frameWidth * j, y + frameHeight*i + heightBoard); // hàm vẽ thêm tham số index và tham số frameHeight, framewidth từ đây
+				//DebugOut(L"x = %f\n", x + frameWidth * j);
 			}
 
 		}

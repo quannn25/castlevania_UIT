@@ -2,7 +2,7 @@
 
 
 
-Stair::Stair(float x1, float y1, int t1)
+Stair::Stair(float x1, float y1, int t1, int nx1)
 {
 	x = x1;
 	y = y1;
@@ -11,6 +11,7 @@ Stair::Stair(float x1, float y1, int t1)
 	t = t1;
 	if (t == 1) // up
 		type = eID::STAIR_UP;
+	nx = nx1;
 }
 
 Stair::~Stair()

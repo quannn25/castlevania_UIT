@@ -3,7 +3,7 @@
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
 20	textures\castle\ground\2.1_Brick.png	255	0	255
-30	textures\castle\map\Scene2.1\2.1.png	255	0	255
+30	textures\castle\map\Scene3.1\3.1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
@@ -46,6 +46,9 @@
 #climbing
 10106	240	66	300	132	0
 10107	300	66	360	132	0
+10108	120	66	180	132	0
+10109	180	66	240	132	0
+
 
 #BRICK
 40001	0	0	32	32	20
@@ -177,6 +180,8 @@
 #Climbing
 506	10106	100
 507	10107	100
+508	10108	100
+509	10109	100
 
 # ==== BRICK =========
 602	40001	100
@@ -270,7 +275,7 @@
 # 
 [ANIMATION_SETS]
 # MARIO
-1	401	501	503	502	599	504	505	506	507
+1	401	501	503	502	599	504	505	506	507	508	509
 #  BRICK 
 22	602
 
@@ -350,8 +355,8 @@
 3	276	380	34	18
 
 #Stair
-# type	x	y	ani_set_id	id	t(1 o duoi)
-4	240	416	0	900	1
+# type	x	y	ani_set_id	id	t(1 o duoi)	nx
+4	240	416	0	900	1	-1
 
 
 
@@ -365,4 +370,4 @@
 [TILEMAP]
 #TILEMAP
 # filepath	mapTXT
-textures\castle\map\Scene2.1\2.1.png	textures\castle\map\Scene2.1\2.1.txt
+textures\castle\map\Scene3.1\3.1.png	textures\castle\map\Scene3.1\3.1.txt

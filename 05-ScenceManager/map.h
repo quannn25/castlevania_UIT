@@ -14,8 +14,8 @@ private:
 	CSprite *TileSprite;
 	LPCWSTR texPath; // đọc file của titleTexture
 	LPCWSTR txtPath; // file txt thuộc tính
-	int frameWidth; // tính đc
-	int frameHeight;// tính đc
+	float frameWidth; // tính đc
+	float frameHeight;// tính đc
 	int index; // giá trị là phần tử của TileMap[500][500]
 	int heightBoard; // độ cao boardGame
 
@@ -31,7 +31,7 @@ private:
 
 	int row; // dòng hiện tại camera đang đứng
 	int column; //cột hiện tại camera đang đứng
-	int x, y; // tọa độ vẽ
+	float x, y; // tọa độ vẽ
 
 public:
 	Map(LPCWSTR texpath, LPCWSTR txtPath);

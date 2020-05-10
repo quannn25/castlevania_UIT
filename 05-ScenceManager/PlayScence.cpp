@@ -170,7 +170,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_STAIR:
 		{
 		int t = atof(tokens[5].c_str()); //t vi tri thang
-		obj = new Stair(x, y, t);
+		int nx1 = atof(tokens[6].c_str());
+		obj = new Stair(x, y, t, nx1);
 		if (t = 1)
 			obj->SetType(eID::STAIR_UP);
 		else
@@ -215,6 +216,8 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 
 	tileMap = new Map(texPath.c_str(), txtPath.c_str());
 	tileMap->load();
+	DebugOut(L"[INFO] Map resources from : %s \n", texPath.c_str());
+	DebugOut(L"[INFO] Map resources from : %s \n", txtPath.c_str());
 }
 
 void CPlayScene::Load()
@@ -318,7 +321,7 @@ void CPlayScene::Update(DWORD dt)
 	grid->ResetTake(objects); // set lai trang thai onCam
 	
 	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
-	DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
+	//DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
 
@@ -485,13 +488,16 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			{
 				if (_coObjects[i]->GetType() == eID::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
 				{
-					simon->SetPosition(_coObjects[i]->GetX() - 25, simon->GetY());// chỉnh lại vị trí simon
+					simon->SetPosition(_coObjects[i]->GetX() - 25, round(simon->GetY()));
 
+					CGameObject* obj = dynamic_cast<Stair*>(_coObjects[i]);
+					simon->NxStair = obj->GetNx();
+					int c = obj->GetNx();
+					simon->SetNx(simon->NxStair);
 
 					simon->isOnStair = 1;
 					simon->walkHeight = 0;
 
-					DebugOut(L"VA cham cau thang\n");
 					break;
 				}
 			}
@@ -501,6 +507,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			simon->isWalking = 1;
 
 			simon->isWalkingOnStair = 1;
+
+			simon->SetNx(simon->NxStair);
 
 			simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
 			return;
@@ -524,7 +532,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		{
 			if (simon->isWalkingOnStair == 0) // nếu không có xử lí gì về cầu thang
 			{
-				simon->SetSpeed(-simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+				simon->SetNx(simon->NxStair *-1);
+
+				simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+
 				simon->isWalking = 1;
 				simon->isWalkingOnStair = 1;
 				simon->walkHeight = 0;

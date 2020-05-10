@@ -35,8 +35,10 @@
 #define SIMON_ANI_DIE 4
 #define SIMON_ANI_SIT_ATTACK	5
 #define SIMON_ANI_STAND_ATTACK	6
-#define SIMON_ANI_STAIR1	7
-#define SIMON_ANI_STAIR2	8
+#define SIMON_ANI_STAIR_UP_1	7
+#define SIMON_ANI_STAIR_UP_2	8
+#define SIMON_ANI_STAIR_DOWN_1	9
+#define SIMON_ANI_STAIR_DOWN_2	10
 
 #define SIMON_UNTOUCHABLE_TIME 5000
 
@@ -45,7 +47,7 @@
 
 #define TIME_FREEZE_MAX 500
 
-#define SIMON_SPEED_ONSTAIR 0.09f
+#define SIMON_SPEED_ONSTAIR 0.05f
 
 
 
@@ -84,6 +86,7 @@ public:
 	bool isOnStair;
 	int isWalkingOnStair;  // có 2 giai đoạn 
 	float walkHeight = 0;//
+	bool NxStair;
 
 public:
 	Simon();
