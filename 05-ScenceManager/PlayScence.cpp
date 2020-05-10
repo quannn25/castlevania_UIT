@@ -150,42 +150,48 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new Simon(); 
-		obj->SetType(eID::SIMON);
+		obj->SetType(eType::SIMON);
 
 		MainSimon::GetInstance()->SetSimon((Simon*)obj);
 		player = (Simon*)obj;
 		break;
 	case OBJECT_TYPE_BRICK:
 		obj = new CBrick();
-		obj->SetType(eID::BRICK);
+		obj->SetType(eType::BRICK);
 		break;
 	case OBJECT_TYPE_TORCH:
 		obj = new Torch();
-		obj->SetType(eID::TORCH);
+		obj->SetType(eType::TORCH);
 		break;
 	case OBJECT_TYPE_CANDLE:
 		obj = new Candle();
-		obj->SetType(eID::CANDLE);
+		obj->SetType(eType::CANDLE);
 		break;
 	case OBJECT_TYPE_STAIR:
 		{
-		int t = atof(tokens[5].c_str()); //t vi tri thang
+		int t = atof(tokens[5].c_str()); //	1 up 2 down
 		int nx1 = atof(tokens[6].c_str());
 		obj = new Stair(x, y, t, nx1);
 		if (t = 1)
-			obj->SetType(eID::STAIR_UP);
+			obj->SetType(eType::STAIR_UP);
 		else
-			obj->SetType(eID::STAIR_DOWN);
+			obj->SetType(eType::STAIR_DOWN);
 		}
 		break;
-	
+	case OBJECT_TYPE_STAIR_QUIT:
+		{
+		int nx1 = atof(tokens[6].c_str());
+		obj = new Stair(x, y, 3, nx1);
+		obj->SetType(eType::STAIR_QUIT);
+		}
+		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
 			float b = atof(tokens[6].c_str());
 			int scene_id = atoi(tokens[7].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
-			obj->SetType(eID::PORTAL);
+			obj->SetType(eType::PORTAL);
 		}
 		break;
 	default:
@@ -438,7 +444,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		simon->SetState(SIMON_STATE_JUMPING);
+		if(simon->isOnStair == false)
+			simon->SetState(SIMON_STATE_JUMPING);
 		break;
 	case DIK_A: // reset
 		simon->SetState(SIMON_STATE_IDLE);
@@ -486,7 +493,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		{
 			for (UINT i = 0; i < _coObjects.size(); i++)
 			{
-				if (_coObjects[i]->GetType() == eID::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
+				if (_coObjects[i]->GetType() == eType::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
 				{
 					simon->SetPosition(_coObjects[i]->GetX() - 25, round(simon->GetY()));
 
@@ -498,6 +505,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 					simon->isOnStair = 1;
 					simon->walkHeight = 0;
 
+					simon->ny = -1; // hướng lên
+
 					break;
 				}
 			}
@@ -505,6 +514,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		else // nếu đang trên thang rồi thì bật xử lý, walking = 1
 		{
 			simon->isWalking = 1;
+
+			simon->ny = -1;
 
 			simon->isWalkingOnStair = 1;
 
@@ -539,6 +550,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 				simon->isWalking = 1;
 				simon->isWalkingOnStair = 1;
 				simon->walkHeight = 0;
+
+				simon->ny = 1; // hướng xuống
+
 				return;
 			}
 
@@ -624,7 +638,7 @@ void CPlayScene::CheckCollisionWeapon()
 
 					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
 					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
+					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eType::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
 				}
 			}
 
@@ -637,7 +651,7 @@ void CPlayScene::CheckCollisionWeapon()
 					gameObjCandle->beAttacked(1);
 
 					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eID::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
+					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eType::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
 				}
 			}
 		}
@@ -660,7 +674,7 @@ void CPlayScene::CheckCollisionWeapon()
 
 					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
 					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eID::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
+					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eType::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
 				}
 			}
 
@@ -675,7 +689,7 @@ void CPlayScene::CheckCollisionWeapon()
 					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
 
 					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eID::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
+					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eType::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
 				}
 			}
 		}
@@ -692,20 +706,20 @@ void CPlayScene::CheckCollisionSimonWithItem()
 			{
 				switch (listItem[i]->GetType())
 				{
-				case eID::LARGEHEART:
+				case eType::LARGEHEART:
 				{
 					player->SetHeartCollected(player->GetHeartCollected() + 5);
 					listItem[i]->SetFinish(true);
 					break;
 				}
-				case eID::SMALLHEART:
+				case eType::SMALLHEART:
 				{
 					player->SetHeartCollected(player->GetHeartCollected() + 1);
 					listItem[i]->SetFinish(true);
 					break;
 				}
 
-				case eID::UPGRADEMORNINGSTAR:
+				case eType::UPGRADEMORNINGSTAR:
 				{
 					MorningStar * objMorningStar = dynamic_cast<MorningStar*>(player->mainWeapon);
 					objMorningStar->UpgradeLevel(); // Nâng cấp vũ khí roi
@@ -713,7 +727,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					player->SetFreeze(true);
 					break;
 				}
-				case eID::DAGGERITEM:
+				case eType::DAGGERITEM:
 				{
 					if (player->subWeapon)
 					{
@@ -724,7 +738,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
-				case eID::MONNEY:
+				case eType::MONNEY:
 				{
 					listItem[i]->SetFinish(true);
 
@@ -740,9 +754,9 @@ void CPlayScene::CheckCollisionSimonWithItem()
 	}
 }
 
-Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
+Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 {
-	if (type == eID::TORCH)
+	if (type == eType::TORCH)
 	{
 		if (id == 99)
 			return new DaggerItem(x, y);
@@ -752,7 +766,7 @@ Item * CPlayScene::GetNewItem(int id, eID type, float x, float y)
 
 	}
 
-	if (type == eID::CANDLE)
+	if (type == eType::CANDLE)
 	{
 		return new SmallHeart(x, y);
 	}

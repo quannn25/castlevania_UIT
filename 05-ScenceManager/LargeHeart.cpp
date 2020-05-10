@@ -8,7 +8,7 @@ LargeHeart::LargeHeart(float x, float y)
 	LPANIMATION_SET ani_set = animation_sets->Get(LARGEHEART_ANI_SET_ID);
 	SetAnimationSet(ani_set);
 
-	type = eID::LARGEHEART;
+	type = eType::LARGEHEART;
 	this->x = x;
 	this->y = y;
 	vy = LARGEHEART_GRAVITY;

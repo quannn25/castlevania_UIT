@@ -137,25 +137,28 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		x = x + dx;
 		y = y + dy;
-
-		return;
 	}
 
-
-	vector<LPGAMEOBJECT> coBrick;
-	coBrick.clear();
-	for (UINT i = 0; i < coObjects->size(); i++)
+	if (isOnStair == false)
 	{
-		if(dynamic_cast<CBrick *>(coObjects->at(i)) || dynamic_cast<CPortal *>(coObjects->at(i))) // tutu xu ly portal
-			coBrick.push_back(coObjects->at(i));
+		vector<LPGAMEOBJECT> coBrick;
+		coBrick.clear();
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (dynamic_cast<CBrick *>(coObjects->at(i)) || dynamic_cast<CPortal *>(coObjects->at(i))) // tutu xu ly portal
+				coBrick.push_back(coObjects->at(i));
+		}
+		CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
 	}
-	CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
+	else
+	{
+		CollisionWithExitStair(coObjects);
+	}
 
-	//reset vi tri weapon
+	//reset vi tri weapon reset de kt va cham
 	mainWeapon->SetPosition(this->x, this->y);
-	mainWeapon->UpdatePositionFitSimon();
-	// reset de kt va cham
 	mainWeapon->SetSpeed(vx, vy);
+	mainWeapon->UpdatePositionFitSimon();
 
 }
 
@@ -193,7 +196,7 @@ void Simon::Render()
 		}
 		else
 		{
-			if (this->nx == 1)
+			if (this->ny == -1)
 				ani = SIMON_ANI_STAIR_UP_1;
 			else
 				ani = SIMON_ANI_STAIR_DOWN_1;
@@ -376,8 +379,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 	// turn off collision when die 
 	//if (state != SIMON_STATE_DIE)
-	if (isOnStair == false) // ko trên thang thì check
-		CalcPotentialCollisions(coObjects, coEvents);
+	CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
 	/*if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
@@ -566,4 +568,54 @@ void Simon::GoUpStair()
 	vx = nx * 0.5f;
 	vy = -1 * 0.5f;
 
+}
+
+
+void Simon::CollisionWithExitStair(vector<LPGAMEOBJECT> *coObjects)
+{
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> listobj;
+	listobj.clear();
+	for (UINT i = 0; i < (*coObjects).size(); i++)
+	{
+		if ((*coObjects)[i]->GetType() == eType::STAIR_QUIT)
+		{
+			listobj.push_back((*coObjects)[i]);
+		}
+	}
+	
+	CalcPotentialCollisions(&listobj, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+
+		if (ny != 0) // va chạm trục y
+		{
+			y = y + dy - (16.0f - walkHeight);
+			vy = 0;
+			isOnStair = 0;
+			isWalkingOnStair = 0;
+			isWalking = 0;
+
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }

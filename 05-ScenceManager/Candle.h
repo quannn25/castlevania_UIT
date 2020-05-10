@@ -1,5 +1,5 @@
-#ifndef Candle_H
-#define Candle_H
+#ifndef CANDLE_H
+#define CANDLE_H
 
 
 #include "GameObject.h"

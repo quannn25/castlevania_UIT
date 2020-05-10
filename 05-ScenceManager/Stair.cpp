@@ -9,8 +9,8 @@ Stair::Stair(float x1, float y1, int t1, int nx1)
 	width = 25;
 	height = 25;
 	t = t1;
-	if (t == 1) // up
-		type = eID::STAIR_UP;
+	if (t == 3) // test
+		width = 300;
 	nx = nx1;
 }
 

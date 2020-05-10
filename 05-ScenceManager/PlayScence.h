@@ -62,7 +62,7 @@ public:
 
 	void ResetResource(); // reset lai resource khi simon mất 1 mạng
 
-	Item * GetNewItem(int id, eID type, float x, float y);
+	Item * GetNewItem(int id, eType type, float x, float y);
 
 	friend class CPlayScenceKeyHandler;
 };

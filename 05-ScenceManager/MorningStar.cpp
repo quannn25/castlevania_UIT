@@ -10,7 +10,7 @@ MorningStar::MorningStar()
 	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
-	type = eID::MORNINGSTAR;
+	type = eType::MORNINGSTAR;
 	this->level = 0;
 }
 

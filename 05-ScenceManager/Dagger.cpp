@@ -8,7 +8,7 @@ Dagger::Dagger()
 	LPANIMATION_SET ani_set = animation_sets->Get(DAGGER_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
-	type = eID::DAGGER;
+	type = eType::DAGGER;
 }
 
 

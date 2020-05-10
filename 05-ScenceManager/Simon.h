@@ -86,7 +86,8 @@ public:
 	bool isOnStair;
 	int isWalkingOnStair;  // có 2 giai đoạn 
 	float walkHeight = 0;//
-	bool NxStair;
+	int NxStair;
+	int ny; // -1 đi hướng lên
 
 public:
 	Simon();
@@ -118,6 +119,7 @@ public:
 	void UpdateFreeze(DWORD dt);
 
 	void GoUpStair();
+	void CollisionWithExitStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
 };
 #endif

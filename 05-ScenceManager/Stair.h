@@ -7,7 +7,7 @@ class Stair : public CGameObject
 private:
 	int width;
 	int height;
-	int t; // 1 ở dưới, 2 ở trên
+	int t; // 1 up, 2 down, 3 quit
 
 public:
 	Stair(float x1, float y1, int t1, int nx1 = 1);

@@ -6,7 +6,7 @@ SmallHeart::SmallHeart(float x1, float y1)
 	LPANIMATION_SET ani_set = animation_sets->Get(SMALLHEART_ANI_SET_ID);
 	SetAnimationSet(ani_set);
 
-	type = eID::SMALLHEART;
+	type = eType::SMALLHEART;
 
 	this->x = x1;
 	this->y = y1;

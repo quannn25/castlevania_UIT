@@ -11,7 +11,7 @@ Monney::Monney(float x1, float y1)
 
 	this->x = x1;
 	this->y = y1;
-	type = eID::MONNEY;
+	type = eType::MONNEY;
 
 	vx = 0;
 	vy = 0;
@@ -59,7 +59,7 @@ void Monney::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
 	for (UINT i = 0; i < listObject->size(); i++)
-		if (listObject->at(i)->GetType() == eID::BRICK)
+		if (listObject->at(i)->GetType() == eType::BRICK)
 			listObject_Brick.push_back(listObject->at(i));
 
 	vector<LPCOLLISIONEVENT> coEvents;

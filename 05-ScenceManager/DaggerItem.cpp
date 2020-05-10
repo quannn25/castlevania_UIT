@@ -9,7 +9,7 @@ DaggerItem::DaggerItem(float x1, float y1)
 
 	SetAnimationSet(ani_set);
 
-	type = eID::DAGGERITEM;
+	type = eType::DAGGERITEM;
 	this->x = x1;
 	this->y = y1;
 	vy = ITEMDAGGER_GRAVITY;

@@ -7,7 +7,7 @@ UpgradeMorningStar::UpgradeMorningStar(float x1, float y1)
 	LPANIMATION_SET ani_set = animation_sets->Get(UPGRADEMORNINGSTAR_ANI_SET_ID);
 
 	SetAnimationSet(ani_set);
-	type = eID::UPGRADEMORNINGSTAR;
+	type = eType::UPGRADEMORNINGSTAR;
 
 	this->x = x1;
 	this->y = y1;

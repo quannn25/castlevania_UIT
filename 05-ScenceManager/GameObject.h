@@ -49,7 +49,7 @@ class CGameObject
 {
 protected:
 	int health;
-	eID type; // loai obj
+	eType type; // loai obj
 public:
 
 	float x; 
@@ -115,8 +115,8 @@ public:
 	void SetNx(int Nx);
 	void SetId(int ID);
 	int GetId() { return id; }
-	void SetType(eID t) { this->type = t; }
-	eID GetType() { return type; }
+	void SetType(eType t) { this->type = t; }
+	eType GetType() { return type; }
 	bool GetOnCam() { return onCam; }
 	void SetOnCam(int a) { onCam = a; }
 
