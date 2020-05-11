@@ -121,7 +121,7 @@ public:
 	void UpdateFreeze(DWORD dt);
 
 	void GoUpStair();
-	void CollisionWithExitStair(vector<LPGAMEOBJECT> *coObjects = NULL);
+	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
 };
 #endif

@@ -172,7 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int t = atof(tokens[5].c_str()); //	1 up 2 down
 		int nx1 = atof(tokens[6].c_str());
 		obj = new Stair(x, y, t, nx1);
-		if (t = 1)
+		if (t == 1)
 			obj->SetType(eType::STAIR_UP);
 		else
 			obj->SetType(eType::STAIR_DOWN);
@@ -487,20 +487,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
 
-	if (game->IsKeyDown(DIK_UP) && simon->isWalkingOnStair == 0) // nhấn lên, và nó đang ko xử lí việc đi trên cầu thang, nếu ko kt isWalkingOnStair thì vào Else bên trong bị gán = 1 hoài
+	if (game->IsKeyDown(DIK_UP)) 
 	{
-		if (simon->isOnStair == false) // nếu đang ko trên thang thì kt va chạm với Obj thang ẩn, ko va chạm thì đi bt
+		if (simon->isOnStair == false) // nếu đang ko trên thang
 		{
 			for (UINT i = 0; i < _coObjects.size(); i++)
 			{
 				if (_coObjects[i]->GetType() == eType::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
 				{
-					simon->SetPosition(_coObjects[i]->GetX() - 25, round(simon->GetY()));
-
 					CGameObject* obj = dynamic_cast<Stair*>(_coObjects[i]);
 					simon->NxStair = obj->GetNx();
-					int c = obj->GetNx();
-					simon->SetNx(simon->NxStair);
+					
+					simon->SetNx(simon->NxStair); // hướng simon theo hướng thang
 
 					simon->isOnStair = 1;
 					simon->walkHeight = 0;
@@ -513,7 +511,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 		else // nếu đang trên thang rồi thì bật xử lý, walking = 1
 		{
-			simon->isWalking = 1;
+			simon->isWalking = true;
 
 			simon->ny = -1;
 
@@ -528,63 +526,47 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else
 	{
-		if (simon->isOnStair == true && simon->isWalkingOnStair == 0)
+		if (game->IsKeyDown(DIK_DOWN))
 		{
-			simon->SetSpeed(0, 0);
-			simon->isWalking = 0;
-		}
-
-	}
-
-
-	if (game->IsKeyDown(DIK_DOWN))
-	{
-		if (simon->isOnStair) // ĐANG TRÊN cầu thang
-		{
-			if (simon->isWalkingOnStair == 0) // nếu không có xử lí gì về cầu thang
+			if (simon->isOnStair == false) // chưa trên stair
 			{
-				simon->SetNx(simon->NxStair *-1);
+				for (UINT i = 0; i < _coObjects.size(); i++)
+				{
+					if (_coObjects[i]->GetType() == eType::STAIR_DOWN)
+					{
+						if (simon->isCollitionObjectWithObject(_coObjects[i]))
+						{
+							CGameObject* gameobj = dynamic_cast<Stair*>(_coObjects[i]);
+							simon->NxStair = gameobj->GetNx(); // lưu hướng của stair
+							simon->ny = 1;// hướng đi xuống
+							simon->SetNx(simon->NxStair * -1);// set hướng simon
 
-				simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+							simon->isOnStair = true; // set trạng thái stair
+							simon->walkHeight = 0;
+						}
+					}
+				}
 
-				simon->isWalking = 1;
-				simon->isWalkingOnStair = 1;
-				simon->walkHeight = 0;
-
-				simon->ny = 1; // hướng xuống
-
-				return;
+			}
+			else // đã trên stair
+			{
+				if (simon->isWalkingOnStair == 0 || simon->isWalkingOnStair == 3) // kết thúc xử lí trước đó
+				{
+					simon->isWalking = true;
+					simon->isWalkingOnStair = 1;
+					simon->ny = 1;// hướng đi xuống
+					simon->SetNx(simon->NxStair*-1);// đi xuống thì ngược so với stair
+					simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+				}
 			}
 
 		}
-		else // trường hợp bt
-		{
-			simon->SetState(SIMON_STATE_SITTING);
 
-			if (game->IsKeyDown(DIK_RIGHT))
-				simon->SetState(SIMON_STATE_RIGHT);
-
-			if (game->IsKeyDown(DIK_LEFT))
-				simon->SetState(SIMON_STATE_LEFT);
-
-			return;
-		}
-
-	}
-	else
-	{
-		if (simon->isOnStair == true && simon->isWalkingOnStair == 0) // đang trên cầu thang, và không xử lí 
-		{
-			simon->SetSpeed(0, 0);
-			simon->isWalking = 0;
-			return;
-		}
-
-		simon->SetState(SIMON_STATE_STOP);
 	}
 
 	if (simon->isJumping)
 		return;
+
 	if(game->IsKeyDown(DIK_RIGHT))
 	{
 		if (simon->isAttacking)

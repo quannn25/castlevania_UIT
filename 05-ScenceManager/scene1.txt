@@ -3,7 +3,7 @@
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
 20	textures\castle\ground\2.1_Brick.png	255	0	255
-30	textures\castle\map\Scene2.2\2.2.png	255	0	255
+30	textures\castle\map\Scene2.1\2.1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
@@ -339,7 +339,7 @@
 # type: 0 = Mario , 1 = Brick, 2 = torch, candle = 3, 4 = stair, 50 = portal,
 
 # MARIO
-0	17	115	1	0
+0	17	300	1	0
 
 # BRICK 
 1	0	432	22	2
@@ -360,15 +360,36 @@
 1	480	432	22	17
 
 
+1	0	304	22	2
+1	32	304	22	3
+1	64	304	22	4
+1	96	304	22	5
+1	128	304	22	6
+1	160	304	22	7
+1	192	304	22	8
+1	224	304	22	9
+1	256	304	22	10
+1	288	304	22	11
+1	320	304	22	12
+1	352	304	22	13
+1	384	304	22	14
+1	416	304	22	15
+1	448	304	22	16
+1	480	304	22	17
+
+
 #CANDLE
 
 3	256	380	34	18
 3	276	380	34	18
 
-#Stair type 4 in, 5 out
+#Stair 
+#type 4 in, 5 out
 # type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx
 4	240	416	0	900	1	1
-5	320	100	0	900	1	1
+4	400	220	0	900	2	1
+#5	320	100	0	900	1	1
+
 
 
 
@@ -382,4 +403,4 @@
 [TILEMAP]
 #TILEMAP
 # filepath	mapTXT
-textures\castle\map\Scene2.2\2.2.png	textures\castle\map\Scene2.2\2.2.txt
+textures\castle\map\Scene2.1\2.1.png	textures\castle\map\Scene2.1\2.1.txt

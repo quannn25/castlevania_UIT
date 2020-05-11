@@ -90,8 +90,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (isWalking == true)
 		{
-			float k = 8.0f;
-
 			walkHeight = walkHeight + abs(vy) * 16.0f;
 
 			if (walkHeight >= 8.0f && isWalkingOnStair == 1)
@@ -103,23 +101,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				walkHeight = 0;
 
 			}
+			//DebugOut(L"walkheight = %f\n", walkHeight);
 
-
-		}
-
-		if (isWalkingOnStair == 3)
-		{
-			isWalkingOnStair = 0;
-
-			x = x + vx * 16;
-			y = y + vy * 16;
-
-			vx = 0; vy = 0;
-
-			walkHeight = 0;
-
-			isWalking = false;
-			return;
 		}
 
 	}
@@ -135,25 +118,23 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		this->dt = dt;
 		dx = vx * 16;
 		dy = vy * 16;
-
-		x = x + dx;
-		y = y + dy;
 	}
 
 	if (isOnStair == false)
 	{
-		vector<LPGAMEOBJECT> coBrick;
-		coBrick.clear();
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			if (dynamic_cast<CBrick *>(coObjects->at(i)) || dynamic_cast<CPortal *>(coObjects->at(i))) // tutu xu ly portal
-				coBrick.push_back(coObjects->at(i));
-		}
-		CollisionWithBrick(&coBrick); // check Collision and update x, y for simon
+		CollisionWithBrick(coObjects); // check Collision and update x, y for simon
 	}
 	else
 	{
-		CollisionWithExitStair(coObjects);
+		CollisionWhenOnStair(coObjects);
+	}
+
+	if (isWalkingOnStair == 3)
+	{
+		isWalkingOnStair = 0;
+		vx = 0;
+		vy = 0;
+		isWalking = false;
 	}
 
 	//reset vi tri weapon reset de kt va cham
@@ -290,6 +271,7 @@ void Simon::Render()
 	bool isLeft = true;
 	if (nx > 0)
 		isLeft = false;
+	//DebugOut(L"nx = %d\n", nx);
 
 	//animation_set->at(ani)->Render(x, y, alpha, isLeft); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
 	//// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
@@ -402,9 +384,18 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
+	vector<LPGAMEOBJECT> list_Brick;
+	list_Brick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (coObjects->at(i)->GetType() == eType::BRICK)
+			list_Brick.push_back(coObjects->at(i));
+	}
+
+
 	// turn off collision when die 
 	//if (state != SIMON_STATE_DIE)
-	CalcPotentialCollisions(coObjects, coEvents);
+	CalcPotentialCollisions(&list_Brick, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
 	/*if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
@@ -598,51 +589,138 @@ void Simon::GoUpStair()
 }
 
 
-void Simon::CollisionWithExitStair(vector<LPGAMEOBJECT> *coObjects)
+void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 {
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	vector<LPGAMEOBJECT> listobj;
-	listobj.clear();
-	for (UINT i = 0; i < (*coObjects).size(); i++)
+	if (ny == 1) // đang đi xuống
 	{
-		if ((*coObjects)[i]->GetType() == eType::STAIR_QUIT)
+		int CountCollisionBottom = 0;
+		vector<LPGAMEOBJECT> listobj;
+		listobj.clear();
+		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			listobj.push_back((*coObjects)[i]);
+			if (coObjects->at(i)->GetType() == eType::STAIR_UP) // nếu là object ở dưới
+			{
+				if (this->isCollitionObjectWithObject(coObjects->at(i)))
+				{
+					CountCollisionBottom++;
+					break;
+				}
+			}
 		}
-	}
-	
-	CalcPotentialCollisions(&listobj, coEvents);
 
-	if (coEvents.size() == 0)
-	{
-
-	}
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-
-		if (ny != 0) // va chạm trục y
+		if (CountCollisionBottom > 0) // có va chạm với bottom
 		{
-			y = y + dy - (16.0f - walkHeight);
-			vy = 0;
-			isOnStair = 0;
-			isWalkingOnStair = 0;
-			isWalking = 0;
+			vector<LPCOLLISIONEVENT> coEvents;
+			vector<LPCOLLISIONEVENT> coEventsResult;
+			coEvents.clear();
+			vector<LPGAMEOBJECT> list_Brick;
+			list_Brick.clear();
+			for (UINT i = 0; i < coObjects->size(); i++)
+				if (coObjects->at(i)->GetType() == eType::BRICK)
+					list_Brick.push_back(coObjects->at(i));
+			CalcPotentialCollisions(&list_Brick, coEvents);
+			if (coEvents.size() == 0)
+			{
+				x += dx;
+				y += dy;
+			}
+			else
+			{
+				float min_tx, min_ty, nx = 0, ny;
+				float rdx = 0;
+				float rdy = 0;
 
+				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+				if (nx != 0 || ny != 0)
+				{
+					vx = 0;
+					vy = 0;
+					isOnStair = false; // kết thúc việc đang trên cầu thang
+					isWalking = false;
+					isWalkingOnStair = 0;
+				}
+			}
+
+			for (UINT i = 0; i < coEvents.size(); i++)
+				delete coEvents[i];
+
+			return; // ko cần xét tiếp
 		}
+
 	}
 
-	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++)
-		delete coEvents[i];
+
+
+
+	if (ny == -1) // đang đi lên
+	{
+		vector<LPGAMEOBJECT> listobj;
+		int CountCollisionTop = 0;
+		listobj.clear();
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (coObjects->at(i)->GetType() == eType::STAIR_DOWN) // nếu là object ở trên
+			{
+				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với top stair
+				{
+					CountCollisionTop++;
+					break;
+				}
+			}
+		}
+
+		if (CountCollisionTop > 0) // có va chạm với top, và nó đang đi lên
+		{
+
+			y = y - 50; // kéo simon lên cao, để tạo va chạm giả xuống mặt đất. tính thời gian tiếp đất
+			vy = 50; // vận tốc kéo xuống lớn
+			dy = vy * dt; // cập nhật lại dy
+
+
+			vector<LPCOLLISIONEVENT> coEvents;
+			vector<LPCOLLISIONEVENT> coEventsResult;
+			coEvents.clear();
+			vector<LPGAMEOBJECT> list_Brick;
+			list_Brick.clear();
+			for (UINT i = 0; i < coObjects->size(); i++)
+				if (coObjects->at(i)->GetType() == eType::BRICK)
+					list_Brick.push_back(coObjects->at(i));
+			CalcPotentialCollisions(&list_Brick, coEvents);
+			if (coEvents.size() == 0)
+			{
+				x += dx;
+				y += dy;
+			}
+			else
+			{
+				float min_tx, min_ty, nx = 0, ny;
+				float rdx = 0;
+				float rdy = 0;
+
+				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
+				if (nx != 0 || ny != 0)
+				{
+					vx = 0;
+					vy = 0;
+					isOnStair = false; // kết thúc việc đang trên cầu thang
+					isWalking = false;
+					isWalkingOnStair = 0;
+				}
+			}
+
+			for (UINT i = 0; i < coEvents.size(); i++)
+				delete coEvents[i];
+
+			return; // ko cần xét tiếp
+		}
+
+	}
+
+	// nếu không đụng up và down thì di chuyển bt
+	x += dx;
+	y += dy;
 }
