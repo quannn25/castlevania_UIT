@@ -71,7 +71,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (subWeapon != NULL)
 			{
-				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == 2);
+				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == 2 || 
+					animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->getCurrentFrame() == 2);
+				//DebugOut(L"ani = %d\n", animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame());
+				//DebugOut(L"aniiiiiiiiiiiiiiiiiii = %d\n", animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame());
 			}
 		}
 	}
@@ -112,8 +115,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = y + vy * 16;
 
 			vx = 0; vy = 0;
-
-
 
 			walkHeight = 0;
 
@@ -176,30 +177,54 @@ void Simon::Render()
 	if (isOnStair)
 	{
 
-		if (isWalking == true)
+		if (isAttacking == true)
 		{
-			if (isWalkingOnStair == 1) // nếu ở giai đoạn 1
+			if (ny == -1)
 			{
-				if (vy<0)
-					ani = SIMON_ANI_STAIR_UP_1;
-				else
-					ani = SIMON_ANI_STAIR_DOWN_1;
+				ani = SIMON_ANI_STAIR_UP_ATTACK;
+				int curFrame = animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame();
+				if (curFrame > 2 || curFrame < 0) 
+				{
+					animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+				}
 			}
-
-			if (isWalkingOnStair == 2) // nếu ở giai đoạn 2
+			else
 			{
-				if (vy<0)
-					ani = SIMON_ANI_STAIR_UP_2;
-				else
-					ani = SIMON_ANI_STAIR_DOWN_2;
+				ani = SIMON_ANI_STAIR_DOWN_ATTACK;
+				int curFrame = animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->getCurrentFrame();
+				if (curFrame > 2 || curFrame < 0)
+				{
+					animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+				}
 			}
 		}
 		else
 		{
-			if (this->ny == -1)
-				ani = SIMON_ANI_STAIR_UP_1;
+			if (isWalking == true)
+			{
+				if (isWalkingOnStair == 1) // nếu ở giai đoạn 1
+				{
+					if (vy<0)
+						ani = SIMON_ANI_STAIR_UP_1;
+					else
+						ani = SIMON_ANI_STAIR_DOWN_1;
+				}
+
+				if (isWalkingOnStair == 2) // nếu ở giai đoạn 2
+				{
+					if (vy<0)
+						ani = SIMON_ANI_STAIR_UP_2;
+					else
+						ani = SIMON_ANI_STAIR_DOWN_2;
+				}
+			}
 			else
-				ani = SIMON_ANI_STAIR_DOWN_1;
+			{
+				if (ny == -1)
+					ani = SIMON_ANI_STAIR_UP_1;
+				else
+					ani = SIMON_ANI_STAIR_DOWN_1;
+			}
 		}
 
 	}
@@ -452,6 +477,8 @@ void Simon::Attack(Weapon * w)
 
 	animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);// fix?
 	animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1);
+	animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->setCurrentFrame(-1);
+	animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->setCurrentFrame(-1);
 
 	isAttacking = true; // set trang thái tấn công
 	w->Create(this->x, this->y, this->nx); // set vị trí weapon theo simon

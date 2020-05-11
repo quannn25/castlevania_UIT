@@ -2,8 +2,8 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
-20	textures\castle\ground\2.png	255	0	255
-30	textures\castle\map\map1\1.png	255	0	255
+20	textures\castle\ground\2.1_Brick.png	255	0	255
+30	textures\castle\map\Scene1\1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
@@ -15,6 +15,8 @@
 102	textures\castle\other\1.png	255	0	255
 103	textures\castle\other\0.png	255	0	255
 104	textures\castle\item\2.png	255	0	255
+105	textures\castle\ground\1.png	255	0	255
+106	textures\castle\item\0.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -41,6 +43,20 @@
 10103	300	0	360	66	0
 10104	360	0	420	66	0
 10105	420	0	480	66	0
+#climbing
+10106	240	66	300	132	0
+10107	300	66	360	132	0
+10108	120	66	180	132	0
+10109	180	66	240	132	0
+#Stair_up_attack
+10110	300	132	360	198	0
+10111	360	132	420	198	0
+10112	420	132	480	198	0
+#Stair_down_attack
+10113	120	132	180	198	0
+10114	180	132	240	198	0
+10115	240	132	300	198	0
+
 
 #BRICK
 40001	0	0	32	32	20
@@ -101,6 +117,10 @@
 60001	0	0	32	64	40
 60002	32	0	64	64	40
 
+#CANDLE
+60003	0	0	16	32	105
+60004	16	0	32	32	105
+
 # morningStar
 70001	0	0	160	68	50
 70002	160	0	320	68	50
@@ -124,6 +144,9 @@
 
 #large_heart
 80001	0	0	24	20	60
+
+#SmallHeart
+80002	0	0	16	16	106
 
 #Dagger
 81000	0	0	32	18	100
@@ -162,12 +185,23 @@
 504	10100	100	10101	100	10102	100
 #stand_attack
 505	10103	100	10104	100	10105	100
+#Climbing
+506	10106	100
+507	10107	100
+508	10108	100
+509	10109	100
+#Stair_up_attack
+510	10110	100	10111	100	10112	100
+511	10113	100	10114	100	10115	100
 
 # ==== BRICK =========
 602	40001	100
 
 # === TORCH ====
 701	60001	100	60002	100
+
+#===CANDLE=====
+702	60003	100	60004	100
 
 # =======MorningStar======
 801	70001	90	70002	90	70003	90	70004	90
@@ -183,6 +217,9 @@
 
 #=======LARGEHEART===========
 901	80001	100
+
+#=======SMALLHEART===========
+902	80002	100
 
 #======FONT=======
 1000	51000	100
@@ -234,7 +271,9 @@
 1110	81000	100
 
 #========monney=========
-1111	81016	60	81017	60	81018	60
+1111	81016	100
+1112	81017	100
+1113	81018	100
 
 #=======Fire============
 1200	81010	100	81011	100	81012	100	81013	100
@@ -247,12 +286,15 @@
 # 
 [ANIMATION_SETS]
 # MARIO
-1	401	501	503	502	599	504	505
+1	401	501	503	502	599	504	505	506	507	508	509	510	511
 #  BRICK 
 22	602
 
 # TORCH
 33	701
+
+#CANDLE
+34	702
 
 # MORNINGSTAR
 44	801	802	803
@@ -282,7 +324,10 @@
 52	1201
 
 #Monney
-53	1111
+53	1111	1112	1113
+
+#SmallHeart
+54	902
 
 
 #====================[OBJECTS]===================================
@@ -369,4 +414,4 @@
 [TILEMAP]
 #TILEMAP
 # filepath	mapTXT
-textures\castle\map\map1\1.png	textures\castle\map\map1\1.txt
+textures\castle\map\Scene1\1.png	textures\castle\map\Scene1\1.txt
