@@ -506,14 +506,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 						simon->NxStair = obj->GetNx();
 
 						simon->SetNx(simon->NxStair); // hướng simon theo hướng thang
-
-						simon->isOnStair = 1;
-						simon->walkHeight = 0;
-						simon->SetPosition(obj->GetX() - 55, simon->GetY());
-
 						simon->ny = -1; // hướng lên
-
-						break;
+						simon->isOnStair = true;
+						simon->walkHeight = 0;
+						
+						if (simon->GetX() < obj->GetX())
+						{
+							simon->SetAutoGoX(1, obj->GetNx(), obj->GetX() - simon->GetX(), SIMON_WALKING_SPEED);
+						}
+						else
+							simon->SetAutoGoX(-1, obj->GetNx(), simon->GetX() - obj->GetX(), SIMON_WALKING_SPEED);
+						
+						return;
 					}
 				}
 			}
@@ -532,7 +536,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			}
 
 		}
-		else
+		else // DOWN
 		{
 			if (game->IsKeyDown(DIK_DOWN))
 			{
@@ -553,10 +557,16 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 								simon->isOnStair = true; // set trạng thái stair
 								simon->walkHeight = 0;
 
-								simon->SetPosition(obj->GetX() - 55, simon->GetY());
+								if (simon->GetX() < obj->GetX())
+								{
+									simon->SetAutoGoX(1, - obj->GetNx(), obj->GetX() - simon->GetX(), SIMON_WALKING_SPEED);
+									// hướng sau khi autogo phải là hướng của cầu thang:  gameobj->GetTrend()
+								}
+								else
+									simon->SetAutoGoX(-1, - obj->GetNx(), simon->GetX() - obj->GetX(), SIMON_WALKING_SPEED);
 
 								isCollitionDown++;
-								break;
+								return;
 							}
 						}
 					}

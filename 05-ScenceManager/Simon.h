@@ -11,7 +11,7 @@
 
 #define SIMON_GRAVITY 0.005f
 
-#define SIMON_WALKING_SPEED 0.45f 
+#define SIMON_WALKING_SPEED 0.15f 
 #define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
 
@@ -75,6 +75,7 @@ private:
 
 	bool isFreeze; // trạng thái đóng băng chóp chóp
 	DWORD TimeFreeze; // thời gian đã đóng băng
+	int NxAfterAuto; //Nx mong muốn sao khi auto
 
 public:
 	Weapon * mainWeapon;
@@ -105,8 +106,8 @@ public:
 	// thông số auto
 	float AutoGoX_Dx;
 	float AutoGoX_Speed;
-	float AutoGoX_TrendGo;
-	float AutoGoX_Backup_X;
+	float AutoGoX_NxGo;
+	float AutoGoX_Backup_X; // x trước khi auto
 
 	bool isAutoGoX = 0;
 
@@ -142,7 +143,7 @@ public:
 	void GoUpStair();
 	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
-	void SetAutoGoX(int NxAuto, int Dx, float Speed); // cài đặt auto và backup trạng thái hiện tại
+	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float Dx, float Speed); // cài đặt auto và backup trạng thái hiện tại
 	void RestoreBackupAutoGoX(); // khôi phục trạng thái trước khi auto
 
 };

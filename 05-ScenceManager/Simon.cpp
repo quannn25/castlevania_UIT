@@ -17,6 +17,11 @@ Simon::Simon() : CGameObject()
 	isAttacking = 0;
 	isWalkingOnStair = 0;
 	isOnStair = 0;
+	walkHeight = 0;
+
+	isAutoGoX = 0;
+	isFreeze = 0;
+	TimeFreeze = 0;
 
 	health = SIMON_DEFAULT_HEALTH;
 	live = SIMON_DEFAULT_HEARTCOLLECT;
@@ -145,6 +150,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		dy = vy * 16;
 	}
 
+	if (isAutoGoX == true) // fix vx = 0 khi autoGo
+	{
+		if (vx == 0)
+			vx = AutoGoX_Speed;
+	}
+
 	if (isOnStair == false)
 	{
 		CollisionWithBrick(coObjects); // check Collision and update x, y for simon
@@ -167,6 +178,16 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	mainWeapon->SetSpeed(vx, vy);
 	mainWeapon->UpdatePositionFitSimon();
 
+	if (isAutoGoX == true) // đang auto thì kt
+	{
+		if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Dx) // nếu đã đi đủ lớn hơn or bằng khoảng cần autoGo thì lùi lại khoảng dư
+		{
+			x = x - (abs(x - AutoGoX_Backup_X) - AutoGoX_Dx); // lùi lại
+
+			RestoreBackupAutoGoX(); // xong hết thì restore lại
+			isAutoGoX = false;
+		}
+	}
 }
 
 
@@ -177,8 +198,6 @@ void Simon::Render()
 	int ani = -1;
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE;
-
-	//======================================================================================================================
 
 	if (isOnStair)
 	{
@@ -453,7 +472,10 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0)
+		{
 			vx = 0;
+		}
+		
 		if (ny != 0)
 		{
 			vy = 0;
@@ -489,6 +511,8 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 void Simon::Attack(Weapon * w)
 {
 	if (isAttacking == true && dynamic_cast<MorningStar*>(w) != NULL)
+		return;
+	if (isWalkingOnStair != 0) // đang xử lý stair thì ko đánh
 		return;
 
 	animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);// fix?
@@ -569,6 +593,13 @@ bool Simon::LoseLife()
 
 	x = xBackup;
 	y = yBackup;
+
+	isAutoGoX = 0;
+
+	isOnStair = 0;
+	isWalkingOnStair = 0;
+	walkHeight = 0;
+	TimeFreeze = 0;
 
 	vx = 0; vy = 0;
 	SetState(SIMON_STATE_IDLE);
@@ -750,12 +781,12 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 	y += dy;
 }
 
-void Simon::SetAutoGoX(int NxAuto, int Dx, float Speed)
+void Simon::SetAutoGoX(int NxAuto,int NxAfterAuto1, float Dx, float Speed)
 {
 	if (isAutoGoX == true)
 		return;
 
-	isAutoGoX = true;// chưa vào chế độ autoGo thì set
+	isAutoGoX = true;// chưa vào chế độ auto thì set
 
 	AutoGoX_Backup_X = x;
 
@@ -771,7 +802,8 @@ void Simon::SetAutoGoX(int NxAuto, int Dx, float Speed)
 
 	AutoGoX_Dx = Dx;
 	AutoGoX_Speed = Speed;
-	AutoGoX_TrendGo = NxAuto;
+	AutoGoX_NxGo = NxAuto;
+	NxAfterAuto = NxAfterAuto1;
 
 	nx = NxAuto;
 	vx = Speed * NxAuto;
@@ -794,8 +826,12 @@ void Simon::RestoreBackupAutoGoX()
 	isWalkingOnStair = isWalkingOnStair_Backup;
 	NxStair = NxStair_Backup;
 	ny = ny_Backup;
+	nx = NxAfterAuto;
 
 
-	isAutoGoX = 0; // tắt trạng thái auto
+	// đứng yên hết
+	isAutoGoX = 0;
+	isWalking = 0;
+	vy = 0;
 	vx = 0;
 }
