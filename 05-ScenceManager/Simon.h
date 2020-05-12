@@ -49,7 +49,7 @@
 
 #define TIME_FREEZE_MAX 500
 
-#define SIMON_SPEED_ONSTAIR 0.05f
+#define SIMON_SPEED_ONSTAIR 0.09f
 
 
 
@@ -91,6 +91,25 @@ public:
 	int NxStair;
 	int ny; // -1 đi hướng lên
 
+	// backup trạng thái
+	bool isWalking_Backup;
+	bool isJumping_Backup;
+	bool isSitting_Backup;
+	bool isAttacking_Backup;
+
+	bool isOnStair_Backup;
+	int isWalkingOnStair_Backup;
+	int NxStair_Backup;
+	int ny_Backup;
+
+	// thông số auto
+	float AutoGoX_Dx;
+	float AutoGoX_Speed;
+	float AutoGoX_TrendGo;
+	float AutoGoX_Backup_X;
+
+	bool isAutoGoX = 0;
+
 public:
 	Simon();
 	~Simon();
@@ -122,6 +141,9 @@ public:
 
 	void GoUpStair();
 	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
+
+	void SetAutoGoX(int NxAuto, int Dx, float Speed); // cài đặt auto và backup trạng thái hiện tại
+	void RestoreBackupAutoGoX(); // khôi phục trạng thái trước khi auto
 
 };
 #endif

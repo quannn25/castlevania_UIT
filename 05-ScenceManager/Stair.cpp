@@ -7,7 +7,7 @@ Stair::Stair(float x1, float y1, int t1, int nx1)
 	x = x1;
 	y = y1;
 	width = 25;
-	height = 25;
+	height = 35;
 	t = t1;
 	if (t == 3) // test
 		width = 300;

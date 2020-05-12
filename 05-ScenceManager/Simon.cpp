@@ -16,6 +16,7 @@ Simon::Simon() : CGameObject()
 	isSitting = 0;
 	isAttacking = 0;
 	isWalkingOnStair = 0;
+	isOnStair = 0;
 
 	health = SIMON_DEFAULT_HEALTH;
 	live = SIMON_DEFAULT_HEARTCOLLECT;
@@ -98,6 +99,30 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (walkHeight >= 16.0f)
 			{
 				isWalkingOnStair++;
+
+				// di hon 16px
+				if (nx == 1 && ny == -1) // đi lên bên phải
+				{
+					x -= (walkHeight - 16.0f);
+					y += (walkHeight - 16.0f);
+				}
+				if (nx == -1 && ny == -1) // đi lên bên trái
+				{
+					x += (walkHeight - 16.0f);
+					y += (walkHeight - 16.0f);
+				}
+
+				if (nx == 1 && ny == 1) // đi xuống bên phải
+				{
+					x -= (walkHeight - 16.0f);
+					y -= (walkHeight - 16.0f);
+				}
+				if (nx == -1 && ny == 1) // đi xuống bên trái
+				{
+					x += (walkHeight - 16.0f);
+					y -= (walkHeight - 16.0f);
+				}
+
 				walkHeight = 0;
 
 			}
@@ -723,4 +748,54 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 	// nếu không đụng up và down thì di chuyển bt
 	x += dx;
 	y += dy;
+}
+
+void Simon::SetAutoGoX(int NxAuto, int Dx, float Speed)
+{
+	if (isAutoGoX == true)
+		return;
+
+	isAutoGoX = true;// chưa vào chế độ autoGo thì set
+
+	AutoGoX_Backup_X = x;
+
+	//Backup trạng thái
+	isWalking_Backup = isWalking;
+	isJumping_Backup = isJumping;
+	isSitting_Backup = isSitting;
+	isAttacking_Backup = isAttacking;
+	isOnStair_Backup = isOnStair;
+	isWalkingOnStair_Backup = isWalkingOnStair;
+	NxStair_Backup = NxStair;
+	ny_Backup = ny;
+
+	AutoGoX_Dx = Dx;
+	AutoGoX_Speed = Speed;
+	AutoGoX_TrendGo = NxAuto;
+
+	nx = NxAuto;
+	vx = Speed * NxAuto;
+	isWalking = 1;
+	isJumping = 0;
+	isSitting = 0;
+	isAttacking = 0;
+	isOnStair = 0;
+	isWalkingOnStair = 0;
+}
+
+void Simon::RestoreBackupAutoGoX()
+{
+
+	isWalking = isWalking_Backup;
+	isJumping = isJumping_Backup;
+	isSitting = isSitting_Backup;
+	isAttacking = isAttacking_Backup;
+	isOnStair = isOnStair_Backup;
+	isWalkingOnStair = isWalkingOnStair_Backup;
+	NxStair = NxStair_Backup;
+	ny = ny_Backup;
+
+
+	isAutoGoX = 0; // tắt trạng thái auto
+	vx = 0;
 }
