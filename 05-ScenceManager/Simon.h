@@ -104,12 +104,12 @@ public:
 	int ny_Backup;
 
 	// thông số auto
-	float AutoGoX_Dx;
-	float AutoGoX_Speed;
-	float AutoGoX_NxGo;
+	float xAuto;
+	float speedAuto;
+	int NxAuto;
 	float AutoGoX_Backup_X; // x trước khi auto
 
-	bool isAutoGoX = 0;
+	bool isAutoGoX;
 
 public:
 	Simon();
@@ -143,7 +143,7 @@ public:
 	void GoUpStair();
 	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
-	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float Dx, float Speed); // cài đặt auto và backup trạng thái hiện tại
+	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float xAuto1, float Speed); // cài đặt auto và backup trạng thái hiện tại
 	void RestoreBackupAutoGoX(); // khôi phục trạng thái trước khi auto
 
 };

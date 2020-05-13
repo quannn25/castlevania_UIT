@@ -152,8 +152,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isAutoGoX == true) // fix vx = 0 khi autoGo
 	{
-		if (vx == 0)
-			vx = AutoGoX_Speed;
+		if (vx != speedAuto * NxAuto)
+			vx = speedAuto * NxAuto;
 	}
 
 	if (isOnStair == false)
@@ -180,13 +180,26 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isAutoGoX == true) // đang auto thì kt
 	{
-		if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Dx) // nếu đã đi đủ lớn hơn or bằng khoảng cần autoGo thì lùi lại khoảng dư
+		if (NxAuto == -1)
 		{
-			x = x - (abs(x - AutoGoX_Backup_X) - AutoGoX_Dx); // lùi lại
-
-			RestoreBackupAutoGoX(); // xong hết thì restore lại
-			isAutoGoX = false;
+			if (x <= xAuto)
+			{
+				x = xAuto;
+				RestoreBackupAutoGoX(); // xong hết thì restore lại
+				isAutoGoX = false;
+			}
 		}
+
+		if (NxAuto == 1)
+		{
+			if (x >= xAuto)
+			{
+				x = xAuto;
+				RestoreBackupAutoGoX(); // xong hết thì restore lại
+				isAutoGoX = false;
+			}
+		}
+		
 	}
 }
 
@@ -781,7 +794,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 	y += dy;
 }
 
-void Simon::SetAutoGoX(int NxAuto,int NxAfterAuto1, float Dx, float Speed)
+void Simon::SetAutoGoX(int NxAuto1, int NxAfterAuto1, float xAuto1, float Speed)
 {
 	if (isAutoGoX == true)
 		return;
@@ -800,12 +813,12 @@ void Simon::SetAutoGoX(int NxAuto,int NxAfterAuto1, float Dx, float Speed)
 	NxStair_Backup = NxStair;
 	ny_Backup = ny;
 
-	AutoGoX_Dx = Dx;
-	AutoGoX_Speed = Speed;
-	AutoGoX_NxGo = NxAuto;
+	xAuto = xAuto1;
+	speedAuto = Speed;
+	NxAuto = NxAuto1;
 	NxAfterAuto = NxAfterAuto1;
 
-	nx = NxAuto;
+	nx = NxAuto1;
 	vx = Speed * NxAuto;
 	isWalking = 1;
 	isJumping = 0;

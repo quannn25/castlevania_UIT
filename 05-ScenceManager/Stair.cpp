@@ -6,7 +6,7 @@ Stair::Stair(float x1, float y1, int t1, int nx1)
 {
 	x = x1;
 	y = y1;
-	width = 25;
+	width = 90;
 	height = 35;
 	t = t1;
 	if (t == 3) // test
@@ -20,7 +20,7 @@ Stair::~Stair()
 
 void Stair::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
-	left = x - width;
+	left = x;
 	right = x + width;
 	top = y;
 	bottom = y + height;

@@ -454,6 +454,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		simon->SetState(SIMON_STATE_IDLE);
 		simon->SetPosition(50.0f, 0.0f);
 		simon->SetSpeed(0, 0);
+		simon->isWalking = 0;
+		simon->isOnStair = 0;
+		simon->isWalkingOnStair = 0;
+		simon->isAutoGoX = 0;
 		break;
 	case DIK_X:
 		simon->Attack(simon->mainWeapon);
@@ -512,10 +516,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 						
 						if (simon->GetX() < obj->GetX())
 						{
-							simon->SetAutoGoX(1, obj->GetNx(), obj->GetX() - simon->GetX(), SIMON_WALKING_SPEED);
+							simon->SetAutoGoX(1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 						}
 						else
-							simon->SetAutoGoX(-1, obj->GetNx(), simon->GetX() - obj->GetX(), SIMON_WALKING_SPEED);
+							simon->SetAutoGoX(-1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 						
 						return;
 					}
@@ -559,11 +563,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 								if (simon->GetX() < obj->GetX())
 								{
-									simon->SetAutoGoX(1, - obj->GetNx(), obj->GetX() - simon->GetX(), SIMON_WALKING_SPEED);
-									// hướng sau khi autogo phải là hướng của cầu thang:  gameobj->GetTrend()
+									simon->SetAutoGoX(1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 								}
 								else
-									simon->SetAutoGoX(-1, - obj->GetNx(), simon->GetX() - obj->GetX(), SIMON_WALKING_SPEED);
+									simon->SetAutoGoX(-1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 
 								isCollitionDown++;
 								return;
