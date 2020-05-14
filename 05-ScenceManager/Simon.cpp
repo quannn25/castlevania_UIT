@@ -445,7 +445,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	list_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i)->GetType() == eType::BRICK)
+		if (coObjects->at(i)->GetType() == eType::BRICK || coObjects->at(i)->GetType() == eType::PORTAL)
 			list_Brick.push_back(coObjects->at(i));
 	}
 
