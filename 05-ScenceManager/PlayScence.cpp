@@ -306,7 +306,7 @@ void CPlayScene::Update(DWORD dt)
 		if (player->GetLive() == 0) // xử lý...
 			return;
 		bool result = player->LoseLife();
-		if (result == true) // còn mạng để chơi tiếp, giảm mạng reset máu xong
+		if (result == true) // còn mạng để chơi tiếp
 		{
 			ResetResource(); // reset lại game
 		}
@@ -546,7 +546,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			{
 				if (simon->isOnStair == false) // chưa trên stair
 				{
-					int isCollitionDown = 0;
 					for (UINT i = 0; i < _coObjects.size(); i++)
 					{
 						if (_coObjects[i]->GetType() == eType::STAIR_DOWN)
@@ -568,22 +567,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 								else
 									simon->SetAutoGoX(-1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 
-								isCollitionDown++;
 								return;
 							}
 						}
 					}
 
-					if (isCollitionDown == 0) // ko đụng stair top, tức là ngồi bt
-					{
-						simon->SetState(SIMON_STATE_SITTING);
-						if (game->IsKeyDown(DIK_RIGHT))
-							simon->SetState(SIMON_STATE_RIGHT);
+					simon->SetState(SIMON_STATE_SITTING);
+					if (game->IsKeyDown(DIK_RIGHT))
+						simon->SetState(SIMON_STATE_RIGHT);
 
-						if (game->IsKeyDown(DIK_RIGHT))
-							simon->SetState(SIMON_STATE_LEFT);
-						return;
-					}
+					if (game->IsKeyDown(DIK_LEFT))
+						simon->SetState(SIMON_STATE_LEFT);
+					return;
 
 				}
 				else // đã trên stair
@@ -771,7 +766,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					break;
 				}
 				default:
-					DebugOut(L"[CheckCollisionSimonWithItem] ko xac nhan dc iTem!\n");
+					DebugOut(L"[CheckCollisionSimonWithItem] Loi nhat item\n");
 					break;
 				}
 
@@ -800,7 +795,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	return new Monney(x, y);
 }
 
-void CPlayScene::ResetResource() // ko dùng cách xóa các reSource đc...
+void CPlayScene::ResetResource()
 {
 	Unload();
 

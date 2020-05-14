@@ -89,7 +89,7 @@ public:
 	bool isOnStair;
 	int isWalkingOnStair;  // có 2 giai đoạn 
 	float walkHeight = 0;//
-	int NxStair;
+	int NxStair; // để đảo chiều leo lên xuống stair
 	int ny; // -1 đi hướng lên
 
 	// backup trạng thái
@@ -144,7 +144,7 @@ public:
 	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
 	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float xAuto1, float Speed); // cài đặt auto và backup trạng thái hiện tại
-	void RestoreBackupAutoGoX(); // khôi phục trạng thái trước khi auto
+	void RestoreAfterAutoGoX(); // khôi phục trạng thái
 
 };
 #endif

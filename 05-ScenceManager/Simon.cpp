@@ -185,7 +185,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (x <= xAuto)
 			{
 				x = xAuto;
-				RestoreBackupAutoGoX(); // xong hết thì restore lại
+				RestoreAfterAutoGoX(); // xong hết thì restore lại
 				isAutoGoX = false;
 			}
 		}
@@ -195,7 +195,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (x >= xAuto)
 			{
 				x = xAuto;
-				RestoreBackupAutoGoX(); // xong hết thì restore lại
+				RestoreAfterAutoGoX(); // xong hết thì restore lại
 				isAutoGoX = false;
 			}
 		}
@@ -828,7 +828,7 @@ void Simon::SetAutoGoX(int NxAuto1, int NxAfterAuto1, float xAuto1, float Speed)
 	isWalkingOnStair = 0;
 }
 
-void Simon::RestoreBackupAutoGoX()
+void Simon::RestoreAfterAutoGoX()
 {
 
 	isWalking = isWalking_Backup;

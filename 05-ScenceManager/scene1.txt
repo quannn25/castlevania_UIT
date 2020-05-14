@@ -3,7 +3,7 @@
 [TEXTURES]
 0	textures\castle\simon.png	255	0	255
 20	textures\castle\ground\2.1_Brick.png	255	0	255
-30	textures\castle\map\Scene2.1\2.1.png	255	0	255
+30	textures\castle\map\Scene3.2\3.2.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
 50	textures\castle\weapon\morningstar.png	255	0	255
 60	textures\castle\item\1.png	255	0	255
@@ -394,4 +394,4 @@
 [TILEMAP]
 #TILEMAP
 # filepath	mapTXT
-textures\castle\map\Scene2.1\2.1.png	textures\castle\map\Scene2.1\2.1.txt
+textures\castle\map\Scene3.2\3.2.png	textures\castle\map\Scene3.2\3.2.txt
