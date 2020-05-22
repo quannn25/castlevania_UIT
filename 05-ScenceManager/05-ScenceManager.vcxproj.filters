@@ -129,9 +129,6 @@
     <ClCompile Include="Torch.cpp">
       <Filter>Object\Ground</Filter>
     </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="PlayScence.cpp">
       <Filter>Framework\Scence</Filter>
     </ClCompile>
@@ -172,6 +169,9 @@
       <Filter>Object\Item</Filter>
     </ClCompile>
     <ClCompile Include="Stair.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
       <Filter>Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,9 +239,6 @@
     <ClInclude Include="Scence.h">
       <Filter>Framework\Scence</Filter>
     </ClInclude>
-    <ClInclude Include="Portal.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -291,6 +288,9 @@
       <Filter>Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="Stair.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
       <Filter>Object\Ground</Filter>
     </ClInclude>
   </ItemGroup>

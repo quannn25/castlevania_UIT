@@ -178,13 +178,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj->SetType(eType::STAIR_DOWN);
 		}
 		break;
-	case OBJECT_TYPE_STAIR_QUIT:
-		{
-		int nx1 = atof(tokens[6].c_str());
-		obj = new Stair(x, y, 3, nx1);
-		obj->SetType(eType::STAIR_QUIT);
-		}
-		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -282,7 +275,7 @@ void CPlayScene::Load()
 void CPlayScene::LoadResources()
 {
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
-	grid = new Grid(objects);// ko bao gom Simon // overlaod hco nay
+	grid = new Grid(objects);
 	boardGame = new Board(0, 0);
 
 	gameTime = GameTime::GetInstance();
@@ -468,6 +461,24 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 			simon->SetHeartCollected(simon->GetHeartCollected() - 1); // giảm 1 heart
 			simon->Attack(simon->subWeapon);
 		}
+		break;
+	case DIK_1:
+		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_2:
+		CGame::GetInstance()->SwitchScene(2);
+		break;
+	case DIK_3:
+		CGame::GetInstance()->SwitchScene(3);
+		break;
+	case DIK_4:
+		CGame::GetInstance()->SwitchScene(4);
+		break;
+	case DIK_5:
+		CGame::GetInstance()->SwitchScene(5);
+		break;
+	case DIK_6:
+		CGame::GetInstance()->SwitchScene(6);
 		break;
 	}
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);

@@ -41,15 +41,22 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 {
 	if (isSitting == true) // simon đang ngồi
 	{
-		left = x + 15;
-		top = y;
+		left = x + 16;
+		top = y + 5;
+		right = x + SIMON_BBOX_WIDTH - 12;
+		bottom = y + SIMON_BBOX_SITTING_HEIGHT - 3;
+	}
+	else if (isJumping == true)
+	{
+		left = x + 16;
+		top = y + 5;
 		right = x + SIMON_BBOX_WIDTH - 12;
 		bottom = y + SIMON_BBOX_SITTING_HEIGHT - 3;
 	}
 	else
 	{
-		left = x + 15;
-		top = y;
+		left = x + 16;
+		top = y + 5;
 		right = x + SIMON_BBOX_WIDTH - 12;
 		bottom = y + SIMON_BBOX_HEIGHT - 3;
 	}
@@ -485,12 +492,14 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0)
-		{
 			vx = 0;
-		}
 		
 		if (ny != 0)
 		{
+			if (isJumping == true) // nếu simon đang nhảy
+			{
+				y = y - 18; // kéo simon lên
+			}
 			vy = 0;
 			isJumping = false;
 		}
