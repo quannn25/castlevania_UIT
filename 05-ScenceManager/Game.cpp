@@ -87,18 +87,6 @@ void CGame::DrawFlipX(float x, float y, LPDIRECT3DTEXTURE9 texture, RECT r, int 
 	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, R, G, B));
 }
 
-void CGame::DrawWithColor(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top, int right, int bottom, int alpha, int R, int G, int B)
-{
-	Camera * cam = Camera::GetInstance();
-	D3DXVECTOR3 p(x - cam->Getx(), y - cam->Gety(), 0);
-	RECT r;
-	r.left = left;
-	r.top = top;
-	r.right = right;
-	r.bottom = bottom;
-	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha, R, G, B));
-}
-
 int CGame::IsKeyDown(int KeyCode)
 {
 	return (keyStates[KeyCode] & 0x80) > 0;

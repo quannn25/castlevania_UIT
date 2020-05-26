@@ -25,10 +25,6 @@ public:
 
 	void DrawWithRect(RECT rect, float x, float y, int alpha = 255);
 
-	void DrawRandomColor(int x, int y, int alpha = 255, bool isFlipX = false);
-	
-	void DrawRandomColorFlipX(int x, int y, int alpha = 255);
-
 	RECT GetRectFrame();
 };
 

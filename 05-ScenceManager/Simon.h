@@ -11,7 +11,7 @@
 
 #define SIMON_GRAVITY 0.005f
 
-#define SIMON_WALKING_SPEED 0.52f //0.12
+#define SIMON_WALKING_SPEED 0.42f //0.12
 #define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
 
@@ -41,6 +41,7 @@
 #define SIMON_ANI_STAIR_DOWN_2	10
 #define SIMON_ANI_STAIR_UP_ATTACK 11
 #define SIMON_ANI_STAIR_DOWN_ATTACK 12
+#define SIMON_ANI_FREEZE 13
 
 #define SIMON_UNTOUCHABLE_TIME 5000
 
@@ -140,7 +141,6 @@ public:
 	void SetFreeze(int f);
 	void UpdateFreeze(DWORD dt);
 
-	void GoUpStair();
 	void CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 
 	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float xAuto1, float Speed); // cài đặt auto và backup trạng thái hiện tại

@@ -20,7 +20,7 @@ void CAnimation::Add(int spriteId, DWORD time)
 }
 
 // NOTE: sometimes Animation object is NULL ??? HOW ??? 
-void CAnimation::Render(float x, float y, int alpha, bool isLeft, bool isFreeze)
+void CAnimation::Render(float x, float y, int alpha, bool isLeft)
 {
 
 	DWORD now = GetTickCount();
@@ -40,20 +40,11 @@ void CAnimation::Render(float x, float y, int alpha, bool isLeft, bool isFreeze)
 		}
 	}
 
-	if (isFreeze)
-	{
-		if (isLeft)
-			frames[currentFrame]->GetSprite()->DrawRandomColor(x, y, alpha);
-		else // neu ben phai thi sao, ham drawFlipX
-			frames[currentFrame]->GetSprite()->DrawRandomColorFlipX(x, y, alpha);
-	}
-	else
-	{
-		if (isLeft)
-			frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
-		else // neu ben phai thi sao, ham drawFlipX
-			frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
-	}
+	if (isLeft)
+		frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+	else // neu ben phai thi sao, ham drawFlipX
+		frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+
 }
 
 CAnimations * CAnimations::__instance = NULL;

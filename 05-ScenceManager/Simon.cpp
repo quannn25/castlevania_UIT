@@ -328,7 +328,10 @@ void Simon::Render()
 		}
 	}
 
-	
+	if (this->GetFreeze() == true)
+	{
+		ani = SIMON_ANI_FREEZE;
+	}
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -340,16 +343,10 @@ void Simon::Render()
 	//animation_set->at(ani)->Render(x, y, alpha, isLeft); // ani sẽ có tham số nx dùng để so sanh chiều trái phải của hành động
 	//// hàm Render() sẽ làm thêm 1 tham số chiều trái phải
 
-	if (this->GetFreeze() == true)
-	{
-		animation_set->at(ani)->Render(x, y, alpha, isLeft, true);
-	}
-	else
-	{
-		animation_set->at(ani)->Render(x, y, alpha, isLeft);
-	}
+	animation_set->at(ani)->Render(x, y, alpha, isLeft);
 
 	RenderBoundingBox();
+
 	// render weapon
 	if (mainWeapon->GetFinish() == false)
 		mainWeapon->Render();
@@ -654,16 +651,6 @@ void Simon::UpdateFreeze(DWORD dt)
 	}
 	else
 		TimeFreeze += dt;
-}
-
-
-
-void Simon::GoUpStair()
-{
-	isOnStair = true;
-	vx = nx * 0.5f;
-	vy = -1 * 0.5f;
-
 }
 
 
