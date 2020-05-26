@@ -18,6 +18,7 @@
 104	textures\castle\item\2.png	255	0	255
 105	textures\castle\ground\1.png	255	0	255
 106	textures\castle\item\0.png	255	0	255
+107	textures\castle\enemy\BlackKnight.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -168,6 +169,11 @@
 81017	30	0	60	30	104
 81018	60	0	90	30	104
 
+#Black Knight
+81020	0	0	32	64	107
+81021	32	0	64	64	107
+81022	64	0	96	64	107
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -284,6 +290,9 @@
 #=======Hit=============
 1201	81014	100	81015	100
 
+#=======Black Knight=========
+1210	81020	100	81021	100	81022	100
+
 #====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
@@ -333,6 +342,8 @@
 #SmallHeart
 54	902
 
+#Black Knight
+55	1210
 
 #====================[OBJECTS]===================================
 [OBJECTS]
@@ -340,7 +351,7 @@
 
 #id: simon 0, portal 1, 2 <= brick < 1000, 1000 <= torch < 1200, 1200 <= ghost < 1300...
 
-# type: 0 = Mario , 1 = Brick, 2 = torch, candle = 3, 4 = stair, 50 = portal,
+# type: 0 = Mario , 1 = Brick, 2 = torch, candle = 3, 4 = stair, 50 = portal, Black Knight = 5
 
 # MARIO
 0	17	300	1	0
@@ -423,6 +434,9 @@
 1	0	304	22	3
 1	32	304	22	3
 
+
+#Black Knight
+5	0	200	55	15
 
 
 

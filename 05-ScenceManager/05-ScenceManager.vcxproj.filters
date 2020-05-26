@@ -55,6 +55,9 @@
     <Filter Include="Framework\Effect">
       <UniqueIdentifier>{9c731da9-fb7e-4bb6-b120-244acc25f62a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Enemy">
+      <UniqueIdentifier>{d2af71ee-f18c-4a75-8985-e4e1a19fb465}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goomba.cpp">
@@ -174,6 +177,12 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Object\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackKnight.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -292,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackKnight.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

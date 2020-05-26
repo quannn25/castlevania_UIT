@@ -169,14 +169,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_STAIR:
 		{
-		int t = atof(tokens[5].c_str()); //	1 up 2 down
-		int nx1 = atof(tokens[6].c_str());
-		obj = new Stair(x, y, t, nx1);
-		if (t == 1)
-			obj->SetType(eType::STAIR_UP);
-		else
-			obj->SetType(eType::STAIR_DOWN);
+			int t = atof(tokens[5].c_str()); //	1 up 2 down
+				int nx1 = atof(tokens[6].c_str());
+			obj = new Stair(x, y, t, nx1);
+			if (t == 1)
+				obj->SetType(eType::STAIR_UP);
+			else
+				obj->SetType(eType::STAIR_DOWN);
 		}
+		break;
+	case OBJECT_TYPE_BLACKKNIGHT:
+	{
+		obj = new BlackKnight();
+		obj->SetType(eType::BLACKKNIGHT);
+
+		obj->SetPosition(x, y);
+		obj->SetId(id);
+
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+
+		listEnemy.push_back((Enemy*)obj);
+		return;
+	}
 		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -341,6 +356,11 @@ void CPlayScene::Update(DWORD dt)
 			listEffect[i]->Update();
 	}
 
+	for (UINT i = 0; i < listEnemy.size(); i++)
+	{
+		listEnemy[i]->Update(dt);
+	}
+
 	CheckCollision();
 
 	// Update camera to follow mario
@@ -376,6 +396,12 @@ void CPlayScene::Render()
 	{
 		if (listEffect[i]->GetFinish() == false)
 			listEffect[i]->Render();
+	}
+
+	for (UINT i = 0; i < listEnemy.size(); i++)
+	{
+		if (listEnemy[i]->GetHealth() > 0)
+			listEnemy[i]->Render();
 	}
 
 	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
@@ -858,4 +884,19 @@ void CPlayScene::LoadAgain()
 	LoadResources();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+bool CPlayScene::isOncam(float x1, float y1, float w1, float h1)
+{
+	float xCam = Camera::GetInstance()->Getx();
+	float yCam = Camera::GetInstance()->Gety();
+	float wCam = Camera::GetInstance()->GetScreenWidth();
+	float hCam = Camera::GetInstance()->GetScreenHeight();
+
+	if (x1 + w1 < xCam || xCam + wCam < x1)
+		return false;
+	if (y1 + h1 < yCam || yCam + hCam < y1)
+		return false;
+
+	return true;
 }

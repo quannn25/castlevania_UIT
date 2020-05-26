@@ -80,6 +80,8 @@ public:
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	float GetX() { return x; }
 	float GetY() { return y; }
+	float GetVx() { return vx; }
+	float GetVy() { return vy; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }

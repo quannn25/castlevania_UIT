@@ -31,6 +31,7 @@ using namespace std;
 #define OBJECT_TYPE_TORCH	2
 #define OBJECT_TYPE_CANDLE	3
 #define OBJECT_TYPE_STAIR	4
+#define OBJECT_TYPE_BLACKKNIGHT 5
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
@@ -92,7 +93,9 @@ enum eType
 
 	STAIR_UP = 61,
 
-	STAIR_DOWN = 62
+	STAIR_DOWN = 62,
+
+	BLACKKNIGHT = 63
 
 };
 

@@ -19,6 +19,7 @@
 #include "Monney.h"
 #include "SmallHeart.h"
 #include "Stair.h"
+#include "BlackKnight.h"
 
 class CPlayScene: public CScene
 {
@@ -40,6 +41,8 @@ protected:
 
 	GameTime * gameTime; //unload()??? hay truyền
 
+	vector <Enemy*> listEnemy;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -59,6 +62,8 @@ public:
 	void CheckCollision();
 	void CheckCollisionWeapon();
 	void CheckCollisionSimonWithItem();
+
+	bool isOncam(float x1, float y1, float w1, float h1);
 
 	void ResetResource(); // reset lai resource khi simon mất 1 mạng
 
