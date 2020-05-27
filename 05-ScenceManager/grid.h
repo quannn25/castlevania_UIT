@@ -13,8 +13,8 @@
 
 using namespace std;
 
-#define GRID_CELL_WIDTH 256
-#define GRID_CELL_HEIGHT 224
+#define GRID_CELL_WIDTH 96 //256
+#define GRID_CELL_HEIGHT 96 //224
 
 
 
@@ -25,7 +25,7 @@ private:
 public:
 	void GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera);
 
-	void ResetTake(vector<LPGAMEOBJECT>& ListObj);
+	void ResetOnCam(vector<LPGAMEOBJECT>& ListObj);
 
 	void Insert(LPGAMEOBJECT obj, float x, float y, float w, float h); //Thêm object vào grid
 

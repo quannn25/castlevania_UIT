@@ -17,7 +17,7 @@ void Grid::LoadGrid(vector<LPGAMEOBJECT> ListObj)// list tá»•ng playScence, trá»
 	for (size_t i = 1; i < ListObj.size(); i++)
 	{
 		ListObj[i]->GetBoundingBox(l, t, r, b);
-		Insert(ListObj[i], l, t, r, b);
+		Insert(ListObj[i], l, t, r - l, b - t);
 	}
 }
 
@@ -28,10 +28,11 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 	int rowBottom = floor((camera->Gety() + camera->GetScreenHeight()) / (float)GRID_CELL_HEIGHT);
 	int rowTop = floor((camera->Gety()) / (float)GRID_CELL_HEIGHT);
 
-	int colLeft = floor((camera->Getx()) / (float)GRID_CELL_WIDTH);// fun -5??
+	int colLeft = floor((camera->Getx()) / (float)GRID_CELL_WIDTH);
 	int colRight = floor((camera->Getx() + camera->GetScreenWidth()) / (float)GRID_CELL_WIDTH);
 
-
+	//DebugOut(L"[Grid] left on Camera = %d\n", colLeft);
+	//DebugOut(L"[Grid] right on Camera = %d\n", colRight);
 	for (int row = rowTop; row <= rowBottom; row++)
 	{
 		for (int col = colLeft; col <= colRight; col++)
@@ -54,7 +55,7 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
 
 
 
-void Grid::ResetTake(vector<LPGAMEOBJECT>& ListObj) // list obj bao gom simon, but ko duyet qua simon
+void Grid::ResetOnCam(vector<LPGAMEOBJECT>& ListObj) // list obj bao gom simon, but ko duyet qua simon
 {
 	for (UINT i = 1; i < ListObj.size(); i++) // i = 0 = Simon
 	{

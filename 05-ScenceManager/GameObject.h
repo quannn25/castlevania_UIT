@@ -120,7 +120,7 @@ public:
 	void SetType(eType t) { this->type = t; }
 	eType GetType() { return type; }
 	bool GetOnCam() { return onCam; }
-	void SetOnCam(int a) { onCam = a; }
+	void SetOnCam(bool a) { onCam = a; }
 
 
 	~CGameObject();
