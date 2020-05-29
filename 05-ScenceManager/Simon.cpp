@@ -165,6 +165,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isOnStair == false)
 	{
+		
 		CollisionWithBrick(coObjects); // check Collision and update x, y for simon
 	}
 	else
@@ -659,8 +660,6 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 	if (ny == 1) // đang đi xuống
 	{
 		int CountCollisionBottom = 0;
-		vector<LPGAMEOBJECT> listobj;
-		listobj.clear();
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
 			if (coObjects->at(i)->GetType() == eType::STAIR_UP) // nếu là object ở dưới
@@ -721,9 +720,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 
 	if (ny == -1) // đang đi lên
 	{
-		vector<LPGAMEOBJECT> listobj;
 		int CountCollisionTop = 0;
-		listobj.clear();
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
 			if (coObjects->at(i)->GetType() == eType::STAIR_DOWN) // nếu là object ở trên
@@ -739,7 +736,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 		if (CountCollisionTop > 0) // có va chạm với top, và nó đang đi lên
 		{
 
-			y = y - 50; // kéo simon lên cao, để tạo va chạm giả xuống mặt đất. tính thời gian tiếp đất
+			y = y - 50; // kéo simon lên cao, để tạo va chạm giả xuống mặt đất
 			vy = 50; // vận tốc kéo xuống lớn
 			dy = vy * dt; // cập nhật lại dy
 

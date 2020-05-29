@@ -617,7 +617,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 									simon->SetAutoGoX(1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 								}
 								else
-									simon->SetAutoGoX(-1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
+								{
+									simon->SetAutoGoX(-1, -obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
+								}
 
 								return;
 							}
