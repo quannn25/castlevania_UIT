@@ -12,6 +12,7 @@ class MorningStar : public Weapon
 {
 protected:
 	int level;
+	DWORD timeAttack;
 public:
 	MorningStar();
 	~MorningStar();

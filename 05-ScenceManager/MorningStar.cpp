@@ -27,42 +27,18 @@ MorningStar::~MorningStar()
 {
 }
 
-void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects) // sẽ chạy cùng simonUpdate để đảm bảo dt
+void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	this->dt = dt;
 	this->dx = vx * dt;
 	this->dy = vy * dt;
+
+	this->timeAttack += dt;
 	
-	// thời gian update rồi tới render sẽ mất thêm đoạn dt, nên render sai thời gian thực??
-	// mang dt vào render luôn??
-	int curFrame = animation_set->at(0)->getCurrentFrame();
-	int curFrame1 = animation_set->at(1)->getCurrentFrame();
-	int curFrame2 = animation_set->at(2)->getCurrentFrame();
-	if ((curFrame == 3 && level == 0) || (curFrame1 == 3 && level == 1) || (curFrame2 == 3 && level == 2))
+
+	if (timeAttack >= 300) // chưa đủ vẽ hết frame cuối?
 	{
 		isFinish = true;
-	}
-
-	switch (level)
-	{
-	case 0:
-		if (curFrame >= 3) // tới frame 3 thì quay lại 0
-		{
-			animation_set->at(0)->setCurrentFrame(-1);
-		}
-		break;
-	case 1:
-		if (curFrame1 >= 3) // tới frame 3 thì quay lại 0
-		{
-			animation_set->at(1)->setCurrentFrame(-1);
-		}
-		break;
-	case 2:
-		if (curFrame2 >= 3) // tới frame 3 thì quay lại 0
-		{
-			animation_set->at(2)->setCurrentFrame(-1);
-		}
-		break;
 	}
 }
 
@@ -71,6 +47,8 @@ void MorningStar::Create(float simonX, float simonY, int simonNx)
 	Weapon::Create(simonX, simonY, simonNx);
 
 	UpdatePositionFitSimon();
+
+	timeAttack = 0;
 
 	switch (level)
 	{

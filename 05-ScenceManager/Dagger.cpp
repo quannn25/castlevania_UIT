@@ -24,6 +24,11 @@ void Dagger::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	x += dx;
+
+	if (x - Camera::GetInstance()->Getx() + DAGGER_FRAMEWIDTH < 0 || x - Camera::GetInstance()->Getx() > Camera::GetInstance()->GetScreenWidth())
+	{
+		isFinish = true;
+	}
 }
 
 void Dagger::Create(float simonX, float simonY, int simonNx)
@@ -52,11 +57,6 @@ bool Dagger::isCollision(LPGAMEOBJECT obj)
 
 void Dagger::Render()
 {
-	if (x - Camera::GetInstance()->Getx() + DAGGER_FRAMEWIDTH < 0 || x - Camera::GetInstance()->Getx() > Camera::GetInstance()->GetScreenWidth())
-	{
-		isFinish = true;
-		return;
-	}
 	Weapon::Render();
 }
 

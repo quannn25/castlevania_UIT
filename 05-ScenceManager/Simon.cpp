@@ -530,8 +530,11 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 void Simon::Attack(Weapon * w)
 {
-	if (isAttacking == true && dynamic_cast<MorningStar*>(w) != NULL)
+	if (isAttacking == true)// && dynamic_cast<MorningStar*>(w) != NULL)
+	{
+		//DebugOut(L"[weapon] return");
 		return;
+	}
 	if (isWalkingOnStair != 0) // đang xử lý stair thì ko đánh
 		return;
 

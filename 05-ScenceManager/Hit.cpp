@@ -17,6 +17,6 @@ Hit::~Hit()
 
 void Hit::Update()
 {
-	if (animation_set->at(0)->getCurrentFrame() == 1) // nếu là frame cuối thì xong, frame cuối trống
+	if (animation_set->at(0)->getCurrentFrame() == 1) // nếu là frame cuối thì xong
 		isFinish = true;
 }

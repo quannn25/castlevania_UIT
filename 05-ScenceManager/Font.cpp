@@ -22,7 +22,7 @@ void Font::Draw(float x, float y, string s)
 			continue;
 		if (s[i] >= 'A' && s[i] <= 'Z')
 		{
-			a = s[i] - 'A'; // vd A = 95, C = 97, sC - 'A' = 2 thì chọn thứ tự là 2 trong ani_set chính là C
+			a = s[i] - 'A'; //  A = 95, C = 97, sC - 'A' = 2 thì chọn thứ tự là 2 trong ani_set chính là C
 		}
 		else
 			if (s[i] >= '0' && s[i] <= '9')

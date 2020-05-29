@@ -76,7 +76,7 @@ private:
 
 	bool isFreeze; // trạng thái đóng băng chóp chóp
 	DWORD TimeFreeze; // thời gian đã đóng băng
-	int NxAfterAuto; //Nx mong muốn sao khi auto
+
 
 public:
 	Weapon * mainWeapon;
@@ -111,6 +111,7 @@ public:
 	float AutoGoX_Backup_X; // x trước khi auto
 
 	bool isAutoGoX;
+	int NxAfterAuto; //Nx mong muốn sao khi auto
 
 public:
 	Simon();
