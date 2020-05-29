@@ -90,12 +90,12 @@ void MorningStar::UpdatePositionFitSimon()
 {
 	if (nx < 0)
 	{
-		this->x = x - 65;
+		this->x = x - 88; // -160 +48tay +24roi
 
 	}
 	else
 	{
-		this->x = x - 30;
+		this->x = x - 40;// -24roi -16tay
 	}
 }
 

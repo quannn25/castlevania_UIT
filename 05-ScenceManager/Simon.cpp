@@ -41,24 +41,24 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 {
 	if (isSitting == true) // simon đang ngồi
 	{
-		left = x + 16;
-		top = y + 5;
-		right = x + SIMON_BBOX_WIDTH - 12;
-		bottom = y + SIMON_BBOX_SITTING_HEIGHT - 3;
+		left = x;
+		top = y;
+		right = x + SIMON_BBOX_WIDTH;
+		bottom = y + SIMON_BBOX_SITTING_HEIGHT;
 	}
 	else if (isJumping == true)
 	{
-		left = x + 16;
-		top = y + 5;
-		right = x + SIMON_BBOX_WIDTH - 12;
-		bottom = y + SIMON_BBOX_SITTING_HEIGHT - 3;
+		left = x;
+		top = y;
+		right = x + SIMON_BBOX_WIDTH;
+		bottom = y + SIMON_BBOX_SITTING_HEIGHT;
 	}
 	else
 	{
-		left = x + 16;
-		top = y + 5;
-		right = x + SIMON_BBOX_WIDTH - 12;
-		bottom = y + SIMON_BBOX_HEIGHT - 3;
+		left = x;
+		top = y;
+		right = x + SIMON_BBOX_WIDTH;
+		bottom = y + SIMON_BBOX_HEIGHT;
 	}
 
 }
