@@ -49,6 +49,12 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	int r = atoi(tokens[3].c_str());
 	int b = atoi(tokens[4].c_str());
 	int texID = atoi(tokens[5].c_str());
+	int x_draw;
+
+	if (tokens.size() > 6)
+		x_draw = atoi(tokens[6].c_str());
+	else
+		x_draw = 0;
 
 	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(texID);
 	if (tex == NULL)
@@ -57,7 +63,7 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 		return; 
 	}
 
-	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+	CSprites::GetInstance()->Add(ID, l, t, r, b, tex, x_draw);
 }
 
 void CPlayScene::_ParseSection_ANIMATIONS(string line)
@@ -334,7 +340,7 @@ void CPlayScene::Update(DWORD dt)
 	
 	grid->ResetOnCam(objects); // set lai trang thai onCam
 	
-	grid->GetListObject(coObjects, Camera::GetInstance()); // lay listObj onCam
+	grid->GetListObject(coObjects); // lay listObj onCam
 	//DebugOut(L"[Grid] Object on Camera = %d\n", coObjects.size());
 
 	player->Update(dt, &coObjects);
@@ -447,6 +453,9 @@ void CPlayScene::Unload()
 
 	listEffect.clear();
 
+	for (int i = 0; i < listEnemy.size(); i++)
+		delete listEnemy[i];
+	listEnemy.clear();
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
@@ -526,7 +535,13 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (simon->isJumping && simon->isWalking)
+	{
+		/*if(simon->GetNx() > 0) // tiến vào sát gạch cao nhảy ko dc // mở ra dính lỗi nhảy lên tường
+			simon->SetState(SIMON_STATE_WALKING_RIGHT);
+		else
+			simon->SetState(SIMON_STATE_WALKING_LEFT);*/
 		return;
+	}
 	// disable control key when Mario die 
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 

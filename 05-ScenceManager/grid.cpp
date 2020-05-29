@@ -21,15 +21,15 @@ void Grid::LoadGrid(vector<LPGAMEOBJECT> ListObj)// list tá»•ng playScence, trá»
 	}
 }
 
-void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera)
+void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj)
 {
 	ListObj.clear(); // clear list
 
-	int rowBottom = floor((camera->Gety() + camera->GetScreenHeight()) / (float)GRID_CELL_HEIGHT);
-	int rowTop = floor((camera->Gety()) / (float)GRID_CELL_HEIGHT);
+	int rowBottom = floor((Camera::GetInstance()->Gety() + Camera::GetInstance()->GetScreenHeight()) / (float)GRID_CELL_HEIGHT);
+	int rowTop = floor((Camera::GetInstance()->Gety()) / (float)GRID_CELL_HEIGHT);
 
-	int colLeft = floor((camera->Getx()) / (float)GRID_CELL_WIDTH);
-	int colRight = floor((camera->Getx() + camera->GetScreenWidth()) / (float)GRID_CELL_WIDTH);
+	int colLeft = floor((Camera::GetInstance()->Getx()) / (float)GRID_CELL_WIDTH);
+	int colRight = floor((Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth()) / (float)GRID_CELL_WIDTH);
 
 	//DebugOut(L"[Grid] left on Camera = %d\n", colLeft);
 	//DebugOut(L"[Grid] right on Camera = %d\n", colRight);

@@ -35,10 +35,9 @@ void CGame::Init(HWND hWnd)
 	d3dpp.BackBufferHeight = r.bottom + 1;
 	d3dpp.BackBufferWidth = r.right + 1;
 
-	Camera::GetInstance()->SetScreenHeight(r.bottom + 1);
-	Camera::GetInstance()->SetScreenWidth(r.right + 1);// thay 2 dong duoi
-	//screen_height = r.bottom + 1;
-	//screen_width = r.right + 1;
+	Camera::GetInstance()->SetScreenHeight(r.bottom);
+	Camera::GetInstance()->SetScreenWidth(r.right);
+	//Camera::GetInstance()->SetScreenWidth(r.right + 1);
 
 	d3d->CreateDevice(
 		D3DADAPTER_DEFAULT,

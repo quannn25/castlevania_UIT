@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Utils.h"
 
-CSprite::CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
+CSprite::CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex, int x_draw)
 {
 	this->id = id;
 	this->left = left;
@@ -10,6 +10,7 @@ CSprite::CSprite(int id, int left, int top, int right, int bottom, LPDIRECT3DTEX
 	this->right = right;
 	this->bottom = bottom;
 	this->texture = tex;
+	this->x_draw = x_draw;
 
 	spriteHandler = CGame::GetInstance()->GetSpriteHandler();
 
@@ -63,9 +64,14 @@ RECT CSprite::GetRectFrame()
 	return res;
 }
 
-void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
+int CSprite::GetXDraw()
 {
-	LPSPRITE s = new CSprite(id, left, top, right, bottom, tex);
+	return x_draw;
+}
+
+void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex, int x_draw)
+{
+	LPSPRITE s = new CSprite(id, left, top, right, bottom, tex, x_draw);
 	sprites[id] = s;
 
 	DebugOut(L"[INFO] sprite added: %d, %d, %d, %d, %d \n", id, left, top, right, bottom);

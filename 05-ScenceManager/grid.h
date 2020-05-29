@@ -23,7 +23,7 @@ class Grid
 private:
 	vector<LPGAMEOBJECT> cells[500][500];
 public:
-	void GetListObject(vector<LPGAMEOBJECT>& ListObj, Camera * camera);
+	void GetListObject(vector<LPGAMEOBJECT>& ListObj);
 
 	void ResetOnCam(vector<LPGAMEOBJECT>& ListObj);
 

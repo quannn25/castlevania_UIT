@@ -41,9 +41,25 @@ void CAnimation::Render(float x, float y, int alpha, bool isLeft)
 	}
 
 	if (isLeft)
-		frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
-	else // neu ben phai thi sao, ham drawFlipX
-		frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+	{
+		if (frames[currentFrame]->GetSprite()->GetXDraw() < 0)
+		{
+			x += (float)frames[currentFrame]->GetSprite()->GetXDraw();
+			frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+		}
+		else 
+			frames[currentFrame]->GetSprite()->Draw(x, y, alpha);
+	}
+	else
+	{
+		if (frames[currentFrame]->GetSprite()->GetXDraw() > 0)
+		{
+			x -= (float)frames[currentFrame]->GetSprite()->GetXDraw();
+			frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+		}
+		else
+			frames[currentFrame]->GetSprite()->DrawFlipX(x, y, alpha);
+	}
 
 }
 
