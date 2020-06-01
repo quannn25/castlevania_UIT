@@ -2,6 +2,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\castle\simon_sprite.png	255	0	255
+1	textures\castle\color.png	255	0	255
 20	textures\castle\ground\2.1_Brick.png	255	0	255
 21	textures\castle\ground\Brick2.1.png	255	0	255
 30	textures\castle\map\Scene2.1\2.1.png	255	0	255
@@ -189,8 +190,6 @@
 502	10051	100
 # sit left
 503	10041	100
-#die
-599	10099	100
 #sit_attack
 504	10100	100	10101	100	10102	100
 #stand_attack
@@ -203,6 +202,11 @@
 #Stair_up_attack
 510	10110	100	10111	100	10112	100
 511	10113	100	10114	100	10115	100
+
+#Freeze
+520	10120	100	10121	100	10122	100	10123	100
+#die
+599	10099	100
 
 # ==== BRICK =========
 602	40001	100
@@ -300,7 +304,7 @@
 # 
 [ANIMATION_SETS]
 # MARIO
-1	401	501	503	502	599	504	505	506	507	508	509	510	511
+1	401	501	503	502	599	504	505	506	507	508	509	510	511	520
 #  BRICK 
 22	602
 23	603

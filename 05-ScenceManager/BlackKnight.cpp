@@ -5,7 +5,7 @@
 BlackKnight::BlackKnight(int nx1)
 {
 	this->nx = nx1;
-	health = 1; // sét máu
+	health = 1; // set máu
 	vx = BLACKKNIGHT_SPEED * this->nx;
 }
 

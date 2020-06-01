@@ -32,6 +32,7 @@ using namespace std;
 #define OBJECT_TYPE_CANDLE	3
 #define OBJECT_TYPE_STAIR	4
 #define OBJECT_TYPE_BLACKKNIGHT 5
+#define OBJECT_TYPE_ZOMBIEZONE 7
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
@@ -47,6 +48,9 @@ using namespace std;
 #define HITEFFECT_ANI_SET_ID 52
 #define	MONNEY_ANI_SET_ID 53
 #define SMALLHEART_ANI_SET_ID 54
+#define ZOMBIE_ANI_SET_ID 56
+
+#define TIME_CREATE_GHOST 1000
 
 extern int Window_Width;
 extern int Window_Height;
@@ -95,7 +99,11 @@ enum eType
 
 	STAIR_DOWN = 62,
 
-	BLACKKNIGHT = 63
+	BLACKKNIGHT = 63,
+
+	ZOMBIE = 64,
+
+	ZOMBIEZONE = 65
 
 };
 

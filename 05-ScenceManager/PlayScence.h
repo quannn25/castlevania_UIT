@@ -20,6 +20,8 @@
 #include "SmallHeart.h"
 #include "Stair.h"
 #include "BlackKnight.h"
+#include "Zombie.h"
+#include "ZombieZone.h"
 
 class CPlayScene: public CScene
 {
@@ -27,7 +29,7 @@ protected:
 	Simon *player;					// A play scene has to have player, right? 
 	
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> coObjects; // unLoad() ko cần delete
+	vector<LPGAMEOBJECT> coObjects; // các obj trong vùng camera
 
 	Map *tileMap;
 
@@ -42,6 +44,9 @@ protected:
 	GameTime * gameTime; //unload()??? hay truyền
 
 	vector <Enemy*> listEnemy;
+
+	DWORD TimeZombie; // thoi gian tao zombie vừa rồi
+	vector <ZombieZone*> listZombieZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -68,6 +73,10 @@ public:
 	void ResetResource(); // reset lai resource khi simon mất 1 mạng
 
 	Item * GetNewItem(int id, eType type, float x, float y);
+
+	void CreateZombie();
+
+	void updateEnemy(DWORD dt);
 
 	friend class CPlayScenceKeyHandler;
 };

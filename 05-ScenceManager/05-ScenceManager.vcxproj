@@ -139,6 +139,7 @@
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="Hit.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -165,6 +166,8 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="ZombieZone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="Hit.h" />
     <ClInclude Include="Item.h" />
@@ -208,6 +212,8 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="ZombieZone.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -199,6 +199,34 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 		break;
+	case OBJECT_TYPE_ZOMBIEZONE:
+	{
+		if (tokens.size() < 11)
+		{
+			DebugOut(L"[ERROR] ZombieZone not found!\n");
+			return;
+		}
+
+		float l1 = atof(tokens[1].c_str());
+		float t1 = atof(tokens[2].c_str());
+		float r1 = atof(tokens[3].c_str());
+		float b1 = atof(tokens[4].c_str());
+
+		float xZom1 = atof(tokens[5].c_str());
+		float yZom1 = atof(tokens[6].c_str());
+		float xZom2 = atof(tokens[7].c_str());
+		float yZom2= atof(tokens[8].c_str());
+
+		int time = atof(tokens[9].c_str());
+		int count = atof(tokens[10].c_str());
+
+		ZombieZone *z = new ZombieZone(l1, t1, r1, b1, xZom1, yZom1, xZom2, yZom2, time, count);
+		
+		listZombieZone.push_back(z);
+
+		return;
+	}
+		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -304,6 +332,8 @@ void CPlayScene::LoadResources()
 
 	player->SetPositionBackup(SIMON_POSITION_DEFAULT);
 
+	TimeZombie = 0;
+
 	listItem.clear();
 	listEffect.clear();
 }
@@ -367,6 +397,10 @@ void CPlayScene::Update(DWORD dt)
 		listEnemy[i]->Update(dt);
 	}
 
+	updateEnemy(dt);
+
+	CreateZombie();
+
 	CheckCollision();
 
 	// Update camera to follow mario
@@ -408,6 +442,11 @@ void CPlayScene::Render()
 	{
 		if (listEnemy[i]->GetHealth() > 0)
 			listEnemy[i]->Render();
+	}
+
+	for (UINT i = 0; i < listZombieZone.size(); i++)
+	{
+		listZombieZone[i]->RenderBoundingBox();
 	}
 
 	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
@@ -455,7 +494,13 @@ void CPlayScene::Unload()
 
 	for (int i = 0; i < listEnemy.size(); i++)
 		delete listEnemy[i];
+
 	listEnemy.clear();
+
+	for (int i = 0; i < listZombieZone.size(); i++)
+		delete listZombieZone[i];
+
+	listZombieZone.clear();
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
@@ -917,3 +962,125 @@ bool CPlayScene::isOncam(float x1, float y1, float w1, float h1)
 
 	return true;
 }
+
+void CPlayScene::CreateZombie()
+{
+	DWORD now = GetTickCount();
+
+	if (now - TimeZombie >= TIME_CREATE_GHOST) // đủ th.gian tạo ra 1 con zombie
+	{
+		for (int i = 0; i < listZombieZone.size(); i++)
+		{
+			if (listZombieZone[i]->isSimonInZombieZone(player)) // nếu simon trong zone
+			{
+				if (now - listZombieZone[i]->getLastTimeCreate() >= listZombieZone[i]->getTimeCreateZombie()) // đủ thời gian tạo ra bầy zomebie
+				{
+					//DebugOut(L"[ZOMBIE] lastTime zombie = %d\n", now);
+					float x1, x2, y1, y2;
+					listZombieZone[i]->getCreateLocation(x1, y1, x2, y2);
+
+					if (listZombieZone[i]->getCountZombie() < listZombieZone[i]->getTotalZombie()) // khi số lượng zombie trong zone chưa đủ
+					{
+						DebugOut(L"[ZOMBIE] so luong zombie cua zone = %d\n", listZombieZone[i]->getCountZombie());
+						if (player->GetVx() > 0) // vx>0 simon đang đi về bên phải
+						{
+							// zombie chạy từ phải qua trái
+							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
+							{
+								listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+							}
+							else // tạo theo tọa độ parse vào
+							{
+								listEnemy.push_back(new Zombie(x2, y2, -1));
+							}
+							
+						}
+						else if (player->GetVx() < 0) // vx>0 simon đang đi về bên trái
+						{
+							// zombie chạy từ bên trái qua phải
+							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
+							{
+								listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+							}
+							else // tạo theo tọa độ parse vào
+							{
+								listEnemy.push_back(new Zombie(x1, y1, 1));
+							}
+						}
+						else // đứng yên thì random chiều zombie chạy
+						{
+							int random = rand() % 2;
+							if (random == 0) // đi từ bên trái
+							{
+								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
+								{
+									listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+								}
+								else // tạo theo tọa độ parse vào
+								{
+									listEnemy.push_back(new Zombie(x1, y1, 1));
+								}
+							}
+							else // đi từ bên phải
+							{
+								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
+								{
+									listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+								}
+								else // tạo theo tọa độ parse vào
+								{
+									listEnemy.push_back(new Zombie(x2, y2, -1));
+								}
+							}
+						}
+
+						listZombieZone[i]->setCountZombie(listZombieZone[i]->getCountZombie() + 1);
+						TimeZombie = now; // set lại thời điểm đã tạo zombie
+					}
+					else
+					{
+						listZombieZone[i]->setCountZombie(0); // đã đủ zombie trong zone thì set lại 0
+						listZombieZone[i]->setLastTimeCreate(now); // đã đủ zom thì set time lại
+					}
+				}
+
+			}
+			else
+			{
+				if(listZombieZone[i]->getCountZombie() > 0) // nếu đang ra zombie mà out zone thì set lại lastTime
+					listZombieZone[i]->setLastTimeCreate(now);
+				listZombieZone[i]->setCountZombie(0); // ko trong zone thì set số Zom thành 0
+			}
+		}
+	}
+	
+}
+
+void CPlayScene::updateEnemy(DWORD dt)
+{
+	for (UINT i = 0; i < listEnemy.size(); i++)
+	{
+		if (listEnemy[i]->GetHealth() > 0) // còn máu
+		{
+			float l, t, r, b;
+			float widthEnemy, heightEnemy;
+			listEnemy[i]->GetBoundingBox(l, t, r, b);
+			widthEnemy = b - t;
+			heightEnemy = r - l;
+			if (isOncam(listEnemy[i]->GetX(), listEnemy[i]->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
+			{
+
+				if (dynamic_cast<Zombie*>(listEnemy[i]) != NULL) // object này là Zombie
+				{
+					listEnemy[i]->SetHealth(0); // ra khỏi cam thì coi như chết
+				}
+
+			}
+			else
+			{
+				listEnemy[i]->Update(dt);
+			}
+		}
+	}
+}
+

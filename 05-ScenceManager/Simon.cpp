@@ -739,7 +739,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 		if (CountCollisionTop > 0) // có va chạm với top, và nó đang đi lên
 		{
 
-			y = y - 50; // kéo simon lên cao, để tạo va chạm giả xuống mặt đất
+			y = y - 50; // kéo simon lên cao
 			vy = 50; // vận tốc kéo xuống lớn
 			dy = vy * dt; // cập nhật lại dy
 
