@@ -1,6 +1,27 @@
-#include "Brick.h"
+﻿#include "Brick.h"
 
+CBrick::CBrick(float w, float h) : CGameObject()
+{
+	this->width = w;
+	this->height = h;
+}
 
+CBrick::CBrick(int type1) : CGameObject()
+{
+	if (type1 == 9) //brick ko bbox
+	{
+		this->width = 0;
+		this->height = 0;
+		return;
+	}
+	this->width = BRICK_BBOX_WIDTH;
+	this->height = BRICK_BBOX_HEIGHT;
+}
+
+CBrick::~CBrick()
+{
+
+}
 
 void CBrick::Render()
 {
@@ -12,8 +33,24 @@ void CBrick::Render()
 
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
+	if (this->type == eType::SPECIALBRICK)
+	{
+		l = x;
+		t = y;
+		r = x + width;
+		b = y + height;
+		return;
+	}
+	if (this->type == eType::SPECIALBRICKSMALL) // bbox nhỏ lại
+	{
+		l = x + 10;
+		t = y + 10;
+		r = x + 15;
+		b = y + 15;
+		return;
+	}
 	l = x;
 	t = y;
-	r = x + BRICK_BBOX_WIDTH;
-	b = y + BRICK_BBOX_HEIGHT;
+	r = x + width;
+	b = y + height;
 }

@@ -11,6 +11,7 @@ Zombie::Zombie(int nx1)
 	health = 1;
 
 	vx = ZOMBIE_SPEED * this->nx;
+	this->type = eType::ZOMBIE;
 }
 
 Zombie::Zombie(float x1, float y1, int nx1)
@@ -26,6 +27,7 @@ Zombie::Zombie(float x1, float y1, int nx1)
 	health = 1;
 
 	vx = ZOMBIE_SPEED * this->nx;
+	this->type = eType::ZOMBIE;
 }
 
 Zombie::~Zombie()
@@ -44,4 +46,18 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	x += dx;
+}
+
+void Zombie::Render()
+{
+	if (health <= 0)
+		return;
+
+	bool isLeft = true;
+	if (nx > 0)
+		isLeft = false;
+
+	animation_set->at(0)->Render(x, y, 255, isLeft);
+
+	RenderBoundingBox();
 }

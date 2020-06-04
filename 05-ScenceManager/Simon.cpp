@@ -22,6 +22,7 @@ Simon::Simon() : CGameObject()
 	isAutoGoX = 0;
 	isFreeze = 0;
 	TimeFreeze = 0;
+	isHurting = 0;
 
 	health = SIMON_DEFAULT_HEALTH;
 	live = SIMON_DEFAULT_HEARTCOLLECT;
@@ -167,10 +168,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		
 		CollisionWithBrick(coObjects); // check Collision and update x, y for simon
+
+		CollisionWithPortal(coObjects);
 	}
 	else
 	{
 		CollisionWhenOnStair(coObjects);
+
+		CollisionWithPortal(coObjects);
 	}
 
 	if (isWalkingOnStair == 3)
@@ -214,8 +219,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Simon::Render()
 {
-
-	/////////////////////
 	int ani = -1;
 	if (state == SIMON_STATE_DIE)
 		ani = SIMON_ANI_DIE;
@@ -274,56 +277,63 @@ void Simon::Render()
 		}
 
 	}
-	else
+	else // ko trên thang
 	{
-		if (isSitting == true)
+		if (isHurting)
 		{
-			if (isAttacking == true) // tấn công
-			{
-				ani = SIMON_ANI_SIT_ATTACK;
-				int curFrame = animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame();
-				if (curFrame > 2 || curFrame < 0) // bị lỗi vũ khí render tốn time nên kết thúc đánh ở frame 1 còn frame 2 chưa render nên hàm này ko vào dc => lần đánh sau đủ sẽ bắt đầu render frame 2 dù mới bắt đầu đánh
-				{
-					animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
-				}
-			}
-			else
-				ani = SIMON_ANI_SITTING;
+			ani = SIMON_ANI_HURTING;
 		}
-		else // standing
+		else
 		{
-			if (isAttacking == true)
+			if (isSitting == true)
 			{
-				ani = SIMON_ANI_STAND_ATTACK;
-				int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
-				if (curFrame > 2 || curFrame < 0)
+				if (isAttacking == true) // tấn công
 				{
-					animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);
+					ani = SIMON_ANI_SIT_ATTACK;
+					int curFrame = animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame();
+					if (curFrame > 2 || curFrame < 0) // bị lỗi vũ khí render tốn time nên kết thúc đánh ở frame 1 còn frame 2 chưa render nên hàm này ko vào dc => lần đánh sau đủ sẽ bắt đầu render frame 2 dù mới bắt đầu đánh
+					{
+						animation_set->at(SIMON_ANI_SIT_ATTACK)->setCurrentFrame(-1); // set -1 vào render cập nhật lại 0, tránh mất frame 0
+					}
 				}
+				else
+					ani = SIMON_ANI_SITTING;
 			}
-			else if (isWalking == true)
+			else // standing
 			{
-				if (isJumping == false)
+				if (isAttacking == true)
 				{
-					ani = SIMON_ANI_WALKING;
+					ani = SIMON_ANI_STAND_ATTACK;
+					int curFrame = animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame();
+					if (curFrame > 2 || curFrame < 0)
+					{
+						animation_set->at(SIMON_ANI_STAND_ATTACK)->setCurrentFrame(-1);
+					}
+				}
+				else if (isWalking == true)
+				{
+					if (isJumping == false)
+					{
+						ani = SIMON_ANI_WALKING;
+
+					}
+					else
+					{
+						ani = SIMON_ANI_JUMPING;
+					}
 
 				}
 				else
 				{
-					ani = SIMON_ANI_JUMPING;
-				}
+					if (isJumping == true) // nếu ko đi mà chỉ nhảy
+					{
+						ani = SIMON_ANI_JUMPING;
+					}
+					else
+					{
+						ani = SiMON_ANI_IDLE;		// SIMON đứng yên
 
-			}
-			else
-			{
-				if (isJumping == true) // nếu ko đi mà chỉ nhảy
-				{
-					ani = SIMON_ANI_JUMPING;
-				}
-				else
-				{
-					ani = SiMON_ANI_IDLE;		// SIMON đứng yên
-
+					}
 				}
 			}
 		}
@@ -400,6 +410,8 @@ void Simon::SetState(int state)
 			return;
 		if (isJumping == true)
 			return;
+		if (isHurting)
+			return;
 		y -= 16;
 		vy = -SIMON_JUMP_SPEED_Y;
 		isJumping = true;
@@ -422,6 +434,8 @@ void Simon::SetState(int state)
 			return;
 		if (isAttacking == true)
 			return;
+		if (isHurting)
+			return;
 
 		vx = 0;
 
@@ -439,6 +453,127 @@ void Simon::SetState(int state)
 
 }
 
+void Simon::SetHurt(LPCOLLISIONEVENT e)
+{
+	if (isHurting == true)
+		return;
+	if (e->nx == 0 && e->ny == 0) // ko có va chạm
+		return;
+
+	isWalking = 0;
+	isAttacking = 0;
+	isJumping = 0;
+	if (isSitting == true)
+	{
+		isSitting = 0; // hủy trạng thái ngồi
+		y = y - 18; 
+	}
+
+	if (isOnStair == false)
+	{
+		if (e->nx != 0)// hướng bay ra
+		{
+			vx = SIMON_WALKING_SPEED * e->nx * 2;
+			vy = -SIMON_JUMP_SPEED_Y;
+			isHurting = 1;
+		}
+
+		if (e->ny != 0)
+		{
+			vy = -SIMON_JUMP_SPEED_Y;
+			isHurting = 1;
+		}
+	}
+
+	StartUntouchable(); // bật untouch
+	mainWeapon->SetFinish(true);
+	beAttacked(2); // va chạm quái mất máu
+
+}
+
+void Simon::CollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
+{
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	vector<LPGAMEOBJECT> list_Portal;
+	list_Portal.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (coObjects->at(i)->GetType() == eType::PORTAL)
+			list_Portal.push_back(coObjects->at(i));
+	}
+
+	CalcPotentialCollisions(&list_Portal, coEvents);
+
+
+	if (coEvents.size() == 0)
+	{
+		return;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+
+		// TODO: This is a very ugly designed function!!!!
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
+		//if (rdx != 0 && rdx!=dx)
+		//	x += nx*abs(rdx); 
+
+		// block every object first!
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
+
+		if (nx != 0)
+			vx = 0;
+
+		if (ny != 0)
+		{
+			if (isJumping == true) // nếu simon đang nhảy
+			{
+				y = y - 18; // kéo simon lên
+			}
+			vy = 0;
+			isJumping = false;
+		}
+
+		if (nx != 0 || ny != 0)
+		{
+			isHurting = 0;
+		}
+
+
+		//
+		// Collision logic with other objects
+		//
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CPortal *>(e->obj))
+			{
+				CPortal *p = dynamic_cast<CPortal *>(e->obj);
+				DebugOut(L"[INFO] Switching to scene %d with switchType %d", p->GetSceneId(), p->GetSwitchType());
+				CGame::GetInstance()->SwitchScene(p->GetSceneId(), p->GetSwitchType()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
+
+				for (UINT i = 0; i < coEvents.size(); i++)
+					delete coEvents[i];
+				return;
+			}
+		}
+	}
+
+	// clean up collision events
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
+}
+
 void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -450,7 +585,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	list_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i)->GetType() == eType::BRICK || coObjects->at(i)->GetType() == eType::PORTAL)
+		if (coObjects->at(i)->GetType() == eType::BRICK || coObjects->at(i)->GetType() == eType::SPECIALBRICK)
 			list_Brick.push_back(coObjects->at(i));
 	}
 
@@ -502,6 +637,11 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			isJumping = false;
 		}
 
+		if (nx != 0 || ny != 0)
+		{
+			isHurting = 0;
+		}
+
 
 		//
 		// Collision logic with other objects
@@ -514,7 +654,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				DebugOut(L"[INFO] Switching to scene %d", p->GetSceneId());
-				CGame::GetInstance()->SwitchScene(p->GetSceneId()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
+				CGame::GetInstance()->SwitchScene(p->GetSceneId(), p->GetSwitchType()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
 
 				for (UINT i = 0; i < coEvents.size(); i++)
 					delete coEvents[i];
@@ -619,6 +759,7 @@ bool Simon::LoseLife()
 
 	isAutoGoX = 0;
 
+	isHurting = 0;
 	isOnStair = 0;
 	isWalkingOnStair = 0;
 	walkHeight = 0;
@@ -843,4 +984,24 @@ void Simon::RestoreAfterAutoGoX()
 	isWalking = 0;
 	vy = 0;
 	vx = 0;
+}
+
+void Simon::setUntouchable(bool a)
+{
+	this->untouchable = a;
+}
+
+bool Simon::getUntouchable()
+{
+	return this->untouchable;
+}
+
+void Simon::setUntouchable_start(int time)
+{
+	this->untouchable_start = time;
+}
+
+DWORD Simon::getUntouchable_start()
+{
+	return this->untouchable_start;
 }

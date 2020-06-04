@@ -2,6 +2,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\castle\simon_sprite.png	255	0	255
+1	textures\castle\color.png	255	0	255
 20	textures\castle\ground\Brick3.1.png	255	0	255
 30	textures\castle\map\Scene3.1\3.1.png	255	0	255
 40	textures\castle\ground\0.png	255	0	255
@@ -17,6 +18,8 @@
 104	textures\castle\item\2.png	255	0	255
 105	textures\castle\ground\1.png	255	0	255
 106	textures\castle\item\0.png	255	0	255
+107	textures\castle\enemy\BlackKnight.png	255	0	255
+108	textures\castle\enemy\Zombie.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -61,10 +64,13 @@
 10121	32	0	64	64	1
 10122	64	0	96	64	1
 10123	96	0	128	64	1
+#Hurting
+10124	256	0	288	64	0
 
 
 #BRICK
 40001	0	0	32	32	20
+40002	0	0	32	32	21
 
 
 #Title Map, l, t, r, b se dc set lai
@@ -168,6 +174,15 @@
 81017	30	0	60	30	104
 81018	60	0	90	30	104
 
+#Black Knight
+81020	0	0	32	64	107
+81021	32	0	64	64	107
+81022	64	0	96	64	107
+
+#Zombie
+81025	0	0	32	64	108
+81026	32	0	64	64	108
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -181,8 +196,6 @@
 502	10051	100
 # sit left
 503	10041	100
-#die
-599	10099	100
 #sit_attack
 504	10100	100	10101	100	10102	100
 #stand_attack
@@ -195,9 +208,16 @@
 #Stair_up_attack
 510	10110	100	10111	100	10112	100
 511	10113	100	10114	100	10115	100
+#Freeze
+520	10120	100	10121	100	10122	100	10123	100
+#Hurting
+521	10124	100
+#die
+599	10099	100
 
 # ==== BRICK =========
 602	40001	100
+603	40002	100
 
 # === TORCH ====
 701	60001	100	60002	100
@@ -283,14 +303,21 @@
 #=======Hit=============
 1201	81014	100	81015	100
 
+#=======Black Knight=========
+1210	81020	100	81021	100	81022	100
+
+#========Zombie===========
+1211	81025	100	81026	100
+
 #====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
 [ANIMATION_SETS]
 # MARIO
-1	401	501	503	502	599	504	505	506	507	508	509	510	511
+1	401	501	503	502	599	504	505	506	507	508	509	510	511	520	521
 #  BRICK 
 22	602
+23	603
 
 # TORCH
 33	701
@@ -330,6 +357,12 @@
 
 #SmallHeart
 54	902
+
+#Black Knight
+55	1210
+
+#Zombie
+56	1211
 
 
 #====================[OBJECTS]===================================
@@ -485,8 +518,8 @@
 
 
 # --- SCENE PORTAL ---- 115 98 150 1
-# type	l	t	ani_set_id	id	r	b	scene_id
-50	400	390	0	999	480	420	5
+# type	l	t	ani_set_id	id	r	b	scene_id	SwitchType
+50	400	390	0	999	480	420	5	1
 
 
 #====================[TILEMAP]===================================
@@ -494,3 +527,16 @@
 #TILEMAP
 # filepath	mapTXT
 textures\castle\map\Scene3.1\3.1.png	textures\castle\map\Scene3.1\3.1.txt
+
+
+#=====================[LOADSIMON]===============================
+#=========[LOADSIMON_0]============
+#X	Y
+[LOADSIMON_0]
+200	80
+
+
+#=========[LOADSIMON_1]============
+#X	Y
+[LOADSIMON_1]
+1200	200

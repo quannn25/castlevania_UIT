@@ -4,10 +4,10 @@
 #define TIME_CREATE_ZOMBIE 1000
 #define ZOMBIE_SPEED 0.05f
 #define ZOMBIE_FRAMEWIDTH 32
-#define ZOMBIE_FRAMEHEIGHT 32
+#define ZOMBIE_FRAMEHEIGHT 64
 
 #include "Enemy.h"
-class Zombie : public Enemy
+class Zombie : public CGameObject
 {
 public:
 	Zombie(int nx1 = 1);
@@ -16,7 +16,7 @@ public:
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
-
+	virtual void Render();
 	
 
 };

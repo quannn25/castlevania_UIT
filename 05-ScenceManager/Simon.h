@@ -6,14 +6,13 @@
 
 #define SIMON_BBOX_WIDTH 32
 #define SIMON_BBOX_HEIGHT 64
-
 #define SIMON_BBOX_SITTING_HEIGHT 48
 
 #define SIMON_GRAVITY 0.005f
-
-#define SIMON_WALKING_SPEED 0.42f //0.12
+#define SIMON_WALKING_SPEED 0.32f //0.12
 #define SIMON_JUMP_SPEED_Y		0.8f
 #define SIMON_DIE_DEFLECT_SPEED	0.5f
+#define SIMON_SPEED_ONSTAIR 0.09f
 
 #define SIMON_STATE_IDLE			0
 #define SIMON_STATE_WALKING_RIGHT	100
@@ -26,11 +25,8 @@
 #define SIMON_STATE_STOP			5
 
 #define SIMON_ANI_WALKING 1
-
 #define SiMON_ANI_IDLE 0
-
 #define SIMON_ANI_JUMPING 3
-
 #define SIMON_ANI_SITTING 2
 #define SIMON_ANI_DIE 4
 #define SIMON_ANI_SIT_ATTACK	5
@@ -42,15 +38,14 @@
 #define SIMON_ANI_STAIR_UP_ATTACK 11
 #define SIMON_ANI_STAIR_DOWN_ATTACK 12
 #define SIMON_ANI_FREEZE 13
+#define SIMON_ANI_HURTING 14
 
-#define SIMON_UNTOUCHABLE_TIME 5000
+#define SIMON_UNTOUCHABLE_TIME 2000
 
 #define SIMON_DEFAULT_HEALTH 16
 #define SIMON_DEFAULT_HEARTCOLLECT 5
 
 #define TIME_FREEZE_MAX 500
-
-#define SIMON_SPEED_ONSTAIR 0.09f
 
 
 
@@ -68,7 +63,7 @@ private:
 
 	int heartCollected; // mana
 
-	int untouchable;
+	bool untouchable;
 	DWORD untouchable_start;
 
 	float xBackup;
@@ -86,6 +81,8 @@ public:
 	bool isJumping;
 	bool isSitting;
 	bool isAttacking;
+
+	bool isHurting;
 
 	bool isOnStair;
 	int isWalkingOnStair;  // có 2 giai đoạn 
@@ -146,6 +143,15 @@ public:
 
 	void SetAutoGoX(int NxAuto, int NxAfterAuto1, float xAuto1, float Speed); // cài đặt auto và backup trạng thái hiện tại
 	void RestoreAfterAutoGoX(); // khôi phục trạng thái
+
+	void SetHurt(LPCOLLISIONEVENT e);
+
+	bool getUntouchable();
+	void setUntouchable(bool a);
+	DWORD getUntouchable_start();
+	void setUntouchable_start(int time);
+
+	void CollisionWithPortal(vector<LPGAMEOBJECT> *coObjects = NULL);
 
 };
 #endif

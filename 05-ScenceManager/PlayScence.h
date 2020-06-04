@@ -43,9 +43,9 @@ protected:
 
 	GameTime * gameTime; //unload()??? hay truyền
 
-	vector <Enemy*> listEnemy;
+	vector <LPGAMEOBJECT> listEnemy;
 
-	DWORD TimeZombie; // thoi gian tao zombie vừa rồi
+	DWORD TimeZombie; // thoi gian tao zombie vừa rồi /////////////////////////// chua deleteeeeeeeeeeeeeeeeeeeeeeeeeeee
 	vector <ZombieZone*> listZombieZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
 
 	void _ParseSection_TEXTURES(string line);
@@ -54,19 +54,24 @@ protected:
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_TILEMAP(string line);
+	void _ParseSection_LOADSIMON0(string line);
+	void _ParseSection_LOADSIMON1(string line);
 public: 
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void LoadResources();
-	virtual void Load();
+	virtual void Load(int SwitchType);
 	virtual void LoadAgain();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	virtual void LoadSimonState(int SwitchType);
 
 	void CheckCollision();
-	void CheckCollisionWeapon();
+	void CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj);
 	void CheckCollisionSimonWithItem();
+	void CheckCollisionWithEnemy();
+	void CheckCollisionSimonWithEnemy();
 
 	bool isOncam(float x1, float y1, float w1, float h1);
 

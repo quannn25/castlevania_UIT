@@ -1,8 +1,9 @@
 #include "Portal.h"
 
 
-CPortal::CPortal(float l, float t, float r, float b, int scene_id )
+CPortal::CPortal(float l, float t, float r, float b, int scene_id, int SwitchType)
 {
+	this->switchType = SwitchType;
 	this->scene_id = scene_id;
 	x = l; 
 	y = t;
@@ -21,4 +22,9 @@ void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)
 	t = y;
 	r = x + width;
 	b = y + height;
+}
+
+int CPortal::GetSwitchType()
+{
+	return this->switchType;
 }

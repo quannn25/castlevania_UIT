@@ -147,6 +147,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			// reset các ani_set của các Obj đc truyền qua
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id); // ani_set Simon
 			player->SetAnimationSet(ani_set);
+
 			player->mainWeapon->ReSetAniSetSwitchScene(); // weapon
 			if(player->subWeapon != NULL) // subWeapon
 				player->subWeapon->ReSetAniSetSwitchScene();
@@ -162,8 +163,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (Simon*)obj;
 		break;
 	case OBJECT_TYPE_BRICK:
-		obj = new CBrick();
+		obj = new CBrick(OBJECT_TYPE_BRICK);
 		obj->SetType(eType::BRICK);
+		break;
+	case OBJECT_TYPE_SPECIALBRICK:
+	{
+		float w = atof(tokens[5].c_str());
+		float h = atof(tokens[6].c_str());
+
+		obj = new CBrick(w, h);
+		obj->SetType(eType::SPECIALBRICK);
+	}
+		break;
+	case OBJECT_TYPE_SPECIALBRICKSMALL:
+		obj = new CBrick(OBJECT_TYPE_SPECIALBRICKSMALL);
+		obj->SetType(eType::SPECIALBRICKSMALL);
 		break;
 	case OBJECT_TYPE_TORCH:
 		obj = new Torch();
@@ -232,7 +246,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			float r = atof(tokens[5].c_str());
 			float b = atof(tokens[6].c_str());
 			int scene_id = atoi(tokens[7].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
+			int switchType = atoi(tokens[8].c_str());
+
+			obj = new CPortal(x, y, r, b, scene_id, switchType);
 			obj->SetType(eType::PORTAL);
 		}
 		break;
@@ -268,7 +284,33 @@ void CPlayScene::_ParseSection_TILEMAP(string line)
 	DebugOut(L"[INFO] Map resources from : %s \n", txtPath.c_str());
 }
 
-void CPlayScene::Load()
+void CPlayScene::_ParseSection_LOADSIMON0(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+
+	float xSimon = atoi(tokens[0].c_str());
+	float ySimon = atoi(tokens[1].c_str());
+
+	MainSimon::GetInstance()->GetSimon()->SetPosition(xSimon, ySimon); // == player
+}
+
+void CPlayScene::_ParseSection_LOADSIMON1(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+
+	float xSimon = atoi(tokens[0].c_str());
+	float ySimon = atoi(tokens[1].c_str());
+
+	MainSimon::GetInstance()->GetSimon()->SetPosition(xSimon, ySimon); // == player
+
+	DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+}
+
+void CPlayScene::Load(int SwitchType)
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
@@ -276,7 +318,8 @@ void CPlayScene::Load()
 	f.open(sceneFilePath);
 
 	// current resource section flag
-	int section = SCENE_SECTION_UNKNOWN;					
+	int section = SCENE_SECTION_UNKNOWN;	
+	int flag = SCENE_SECTION_UNKNOWN;
 
 	char str[MAX_SCENE_LINE];
 	while (f.getline(str, MAX_SCENE_LINE))
@@ -285,7 +328,8 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
+		if (line == "[TEXTURES]") { 
+			section = SCENE_SECTION_TEXTURES; continue; }
 		if (line == "[SPRITES]") { 
 			section = SCENE_SECTION_SPRITES; continue; }
 		if (line == "[ANIMATIONS]") { 
@@ -296,7 +340,10 @@ void CPlayScene::Load()
 			section = SCENE_SECTION_OBJECTS; continue; }
 		if (line == "[TILEMAP]") {
 			section = SCENE_SECTION_TILEMAP; continue; }
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
+		if (line[0] == '[') 
+		{
+			section = SCENE_SECTION_UNKNOWN; continue;
+		}	
 
 		//
 		// data section
@@ -314,11 +361,80 @@ void CPlayScene::Load()
 
 	f.close();
 
+	LoadSimonState(SwitchType); // hàm load simon khi chuyển đến scene dạng 0 hoặc 1
+
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	LoadResources();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+void CPlayScene::LoadSimonState(int SwitchType)
+{
+	if (SwitchType == 1)
+	{
+		ifstream f;
+		f.open(sceneFilePath);
+
+		// current resource section flag
+		int section = SCENE_SECTION_UNKNOWN;
+
+		char str[MAX_SCENE_LINE];
+		while (f.getline(str, MAX_SCENE_LINE))
+		{
+			string line(str);
+
+			if (line[0] == '#') continue;	// skip comment lines	
+
+			if (line == "[LOADSIMON_1]") {
+				section = SCENE_SECTION_LOADSIMON_1; continue;
+			}
+			if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+			//
+			// data section
+			//
+			switch (section)
+			{
+			case SCENE_SECTION_LOADSIMON_1: _ParseSection_LOADSIMON1(line); break; // hàm này đọc thông số từ file rồi gán cho simon static hoặc player
+			}
+		}
+
+		f.close();
+	}
+	else
+	{
+		ifstream f;
+		f.open(sceneFilePath);
+
+		// current resource section flag
+		int section = SCENE_SECTION_UNKNOWN;
+
+		char str[MAX_SCENE_LINE];
+		while (f.getline(str, MAX_SCENE_LINE))
+		{
+			string line(str);
+
+			if (line[0] == '#') continue;	// skip comment lines	
+
+			if (line == "[LOADSIMON_0]") {
+				section = SCENE_SECTION_LOADSIMON_0; continue;
+			}
+
+			if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+
+			//
+			// data section
+			//
+			switch (section)
+			{
+			case SCENE_SECTION_LOADSIMON_0: _ParseSection_LOADSIMON0(line); break; // hàm này đọc thông số từ file rồi gán cho simon static hoặc player
+			}
+		}
+
+		f.close();
+	}
 }
 
 void CPlayScene::LoadResources()
@@ -344,8 +460,9 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
+	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 
-	if (gameTime->GetTime() >= GAMETIME_SCENE_1)
+	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
 		if (player->GetLive() == 0) // xử lý...
 			return;
@@ -392,10 +509,6 @@ void CPlayScene::Update(DWORD dt)
 			listEffect[i]->Update();
 	}
 
-	for (UINT i = 0; i < listEnemy.size(); i++)
-	{
-		listEnemy[i]->Update(dt);
-	}
 
 	updateEnemy(dt);
 
@@ -509,6 +622,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 
 	Simon *simon = ((CPlayScene*)scence)->player;
 
+	if (simon->isHurting)
+		return;
+
 	if (simon->GetFreeze() == true) // Đang bóng băng thì không quan tâm phím
 	{
 		return;
@@ -516,6 +632,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 
 	if (simon->isAutoGoX == true)
 		return;
+
 
 	switch (KeyCode)
 	{
@@ -543,22 +660,22 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		}
 		break;
 	case DIK_1:
-		CGame::GetInstance()->SwitchScene(1);
+		CGame::GetInstance()->SwitchScene(1, 1);
 		break;
 	case DIK_2:
-		CGame::GetInstance()->SwitchScene(2);
+		CGame::GetInstance()->SwitchScene(2, 1);
 		break;
 	case DIK_3:
-		CGame::GetInstance()->SwitchScene(3);
+		CGame::GetInstance()->SwitchScene(3, 1);
 		break;
 	case DIK_4:
-		CGame::GetInstance()->SwitchScene(4);
+		CGame::GetInstance()->SwitchScene(4, 1);
 		break;
 	case DIK_5:
-		CGame::GetInstance()->SwitchScene(5);
+		CGame::GetInstance()->SwitchScene(5, 1);
 		break;
 	case DIK_6:
-		CGame::GetInstance()->SwitchScene(6);
+		CGame::GetInstance()->SwitchScene(6, 1);
 		break;
 	}
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
@@ -574,6 +691,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	Simon *simon = ((CPlayScene*)scence)->player;
 	vector<LPGAMEOBJECT> _coObjects = ((CPlayScene*)scence)->coObjects;
 
+	if (simon->isHurting)
+		return;
+
 	if (simon->GetFreeze() == true) // dang bóng băng
 	{
 		return;
@@ -581,10 +701,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	if (simon->isJumping && simon->isWalking)
 	{
-		/*if(simon->GetNx() > 0) // tiến vào sát gạch cao nhảy ko dc // mở ra dính lỗi nhảy lên tường
+		if(simon->GetNx() > 0) // tiến vào sát gạch cao nhảy ko dc // mở ra dính lỗi nhảy lên tường
 			simon->SetState(SIMON_STATE_WALKING_RIGHT);
 		else
-			simon->SetState(SIMON_STATE_WALKING_LEFT);*/
+			simon->SetState(SIMON_STATE_WALKING_LEFT);
 		return;
 	}
 	// disable control key when Mario die 
@@ -736,42 +856,62 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 void CPlayScene::CheckCollision()
 {
-	CheckCollisionWeapon();
+	CheckCollisionWeapon(coObjects); // kt va chạm vũ khí với các object nền
 
 	CheckCollisionSimonWithItem();
+
+	CheckCollisionWithEnemy(); // kt vũ khí cới enemy và simon với enemy
 }
 
-void CPlayScene::CheckCollisionWeapon()
+void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 {
 	// main weapon
 	if (player->mainWeapon->GetFinish() == false) // Vũ khí đang hoạt động
 	{
-		for (UINT i = 0; i < coObjects.size(); i++)
+		for (UINT i = 0; i < listObj.size(); i++)
 		{
-			if (dynamic_cast<Torch *>(coObjects[i])) // Torch
+			if (player->mainWeapon->isCollision(listObj[i]) == true) // có va chạm với obj (heal > 0)
 			{
-				if (player->mainWeapon->isCollision(coObjects[i]) == true)
+				switch (listObj[i]->GetType())
 				{
-					CGameObject *gameObjTorch = dynamic_cast<Torch*>(coObjects[i]);
+				case eType::CANDLE:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
 
-					gameObjTorch->beAttacked(1);
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
-					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
-					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eType::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
+					break;
 				}
-			}
-
-			if (dynamic_cast<Candle *>(coObjects[i])) // Candle
-			{
-				if (player->mainWeapon->isCollision(coObjects[i]) == true)
+				case eType::TORCH:
 				{
-					CGameObject *gameObjCandle = dynamic_cast<Candle *>(coObjects[i]);
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
 
-					gameObjCandle->beAttacked(1);
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
-					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eType::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
+					break;
+				}
+
+				case eType::ZOMBIE:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+					
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+					
+					break;
+				}
+
+				default:
+					break;
 				}
 			}
 		}
@@ -780,36 +920,58 @@ void CPlayScene::CheckCollisionWeapon()
 	// sub
 	if (player->subWeapon != NULL && player->subWeapon->GetFinish() == false)
 	{
-		for (UINT i = 0; i < coObjects.size(); i++)
+		for (UINT i = 0; i < listObj.size(); i++)
 		{
-			if (dynamic_cast<Torch *>(coObjects[i]))
+			if (player->subWeapon->isCollision(listObj[i]) == true) // có va chạm với obj (heal > 0)
 			{
-				if (player->subWeapon->isCollision(coObjects[i]) == true)
+				switch (listObj[i]->GetType())
 				{
-					CGameObject *gameObjTorch = dynamic_cast<Torch*>(coObjects[i]);
-
-					gameObjTorch->beAttacked(1);
+				case eType::CANDLE:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
 
 					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
 
-					listEffect.push_back(new Hit(gameObjTorch->GetX() + 14, gameObjTorch->GetY() + 14)); // hiệu ứng
-					listEffect.push_back(new Fire(gameObjTorch->GetX() - 5, gameObjTorch->GetY() + 8)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjTorch->GetId(), eType::TORCH, gameObjTorch->GetX() + 5, gameObjTorch->GetY()));
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+
+					break;
 				}
-			}
-
-			if (dynamic_cast<Candle *>(coObjects[i])) // Candle
-			{
-				if (player->subWeapon->isCollision(coObjects[i]) == true)
+				case eType::TORCH:
 				{
-					CGameObject *gameObjCandle = dynamic_cast<Candle *>(coObjects[i]);
-
-					gameObjCandle->beAttacked(1);
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
 
 					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
 
-					listEffect.push_back(new Hit(gameObjCandle->GetX() + 10, gameObjCandle->GetY() + 14)); // hiệu ứng
-					listItem.push_back(GetNewItem(gameObjCandle->GetId(), eType::CANDLE, gameObjCandle->GetX() + 5, gameObjCandle->GetY()));
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+
+					break;
+				}
+
+				case eType::ZOMBIE:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					player->SetScore(player->GetScore() + 100);
+
+					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+
+				default:
+					break;
 				}
 			}
 		}
@@ -861,7 +1023,7 @@ void CPlayScene::CheckCollisionSimonWithItem()
 				case eType::MONNEY:
 				{
 					listItem[i]->SetFinish(true);
-
+					player->SetScore(player->GetScore() + 1000);
 					break;
 				}
 				default:
@@ -872,6 +1034,51 @@ void CPlayScene::CheckCollisionSimonWithItem()
 			}
 		}
 	}
+}
+
+void CPlayScene::CheckCollisionWithEnemy()
+{
+	CheckCollisionWeapon(listEnemy);
+
+	CheckCollisionSimonWithEnemy();
+}
+
+void CPlayScene::CheckCollisionSimonWithEnemy()
+{
+
+	if (GetTickCount() - player->getUntouchable_start() > SIMON_UNTOUCHABLE_TIME)
+	{
+		player->setUntouchable_start(0);
+		player->setUntouchable(false);
+	}
+
+	if (player->getUntouchable() == false) // tắt chế độ ko cho đụng
+	{
+		for (UINT i = 0; i < listEnemy.size(); i++)
+		{
+			CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemy[i]);
+			if (gameobj->GetHealth() > 0) // còn sống
+			{
+				LPCOLLISIONEVENT e = player->SweptAABBEx(gameobj);
+				if (e->t > 0 && e->t <= 1) // có va chạm, chưa AABB
+				{
+					player->SetHurt(e);
+					return; // ko cần xét tiếp vì đang untouchable
+				}
+
+				if (player->isCollitionObjectWithObject(gameobj)) // chủ yếu dùng hàm này để có AABBcheck, chứ nếu có (e->t > 0 && e->t <= 1) == true thì nó dính if ở trên
+				{
+					LPCOLLISIONEVENT e = new CCollisionEvent(1, -player->GetNx(), 0, NULL); // player->nx đẩy hướng ngược lại
+
+					player->SetHurt(e);
+					return;
+				}
+
+			}
+		}
+	}
+
+
 }
 
 Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
@@ -891,7 +1098,34 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 		return new SmallHeart(x, y);
 	}
 
-	return new Monney(x, y);
+
+	if (type == eType::ZOMBIE)
+	{
+		int random = rand() % 10;
+		switch (random)
+		{
+		case 0:
+			return	new LargeHeart(x, y);
+			break;
+		case 1:
+			return	new SmallHeart(x, y);
+			break;
+		case 2:
+			return new DaggerItem(x, y);
+			break;
+		case 3:
+			return new Monney(x, y);
+			break;
+		case 4:
+			return new UpgradeMorningStar(x, y);
+			break;
+		default: // 50% còn lại là SmallHeart
+			return new SmallHeart(x, y);
+			break;
+		}
+	}
+
+	return new LargeHeart(x, y);
 }
 
 void CPlayScene::ResetResource()
@@ -919,15 +1153,11 @@ void CPlayScene::LoadAgain()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[TEXTURES]") continue;
-		if (line == "[SPRITES]") continue;
-		if (line == "[ANIMATIONS]") continue;
-		if (line == "[ANIMATION_SETS]") continue;
-		if (line == "[TILEMAP]") {
-			section = SCENE_SECTION_TILEMAP; continue;
-		}
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
+		}
+		if (line == "[TILEMAP]") {
+			section = SCENE_SECTION_TILEMAP; continue;
 		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
@@ -1060,25 +1290,26 @@ void CPlayScene::updateEnemy(DWORD dt)
 {
 	for (UINT i = 0; i < listEnemy.size(); i++)
 	{
-		if (listEnemy[i]->GetHealth() > 0) // còn máu
+		CGameObject * enemy = dynamic_cast<CGameObject *>(listEnemy[i]);
+		if (enemy->GetHealth() > 0) // còn máu
 		{
 			float l, t, r, b;
 			float widthEnemy, heightEnemy;
-			listEnemy[i]->GetBoundingBox(l, t, r, b);
+			enemy->GetBoundingBox(l, t, r, b);
 			widthEnemy = b - t;
 			heightEnemy = r - l;
-			if (isOncam(listEnemy[i]->GetX(), listEnemy[i]->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
+			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
 			{
 
-				if (dynamic_cast<Zombie*>(listEnemy[i]) != NULL) // object này là Zombie
+				if (dynamic_cast<Zombie*>(enemy) != NULL) // object này là Zombie
 				{
-					listEnemy[i]->SetHealth(0); // ra khỏi cam thì coi như chết
+					enemy->SetHealth(0); // ra khỏi cam thì coi như chết
 				}
 
 			}
 			else
 			{
-				listEnemy[i]->Update(dt);
+				enemy->Update(dt);
 			}
 		}
 	}
