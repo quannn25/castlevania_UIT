@@ -200,6 +200,17 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				x = xAuto;
 				RestoreAfterAutoGoX(); // xong hết thì restore lại
 				isAutoGoX = false;
+
+				if (this->ny > 0) //cho simon đi 1 lần
+				{
+					if (isWalkingOnStair == 0 || isWalkingOnStair == 3) // kết thúc xử lí trước đó
+					{
+						isWalking = true;
+						isWalkingOnStair = 1;
+						SetNx(NxStair*-1);// đi xuống thì ngược so với stair
+						SetSpeed(this->nx* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+					}
+				}
 			}
 		}
 
@@ -210,6 +221,17 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				x = xAuto;
 				RestoreAfterAutoGoX(); // xong hết thì restore lại
 				isAutoGoX = false;
+
+				if (this->ny > 0) //cho simon đi 1 lần
+				{
+					if (isWalkingOnStair == 0 || isWalkingOnStair == 3) // kết thúc xử lí trước đó
+					{
+						isWalking = true;
+						isWalkingOnStair = 1;
+						SetNx(NxStair*-1);// đi xuống thì ngược so với stair
+						SetSpeed(this->nx* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
+					}
+				}
 			}
 		}
 		
@@ -527,26 +549,26 @@ void Simon::CollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		//	x += nx*abs(rdx); 
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		//x += min_tx * dx + nx * 0.4f;
+		//y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0)
-			vx = 0;
+		/*if (nx != 0)
+			vx = 0;*/
 
-		if (ny != 0)
-		{
-			if (isJumping == true) // nếu simon đang nhảy
-			{
-				y = y - 18; // kéo simon lên
-			}
-			vy = 0;
-			isJumping = false;
-		}
+		//if (ny != 0)
+		//{
+		//	if (isJumping == true) // nếu simon đang nhảy
+		//	{
+		//		y = y - 18; // kéo simon lên
+		//	}
+		//	vy = 0;
+		//	isJumping = false;
+		//}
 
-		if (nx != 0 || ny != 0)
-		{
-			isHurting = 0;
-		}
+		//if (nx != 0 || ny != 0)
+		//{
+		//	isHurting = 0;
+		//}
 
 
 		//
@@ -803,20 +825,153 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 {
 	if (ny == 1) // đang đi xuống
 	{
-		int CountCollisionBottom = 0;
+		int CountCollisionDown = 0;
+		int CountCollisionUp = 0;
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			if (coObjects->at(i)->GetType() == eType::STAIR_UP) // nếu là object ở dưới
+			if (coObjects->at(i)->GetType() == eType::STAIR_DOWN)
 			{
-				if (this->isCollitionObjectWithObject(coObjects->at(i)))
+				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với down
 				{
-					CountCollisionBottom++;
-					break;
+					CountCollisionDown++;
+					continue;
+				}
+			}
+
+			if (coObjects->at(i)->GetType() == eType::STAIR_UP)
+			{
+				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với up
+				{
+					CountCollisionUp++;
+					continue;
 				}
 			}
 		}
 
-		if (CountCollisionBottom > 0) // có va chạm với bottom
+		if (CountCollisionUp > 0 && CountCollisionDown > 0) // nếu đang xuống và va chạm cả 2 stair
+		{
+			// cho đi bình thường
+
+			// nhưng set lại nx theo hướng của thang down hiện đang va chạm
+			for (UINT i = 0; i < coObjects->size(); i++)
+			{
+				if (coObjects->at(i)->GetType() == eType::STAIR_DOWN)
+				{
+					if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với down
+					{
+
+
+						if (this->nx < 0) // x giảm dần
+						{
+							if (this->x <= coObjects->at(i)->x) //auto go lên đã đúng == x, nhưng cho chắc thì đi vượt quá xíu cũng đc
+							{
+								y = y - 50; // kéo simon lên cao
+								vy = 50; // vận tốc kéo xuống lớn
+								dy = vy * dt; // cập nhật lại dy
+
+
+								vector<LPCOLLISIONEVENT> coEvents;
+								vector<LPCOLLISIONEVENT> coEventsResult;
+								coEvents.clear();
+								vector<LPGAMEOBJECT> list_Brick;
+								list_Brick.clear();
+								for (UINT i = 0; i < coObjects->size(); i++)
+									if (coObjects->at(i)->GetType() == eType::BRICK)
+										list_Brick.push_back(coObjects->at(i));
+								CalcPotentialCollisions(&list_Brick, coEvents);
+								if (coEvents.size() == 0)
+								{
+									x += dx;
+									y += dy;
+								}
+								else
+								{
+									float min_tx, min_ty, nx = 0, ny;
+									float rdx = 0;
+									float rdy = 0;
+
+									FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+									x += min_tx * dx + nx * 0.4f;
+									y += min_ty * dy + ny * 0.4f;
+									if (nx != 0 || ny != 0)
+									{
+										vx = 0;
+										vy = 0;
+										isOnStair = false; // kết thúc việc đang trên cầu thang
+										isWalking = false;
+										isWalkingOnStair = 0;
+									}
+								}
+
+								for (UINT i = 0; i < coEvents.size(); i++)
+									delete coEvents[i];
+
+								return; // ko cần xét tiếp
+							}
+						}
+						else // x tăng dần
+						{
+							if (this->x >= coObjects->at(i)->x) //auto go lên đã đúng == x, nhưng cho chắc thì đi vượt quá xíu cũng đc
+							{
+								if (this->nx != -coObjects->at(i)->GetNx())
+								{
+									y = y - 50; // kéo simon lên cao
+									vy = 50; // vận tốc kéo xuống lớn
+									dy = vy * dt; // cập nhật lại dy
+
+
+									vector<LPCOLLISIONEVENT> coEvents;
+									vector<LPCOLLISIONEVENT> coEventsResult;
+									coEvents.clear();
+									vector<LPGAMEOBJECT> list_Brick;
+									list_Brick.clear();
+									for (UINT i = 0; i < coObjects->size(); i++)
+										if (coObjects->at(i)->GetType() == eType::BRICK)
+											list_Brick.push_back(coObjects->at(i));
+									CalcPotentialCollisions(&list_Brick, coEvents);
+									if (coEvents.size() == 0)
+									{
+										x += dx;
+										y += dy;
+									}
+									else
+									{
+										float min_tx, min_ty, nx = 0, ny;
+										float rdx = 0;
+										float rdy = 0;
+
+										FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+										x += min_tx * dx + nx * 0.4f;
+										y += min_ty * dy + ny * 0.4f;
+										if (nx != 0 || ny != 0)
+										{
+											vx = 0;
+											vy = 0;
+											isOnStair = false; // kết thúc việc đang trên cầu thang
+											isWalking = false;
+											isWalkingOnStair = 0;
+										}
+									}
+
+									for (UINT i = 0; i < coEvents.size(); i++)
+										delete coEvents[i];
+
+									return; // ko cần xét tiếp
+								}
+							}
+						}
+
+
+					}
+				}
+			}
+
+			x += dx;
+			y += dy;
+			return;// ko cần xét tiếp
+		}
+
+		if (CountCollisionUp > 0 && CountCollisionDown == 0) // đang đi xuống và chỉ va chạm thang up
 		{
 			vector<LPCOLLISIONEVENT> coEvents;
 			vector<LPCOLLISIONEVENT> coEventsResult;
@@ -864,20 +1019,73 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 
 	if (ny == -1) // đang đi lên
 	{
-		int CountCollisionTop = 0;
+		int CountCollisionDown = 0;
+		int CountCollisionUp = 0;
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			if (coObjects->at(i)->GetType() == eType::STAIR_DOWN) // nếu là object ở trên
+			if (coObjects->at(i)->GetType() == eType::STAIR_DOWN)
 			{
-				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với top stair
+				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với down
 				{
-					CountCollisionTop++;
-					break;
+					CountCollisionDown++;
+					continue;
+				}
+			}
+
+			if (coObjects->at(i)->GetType() == eType::STAIR_UP)
+			{
+				if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với up
+				{
+					CountCollisionUp++;
+					continue;
 				}
 			}
 		}
 
-		if (CountCollisionTop > 0) // có va chạm với top, và nó đang đi lên
+		if (CountCollisionUp > 0 && CountCollisionDown > 0) // nếu đang lên và va chạm cả 2 stair
+		{
+			// cho đi bình thường
+
+			// nhưng set lại nx theo hướng của thang up hiện đang va chạm
+			for (UINT i = 0; i < coObjects->size(); i++)
+			{
+				if (coObjects->at(i)->GetType() == eType::STAIR_UP)
+				{
+					if (this->isCollitionObjectWithObject(coObjects->at(i))) // có va chạm với up
+					{
+						if (this->nx != coObjects->at(i)->GetNx())
+						{
+							this->NxStair = coObjects->at(i)->GetNx();
+							this->nx = coObjects->at(i)->GetNx();
+							this->vx = -this->vx;
+
+							if (vx >= 0) //nếu vận tốc > 0 mà dx vẫn < 0 thì set lại
+							{
+								if (dx <= 0)
+								{
+									dx = -dx;
+								}
+							}
+							else
+							{
+								if (dx >= 0)
+								{
+									dx = -dx;
+								}
+							}
+
+						}
+						break;
+					}
+				}
+			}
+
+			x += dx;
+			y += dy;
+			return;// ko cần xét tiếp
+		}
+
+		if (CountCollisionUp == 0 && CountCollisionDown > 0) // đang đi lên và chỉ va chạm down
 		{
 
 			y = y - 50; // kéo simon lên cao

@@ -512,14 +512,14 @@
 #Stair 
 #type 4 in, 5 out
 # type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx
-
+4	305	220	0	900	1	-1
 
 
 
 
 # --- SCENE PORTAL ---- 115 98 150 1
 # type	l	t	ani_set_id	id	r	b	scene_id	SwitchType
-50	400	390	0	999	480	420	5	1
+50	129	25	0	999	140	29	5	1
 
 
 #====================[TILEMAP]===================================

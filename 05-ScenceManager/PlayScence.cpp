@@ -435,6 +435,17 @@ void CPlayScene::LoadSimonState(int SwitchType)
 
 		f.close();
 	}
+
+	// xử lý chuyển Scene và Simon đang trên thang
+	if (MainSimon::GetInstance()->GetSimon()->isOnStair)
+	{
+		MainSimon::GetInstance()->GetSimon()->isWalkingOnStair = 0;
+		MainSimon::GetInstance()->GetSimon()->vx = 0;
+		MainSimon::GetInstance()->GetSimon()->vy = 0;
+		MainSimon::GetInstance()->GetSimon()->isWalking = false;
+		MainSimon::GetInstance()->GetSimon()->walkHeight = 0;
+	}
+
 }
 
 void CPlayScene::LoadResources()
@@ -460,7 +471,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
-	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+	DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
