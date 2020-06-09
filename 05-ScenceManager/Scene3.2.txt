@@ -491,11 +491,22 @@
 4	113	300	0	900	1	1
 4	113	310	0	900	2	-1
 
+#out thang doi
+4	238	180	0	900	2	1
+#thang le 1
+4	750	365	0	900	1	1
+4	818	240	0	900	2	1
+#thang le 1
+4	1265	355	0	900	1	-1
+4	1136	185	0	900	2	-1
+
 
 
 # --- SCENE PORTAL ---- 115 98 150 1
 # type	l	t	ani_set_id	id	r	b	scene_id	SwitchType
 50	1468	240	0	999	1500	300	6	1
+#quay lai
+50	214	390	0	999	229	430	4	0
 
 
 #====================[TILEMAP]===================================
@@ -509,7 +520,7 @@ textures\castle\map\Scene3.2\3.2.png	textures\castle\map\Scene3.2\3.2.txt
 #=========[LOADSIMON_0]============
 #X	Y
 [LOADSIMON_0]
-200	80
+1404	200
 
 
 #=========[LOADSIMON_1]============

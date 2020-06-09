@@ -506,7 +506,7 @@
 
 # --- SCENE PORTAL ---- 115 98 150 1
 # type	l	t	ani_set_id	id	r	b	scene_id	SwitchType
-50	10	144	0	999	50	194	4	1
+50	10	144	0	999	20	194	4	1
 
 50	732	457	0	999	780	474	2	0
 
@@ -523,7 +523,7 @@ textures\castle\map\Scene2.2\2.2.png	textures\castle\map\Scene2.2\2.2.txt
 #=========[LOADSIMON_0]============
 #X	Y
 [LOADSIMON_0]
-284	70
+30	70
 
 
 #=========[LOADSIMON_1]============

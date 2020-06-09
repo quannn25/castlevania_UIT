@@ -470,11 +470,27 @@
 
 
 
+#Stair 
+#type 4 in, 5 out
+# type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx
+4	271	259	0	900	1	-1
+4	208	143	0	900	2	-1
+#thang 2
+4	721	369	0	900	1	-1
+4	593	206	0	900	2	-1
+#thang 3
+4	1359	330	0	900	1	1
+4	1425	208	0	900	2	1
+
+
 
 
 # --- SCENE PORTAL ---- 1450 280 1480 335
 # type	l	t	ani_set_id	id	r	b	scene_id	SwitchType
-50	1490	280	0	999	1500	335	1	1
+50	1520	260	0	999	1530	335	1	1
+
+#quay lai
+50	0	165	0	999	7	205	5	0
 
 
 #====================[TILEMAP]===================================
@@ -494,4 +510,4 @@ textures\castle\map\Scene4\4.png	textures\castle\map\Scene4\4.txt
 #=========[LOADSIMON_1]============
 #X	Y
 [LOADSIMON_1]
-1200	200
+50	175

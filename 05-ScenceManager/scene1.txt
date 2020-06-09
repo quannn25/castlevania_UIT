@@ -470,10 +470,10 @@ textures\castle\map\Scene1\1.png	textures\castle\map\Scene1\1.txt
 #=========[LOADSIMON_0]============
 #X	Y
 [LOADSIMON_0]
-200	80
+1345	250
 
 
 #=========[LOADSIMON_1]============
 #X	Y
 [LOADSIMON_1]
-500	200
+10	200
