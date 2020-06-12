@@ -22,6 +22,7 @@
 #include "BlackKnight.h"
 #include "Zombie.h"
 #include "ZombieZone.h"
+#include "Bat.h"
 
 class CPlayScene: public CScene
 {
@@ -44,6 +45,8 @@ protected:
 	GameTime * gameTime; //unload()??? hay truyền
 
 	vector <LPGAMEOBJECT> listBlackKnight;
+
+	vector <LPGAMEOBJECT> listBat;
 
 	vector <LPGAMEOBJECT> listZombie; // hiện chỉ có zombie
 	DWORD TimeZombie; // thoi gian tao zombie vừa rồi /////////////////////////// chua deleteeeeeeeeeeeeeeeeeeeeeeeeeeee

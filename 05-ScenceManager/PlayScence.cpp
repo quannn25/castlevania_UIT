@@ -244,6 +244,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 		break;
+	case OBJECT_TYPE_BAT:
+	{
+		obj = new Bat(x, y);
+		obj->SetType(eType::BAT);
+
+		obj->SetId(id);
+
+		listBat.push_back(obj);
+		return;
+	}
+		break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -523,11 +534,13 @@ void CPlayScene::Update(DWORD dt)
 			listEffect[i]->Update();
 	}
 
+	// update enemy
 
 	updateEnemy(dt);
 
 	CreateZombie();
 
+	// check collision
 	CheckCollision();
 
 	// Update camera to follow mario
@@ -559,12 +572,6 @@ void CPlayScene::Render()
 			listItem[i]->Render();
 	}
 
-	for (int i = 0; i < listEffect.size(); i++)
-	{
-		if (listEffect[i]->GetFinish() == false)
-			listEffect[i]->Render();
-	}
-
 	for (UINT i = 0; i < listZombie.size(); i++)
 	{
 		if (listZombie[i]->GetHealth() > 0)
@@ -586,12 +593,37 @@ void CPlayScene::Render()
 
 		if (listBlackKnight[i]->GetHealth() > 0)
 		{
-			if (isOncam(listBlackKnight[i]->GetX(), listBlackKnight[i]->GetY(), widthEnemy, heightEnemy) == true)  // trong camera thi update
+			if (isOncam(listBlackKnight[i]->GetX(), listBlackKnight[i]->GetY(), widthEnemy, heightEnemy) == true)
 			{
 				listBlackKnight[i]->Render();
 			}
 		}
 			
+	}
+
+	for (UINT i = 0; i < listBat.size(); i++)
+	{
+		float l, t, r, b;
+		float widthEnemy, heightEnemy;
+		listBat[i]->GetBoundingBox(l, t, r, b);
+		widthEnemy = b - t;
+		heightEnemy = r - l;
+
+		if (listBat[i]->GetHealth() > 0)
+		{
+			if (isOncam(listBat[i]->GetX(), listBat[i]->GetY(), widthEnemy, heightEnemy) == true)
+			{
+				listBat[i]->Render();
+			}
+		}
+	}
+
+
+
+	for (int i = 0; i < listEffect.size(); i++)
+	{
+		if (listEffect[i]->GetFinish() == false)
+			listEffect[i]->Render();
 	}
 
 	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
@@ -651,6 +683,11 @@ void CPlayScene::Unload()
 		delete listBlackKnight[i];
 
 	listBlackKnight.clear();
+
+	for (int i = 0; i < listBat.size(); i++)
+		delete listBat[i];
+
+	listBat.clear();
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
@@ -938,6 +975,8 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 					
 					// if health <= 0 moi rot item
 					if (rand() % 2 == 1) // tỉ lệ 50%
@@ -951,6 +990,22 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+				case eType::BAT:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
 					if (rand() % 2 == 1) // tỉ lệ 50%
 					{
@@ -1011,6 +1066,44 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					player->SetScore(player->GetScore() + 100);
 
 					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+				case eType::BLACKKNIGHT:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					player->SetScore(player->GetScore() + 100);
+
+					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+				case eType::BAT:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					player->SetScore(player->GetScore() + 100);
+
+					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
 					if (rand() % 2 == 1) // tỉ lệ 50%
 					{
@@ -1091,10 +1184,12 @@ void CPlayScene::CheckCollisionWithEnemy()
 	// kiểm tra va chạm vũ khí với enemy
 	CheckCollisionWeapon(listZombie);
 	CheckCollisionWeapon(listBlackKnight);
+	CheckCollisionWeapon(listBat);
 
 	// kiểm tra va chạm simon với enemy
 	CheckCollisionSimonWithEnemy(listZombie);
 	CheckCollisionSimonWithEnemy(listBlackKnight);
+	CheckCollisionSimonWithEnemy(listBat);
 }
 
 void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
@@ -1180,6 +1275,32 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	}
 
 	if (type == eType::BLACKKNIGHT)
+	{
+		int random = rand() % 10;
+		switch (random)
+		{
+		case 0:
+			return	new LargeHeart(x, y);
+			break;
+		case 1:
+			return	new SmallHeart(x, y);
+			break;
+		case 2:
+			return new DaggerItem(x, y);
+			break;
+		case 3:
+			return new Monney(x, y);
+			break;
+		case 4:
+			return new UpgradeMorningStar(x, y);
+			break;
+		default: // 50% còn lại là SmallHeart
+			return new SmallHeart(x, y);
+			break;
+		}
+	}
+
+	if (type == eType::BAT)
 	{
 		int random = rand() % 10;
 		switch (random)
@@ -1402,6 +1523,26 @@ void CPlayScene::updateEnemy(DWORD dt)
 	for (UINT i = 0; i < listBlackKnight.size(); i++)
 	{
 		BlackKnight * enemy = dynamic_cast<BlackKnight *>(listBlackKnight[i]);
+		if (enemy->GetHealth() > 0) // còn máu
+		{
+			float l, t, r, b;
+			float widthEnemy, heightEnemy;
+			enemy->GetBoundingBox(l, t, r, b);
+			widthEnemy = b - t;
+			heightEnemy = r - l;
+
+			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == true)  // trong camera thi update
+			{
+				enemy->Update(dt, player, &coObjects);
+			}
+		}
+	}
+
+	// Bat==========================
+
+	for (UINT i = 0; i < listBat.size(); i++)
+	{
+		Bat * enemy = dynamic_cast<Bat *>(listBat[i]);
 		if (enemy->GetHealth() > 0) // còn máu
 		{
 			float l, t, r, b;

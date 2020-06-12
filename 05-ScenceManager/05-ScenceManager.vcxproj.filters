@@ -189,6 +189,9 @@
     <ClCompile Include="ZombieZone.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -321,6 +324,9 @@
       <Filter>Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="ZombieZone.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
