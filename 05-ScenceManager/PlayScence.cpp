@@ -166,7 +166,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(OBJECT_TYPE_BRICK);
 		obj->SetType(eType::BRICK);
 		break;
-	case OBJECT_TYPE_SPECIALBRICK:
+	case OBJECT_TYPE_SPECIALBRICK: // gạch bbox lớn
 	{
 		float w = atof(tokens[5].c_str());
 		float h = atof(tokens[6].c_str());
@@ -175,7 +175,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetType(eType::SPECIALBRICK);
 	}
 		break;
-	case OBJECT_TYPE_SPECIALBRICKSMALL:
+	case OBJECT_TYPE_SPECIALBRICKSMALL: //gạch bbox nhỏ
 		obj = new CBrick(OBJECT_TYPE_SPECIALBRICKSMALL);
 		obj->SetType(eType::SPECIALBRICKSMALL);
 		break;
@@ -190,7 +190,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_STAIR:
 		{
 			int t = atof(tokens[5].c_str()); //	1 up 2 down
-				int nx1 = atof(tokens[6].c_str());
+			int nx1 = atof(tokens[6].c_str());
 			obj = new Stair(x, y, t, nx1);
 			if (t == 1)
 				obj->SetType(eType::STAIR_UP);
@@ -200,7 +200,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BLACKKNIGHT:
 	{
-		obj = new BlackKnight();
+		float left_boundary = atof(tokens[5].c_str());
+		float right_boundary = atof(tokens[6].c_str());
+
+		obj = new BlackKnight(left_boundary, right_boundary);
 		obj->SetType(eType::BLACKKNIGHT);
 
 		obj->SetPosition(x, y);
@@ -209,7 +212,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 
-		listEnemy.push_back((Enemy*)obj);
+		listBlackKnight.push_back((Enemy*)obj);
 		return;
 	}
 		break;
@@ -221,12 +224,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 
-		float l1 = atof(tokens[1].c_str());
+		float l1 = atof(tokens[1].c_str()); // bbox zone zombie
 		float t1 = atof(tokens[2].c_str());
 		float r1 = atof(tokens[3].c_str());
 		float b1 = atof(tokens[4].c_str());
 
-		float xZom1 = atof(tokens[5].c_str());
+		float xZom1 = atof(tokens[5].c_str()); // tọa độ xuất hiện zombie, = -1 => theo camera
 		float yZom1 = atof(tokens[6].c_str());
 		float xZom2 = atof(tokens[7].c_str());
 		float yZom2= atof(tokens[8].c_str());
@@ -246,7 +249,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			float r = atof(tokens[5].c_str());
 			float b = atof(tokens[6].c_str());
 			int scene_id = atoi(tokens[7].c_str());
-			int switchType = atoi(tokens[8].c_str());
+			int switchType = atoi(tokens[8].c_str()); // 1 chuyển sang scene sau, 0 quay về scene trước
 
 			obj = new CPortal(x, y, r, b, scene_id, switchType);
 			obj->SetType(eType::PORTAL);
@@ -471,7 +474,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
-	DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
@@ -562,15 +565,33 @@ void CPlayScene::Render()
 			listEffect[i]->Render();
 	}
 
-	for (UINT i = 0; i < listEnemy.size(); i++)
+	for (UINT i = 0; i < listZombie.size(); i++)
 	{
-		if (listEnemy[i]->GetHealth() > 0)
-			listEnemy[i]->Render();
+		if (listZombie[i]->GetHealth() > 0)
+			listZombie[i]->Render();
 	}
 
 	for (UINT i = 0; i < listZombieZone.size(); i++)
 	{
 		listZombieZone[i]->RenderBoundingBox();
+	}
+
+	for (UINT i = 0; i < listBlackKnight.size(); i++)
+	{
+		float l, t, r, b;
+		float widthEnemy, heightEnemy;
+		listBlackKnight[i]->GetBoundingBox(l, t, r, b);
+		widthEnemy = b - t;
+		heightEnemy = r - l;
+
+		if (listBlackKnight[i]->GetHealth() > 0)
+		{
+			if (isOncam(listBlackKnight[i]->GetX(), listBlackKnight[i]->GetY(), widthEnemy, heightEnemy) == true)  // trong camera thi update
+			{
+				listBlackKnight[i]->Render();
+			}
+		}
+			
 	}
 
 	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
@@ -616,15 +637,20 @@ void CPlayScene::Unload()
 
 	listEffect.clear();
 
-	for (int i = 0; i < listEnemy.size(); i++)
-		delete listEnemy[i];
+	for (int i = 0; i < listZombie.size(); i++)
+		delete listZombie[i];
 
-	listEnemy.clear();
+	listZombie.clear();
 
 	for (int i = 0; i < listZombieZone.size(); i++)
 		delete listZombieZone[i];
 
 	listZombieZone.clear();
+
+	for (int i = 0; i < listBlackKnight.size(); i++)
+		delete listBlackKnight[i];
+
+	listBlackKnight.clear();
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
@@ -913,11 +939,24 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
 					
+					// if health <= 0 moi rot item
 					if (rand() % 2 == 1) // tỉ lệ 50%
 					{
 						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					}
 					
+					break;
+				}
+				case eType::BLACKKNIGHT:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
 					break;
 				}
 
@@ -1049,12 +1088,16 @@ void CPlayScene::CheckCollisionSimonWithItem()
 
 void CPlayScene::CheckCollisionWithEnemy()
 {
-	CheckCollisionWeapon(listEnemy);
+	// kiểm tra va chạm vũ khí với enemy
+	CheckCollisionWeapon(listZombie);
+	CheckCollisionWeapon(listBlackKnight);
 
-	CheckCollisionSimonWithEnemy();
+	// kiểm tra va chạm simon với enemy
+	CheckCollisionSimonWithEnemy(listZombie);
+	CheckCollisionSimonWithEnemy(listBlackKnight);
 }
 
-void CPlayScene::CheckCollisionSimonWithEnemy()
+void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
 {
 
 	if (GetTickCount() - player->getUntouchable_start() > SIMON_UNTOUCHABLE_TIME)
@@ -1065,9 +1108,9 @@ void CPlayScene::CheckCollisionSimonWithEnemy()
 
 	if (player->getUntouchable() == false) // tắt chế độ ko cho đụng
 	{
-		for (UINT i = 0; i < listEnemy.size(); i++)
+		for (UINT i = 0; i < listEnemyX.size(); i++)
 		{
-			CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemy[i]);
+			CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemyX[i]);
 			if (gameobj->GetHealth() > 0) // còn sống
 			{
 				LPCOLLISIONEVENT e = player->SweptAABBEx(gameobj);
@@ -1111,6 +1154,32 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 
 	if (type == eType::ZOMBIE)
+	{
+		int random = rand() % 10;
+		switch (random)
+		{
+		case 0:
+			return	new LargeHeart(x, y);
+			break;
+		case 1:
+			return	new SmallHeart(x, y);
+			break;
+		case 2:
+			return new DaggerItem(x, y);
+			break;
+		case 3:
+			return new Monney(x, y);
+			break;
+		case 4:
+			return new UpgradeMorningStar(x, y);
+			break;
+		default: // 50% còn lại là SmallHeart
+			return new SmallHeart(x, y);
+			break;
+		}
+	}
+
+	if (type == eType::BLACKKNIGHT)
 	{
 		int random = rand() % 10;
 		switch (random)
@@ -1228,11 +1297,11 @@ void CPlayScene::CreateZombie()
 							// zombie chạy từ phải qua trái
 							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 							{
-								listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
 							}
 							else // tạo theo tọa độ parse vào
 							{
-								listEnemy.push_back(new Zombie(x2, y2, -1));
+								listZombie.push_back(new Zombie(x2, y2, -1));
 							}
 							
 						}
@@ -1241,11 +1310,11 @@ void CPlayScene::CreateZombie()
 							// zombie chạy từ bên trái qua phải
 							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 							{
-								listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
 							}
 							else // tạo theo tọa độ parse vào
 							{
-								listEnemy.push_back(new Zombie(x1, y1, 1));
+								listZombie.push_back(new Zombie(x1, y1, 1));
 							}
 						}
 						else // đứng yên thì random chiều zombie chạy
@@ -1255,22 +1324,22 @@ void CPlayScene::CreateZombie()
 							{
 								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 								{
-									listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
 								}
 								else // tạo theo tọa độ parse vào
 								{
-									listEnemy.push_back(new Zombie(x1, y1, 1));
+									listZombie.push_back(new Zombie(x1, y1, 1));
 								}
 							}
 							else // đi từ bên phải
 							{
 								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 								{
-									listEnemy.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
 								}
 								else // tạo theo tọa độ parse vào
 								{
-									listEnemy.push_back(new Zombie(x2, y2, -1));
+									listZombie.push_back(new Zombie(x2, y2, -1));
 								}
 							}
 						}
@@ -1299,9 +1368,11 @@ void CPlayScene::CreateZombie()
 
 void CPlayScene::updateEnemy(DWORD dt)
 {
-	for (UINT i = 0; i < listEnemy.size(); i++)
+	//Zombie========================
+
+	for (UINT i = 0; i < listZombie.size(); i++)
 	{
-		CGameObject * enemy = dynamic_cast<CGameObject *>(listEnemy[i]);
+		CGameObject * enemy = dynamic_cast<CGameObject *>(listZombie[i]);
 		if (enemy->GetHealth() > 0) // còn máu
 		{
 			float l, t, r, b;
@@ -1309,6 +1380,7 @@ void CPlayScene::updateEnemy(DWORD dt)
 			enemy->GetBoundingBox(l, t, r, b);
 			widthEnemy = b - t;
 			heightEnemy = r - l;
+
 			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
 			{
 
@@ -1324,5 +1396,26 @@ void CPlayScene::updateEnemy(DWORD dt)
 			}
 		}
 	}
+
+	// BlackKinght=======================
+
+	for (UINT i = 0; i < listBlackKnight.size(); i++)
+	{
+		BlackKnight * enemy = dynamic_cast<BlackKnight *>(listBlackKnight[i]);
+		if (enemy->GetHealth() > 0) // còn máu
+		{
+			float l, t, r, b;
+			float widthEnemy, heightEnemy;
+			enemy->GetBoundingBox(l, t, r, b);
+			widthEnemy = b - t;
+			heightEnemy = r - l;
+
+			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == true)  // trong camera thi update
+			{
+				enemy->Update(dt, player, &coObjects);
+			}
+		}
+	}
+
 }
 

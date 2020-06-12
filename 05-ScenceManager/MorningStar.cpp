@@ -12,6 +12,12 @@ MorningStar::MorningStar()
 	SetAnimationSet(ani_set);
 	type = eType::MORNINGSTAR;
 	this->level = 0;
+
+	timeAttack = 0;
+
+	isAttack = false;
+
+	lastFrameTime = -1;
 }
 
 void MorningStar::ReSetAniSetSwitchScene()
@@ -34,9 +40,50 @@ void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	this->dy = vy * dt;
 
 	this->timeAttack += dt;
+
+	// dùng để set lại isAttack, diệt bug đánh 1 lần nhưng update quá nhanh =>>
+	//=> còn roi => còn va chạm với enemy => nó mất nhiều hơn 1 máu
+	if (level == 0 && animation_set->at(0)->getCurrentFrame() == 2)
+	{
+		if (lastFrameTime == -1)
+		{
+			lastFrameTime = animation_set->at(0)->getLastFrameTime();
+			isAttack = true;
+		}
+		else
+			isAttack = false;
+
+		/*DebugOut(L"lastFrame = %d, getLast = %d\n", lastFrameTime, animation_set->at(0)->getLastFrameTime());
+		if (lastFrameTime != animation_set->at(0)->getLastFrameTime())
+		{
+			isAttack = false;
+		}*/
+	}
+
+	if (level == 1 && animation_set->at(1)->getCurrentFrame() == 2)
+	{
+		if (lastFrameTime == -1)
+		{
+			lastFrameTime = animation_set->at(1)->getLastFrameTime();
+			isAttack = true;
+		}
+		else
+			isAttack = false;
+	}
+
+	if (level == 2 && animation_set->at(2)->getCurrentFrame() == 2)
+	{
+		if (lastFrameTime == -1)
+		{
+			lastFrameTime = animation_set->at(2)->getLastFrameTime();
+			isAttack = true;
+		}
+		else
+			isAttack = false;
+	}
 	
 
-	if (timeAttack >= 300) // chưa đủ vẽ hết frame cuối?
+	if (timeAttack >= 320) // chưa đủ vẽ hết frame cuối?
 	{
 		isFinish = true;
 	}
@@ -49,6 +96,10 @@ void MorningStar::Create(float simonX, float simonY, int simonNx)
 	UpdatePositionFitSimon();
 
 	timeAttack = 0;
+
+	isAttack = false;
+
+	lastFrameTime = -1;
 
 	switch (level)
 	{
@@ -146,13 +197,13 @@ void MorningStar::GetBoundingBox(float & left, float & top, float & right, float
 
 bool MorningStar::isCollision(LPGAMEOBJECT obj)
 {
-	if (level == 0 && animation_set->at(0)->getCurrentFrame() != 2)
+	if ((level == 0 && animation_set->at(0)->getCurrentFrame() != 2) || isAttack == false)
 		return false;
 
-	if (level == 1 && animation_set->at(1)->getCurrentFrame() != 2)
+	if ((level == 1 && animation_set->at(1)->getCurrentFrame() != 2) || isAttack == false)
 		return false;
 
-	if (level == 2 && animation_set->at(2)->getCurrentFrame() != 2)
+	if ((level == 2 && animation_set->at(2)->getCurrentFrame() != 2) || isAttack == false)
 		return false;
 
 	CGameObject *gameObj = dynamic_cast<CGameObject*>(obj);

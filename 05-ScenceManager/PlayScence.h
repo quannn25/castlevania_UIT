@@ -43,8 +43,9 @@ protected:
 
 	GameTime * gameTime; //unload()??? hay truyền
 
-	vector <LPGAMEOBJECT> listEnemy;
+	vector <LPGAMEOBJECT> listBlackKnight;
 
+	vector <LPGAMEOBJECT> listZombie; // hiện chỉ có zombie
 	DWORD TimeZombie; // thoi gian tao zombie vừa rồi /////////////////////////// chua deleteeeeeeeeeeeeeeeeeeeeeeeeeeee
 	vector <ZombieZone*> listZombieZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
 
@@ -71,7 +72,7 @@ public:
 	void CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj);
 	void CheckCollisionSimonWithItem();
 	void CheckCollisionWithEnemy();
-	void CheckCollisionSimonWithEnemy();
+	void CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX);
 
 	bool isOncam(float x1, float y1, float w1, float h1);
 

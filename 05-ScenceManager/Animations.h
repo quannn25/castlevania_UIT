@@ -33,6 +33,7 @@ public:
 	int getCurrentFrame() { return currentFrame; }
 	void setCurrentFrame(int curFrame) { this->currentFrame = curFrame; }
 	int getFramesSize() { return frames.size(); }
+	int getLastFrameTime() { return lastFrameTime; }
 	void Render(float x, float y, int alpha = 255, bool isLeft = true);
 };
 

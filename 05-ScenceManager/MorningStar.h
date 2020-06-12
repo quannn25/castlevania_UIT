@@ -13,6 +13,8 @@ class MorningStar : public Weapon
 protected:
 	int level;
 	DWORD timeAttack;
+	int lastFrameTime;
+	bool isAttack;
 public:
 	MorningStar();
 	~MorningStar();
