@@ -477,6 +477,7 @@ void Simon::SetState(int state)
 
 void Simon::SetHurt(LPCOLLISIONEVENT e)
 {
+	bool isOnStairWalking = isWalking;
 	if (isHurting == true)
 		return;
 	if (e->nx == 0 && e->ny == 0) // ko có va chạm
@@ -505,6 +506,12 @@ void Simon::SetHurt(LPCOLLISIONEVENT e)
 			vy = -SIMON_JUMP_SPEED_Y;
 			isHurting = 1;
 		}
+
+	}
+	else
+	{
+		if (isOnStairWalking)
+			isWalking = 1;
 	}
 
 	StartUntouchable(); // bật untouch
