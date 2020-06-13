@@ -28,9 +28,19 @@ void Board::Render(Simon *simon , int state, Weapon * subWeapon, int RemainingTi
 
 	if (subWeapon != NULL)
 	{
-		if (subWeapon->GetType() == eType::DAGGER)
+		switch (subWeapon->GetType())
 		{
+		case eType::DAGGER:
 			subWeapon->RenderIcon(x1 + 310, y1 + 40);
+			break;
+
+		case eType::HOLYWATER:
+			subWeapon->RenderIcon(x1 + 315, y1 + 30);
+			break;
+
+
+		default:
+			break;
 		}
 
 	}

@@ -2,9 +2,10 @@
 #define ZOMBIE_H
 
 #define TIME_CREATE_ZOMBIE 1000
-#define ZOMBIE_SPEED 0.05f
+#define ZOMBIE_SPEED_X 0.05f
 #define ZOMBIE_FRAMEWIDTH 32
 #define ZOMBIE_FRAMEHEIGHT 64
+#define ZOMBIE_GRAVITY 0.005f
 
 #include "Enemy.h"
 class Zombie : public CGameObject

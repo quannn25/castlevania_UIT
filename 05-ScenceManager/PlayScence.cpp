@@ -1029,6 +1029,8 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 		{
 			if (player->subWeapon->isCollision(listObj[i]) == true) // có va chạm với obj (heal > 0)
 			{
+				bool isCollisonWithEnemy = false;
+
 				switch (listObj[i]->GetType())
 				{
 				case eType::CANDLE:
@@ -1036,7 +1038,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
 
-					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
@@ -1049,7 +1051,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
 
-					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
@@ -1065,7 +1067,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					player->SetScore(player->GetScore() + 100);
 
-					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 
@@ -1083,7 +1085,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					player->SetScore(player->GetScore() + 100);
 
-					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 
@@ -1101,7 +1103,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					player->SetScore(player->GetScore() + 100);
 
-					player->subWeapon->SetFinish(true);   // trúng object thì tắt luôn
+					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
@@ -1116,6 +1118,27 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				default:
 					break;
 				}
+
+				if (isCollisonWithEnemy)
+				{
+					switch (player->subWeapon->GetType())
+					{
+					case eType::HOLYWATER:
+					{
+						break;
+					}
+
+					case eType::DAGGER:
+					{
+
+						player->subWeapon->SetFinish(true); // hủy cây kiếm
+						break;
+					}
+					default:
+						break;
+					}
+				}
+
 			}
 		}
 	}
@@ -1167,6 +1190,17 @@ void CPlayScene::CheckCollisionSimonWithItem()
 				{
 					listItem[i]->SetFinish(true);
 					player->SetScore(player->GetScore() + 1000);
+					break;
+				}
+				case eType::HOLYWATERITEM:
+				{
+					if (player->subWeapon)
+					{
+						delete player->subWeapon;
+						player->subWeapon = NULL;
+					}
+					player->subWeapon = new HolyWater();
+					listItem[i]->SetFinish(true);
 					break;
 				}
 				default:
@@ -1238,7 +1272,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 			return new DaggerItem(x, y);
 
 		if (id == 100 || id == 101)
-			return new UpgradeMorningStar(x, y);
+			return new HolyWaterItem(x, y);
 
 	}
 
@@ -1513,7 +1547,7 @@ void CPlayScene::updateEnemy(DWORD dt)
 			}
 			else
 			{
-				enemy->Update(dt);
+				enemy->Update(dt, &coObjects);
 			}
 		}
 	}

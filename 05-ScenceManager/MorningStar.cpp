@@ -83,7 +83,7 @@ void MorningStar::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	
 
-	if (timeAttack >= 320) // chưa đủ vẽ hết frame cuối?
+	if (timeAttack >= 320) // chưa đủ vẽ hết frame cuối? // chắc là sẽ dùng frame cuối trống để xét kết thúc
 	{
 		isFinish = true;
 	}

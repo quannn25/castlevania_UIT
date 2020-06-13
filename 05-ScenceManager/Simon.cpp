@@ -95,7 +95,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (subWeapon != NULL && subWeapon->GetFinish() == false)
 	{
-		subWeapon->Update(dt);
+		subWeapon->Update(dt, coObjects);
 	}
 
 

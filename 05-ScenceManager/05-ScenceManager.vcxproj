@@ -143,6 +143,8 @@
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="Hit.cpp" />
+    <ClCompile Include="HolyWater.cpp" />
+    <ClCompile Include="HolyWaterItem.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
@@ -189,6 +191,8 @@
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="Hit.h" />
+    <ClInclude Include="HolyWater.h" />
+    <ClInclude Include="HolyWaterItem.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="LargeHeart.h" />

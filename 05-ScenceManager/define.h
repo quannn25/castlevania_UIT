@@ -56,6 +56,8 @@ using namespace std;
 #define SMALLHEART_ANI_SET_ID 54
 #define ZOMBIE_ANI_SET_ID 56
 #define BAT_ANI_SET_ID 57
+#define HOLYWATERITEM_ANI_SET_ID 58
+#define HOLYWATER_ANI_SET_ID 59
 
 #define TIME_CREATE_GHOST 1000
 
@@ -116,7 +118,11 @@ enum eType
 
 	SPECIALBRICKSMALL = 67,
 
-	BAT = 68
+	BAT = 68,
+
+	HOLYWATER = 69,
+
+	HOLYWATERITEM = 70
 
 };
 

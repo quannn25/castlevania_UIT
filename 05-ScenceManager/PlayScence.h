@@ -23,6 +23,8 @@
 #include "Zombie.h"
 #include "ZombieZone.h"
 #include "Bat.h"
+#include "HolyWater.h"
+#include "HolyWaterItem.h"
 
 class CPlayScene: public CScene
 {
