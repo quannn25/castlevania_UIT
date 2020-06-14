@@ -496,9 +496,9 @@
 1	32	304	22	3
 
 
-#Black Knight
+#Black Knight175y
 # type	x	y	ani_set_id	id	leftBoundary	rightBoundary
-5	75	175	55	15	70	285
+5	120	90	55	15	70	285
 
 #Bat
 # type	x	y	ani_set_id	id
@@ -542,4 +542,4 @@ textures\castle\map\Scene2.1\2.1.png	textures\castle\map\Scene2.1\2.1.txt
 #=========[LOADSIMON_1]============
 #X	Y
 [LOADSIMON_1]
-40	300
+70	330

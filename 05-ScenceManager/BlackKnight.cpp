@@ -31,7 +31,7 @@ void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObject
 {
 	CGameObject::Update(dt);
 
-	DebugOut(L"[INFO] BK_health = %d\n", this->health);
+	//DebugOut(L"[INFO] BK_health = %d\n", this->health);
 	if (simon->GetY() >= this->y - 10 && simon->GetY() <= this->y + 10) // simon trong tầm thì hướng về simon
 	{
 		if (simon->GetX() <= this->x) // kiểm tra vị trí simon
@@ -75,4 +75,42 @@ void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObject
 
 	// nếu đụng biên phải thì quay lại
 	// xong tiếp tục đi hướng của nó, nếu y simon trong độ cao khoảng xác định dựa trên y bkacknight (yBK - 10 < ySimon < yBK + 10 ) thì quay về hướng của simon (xsimon < xBK => nxBK = -1, ngược lại)
+
+
+	vy += BLACKKNIGHT_GRAVITY * dt;
+
+	vector<LPGAMEOBJECT> listObject_Brick;
+	listObject_Brick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			listObject_Brick.push_back(coObjects->at(i));
+	}
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	coEvents.clear();
+	CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm 
+	if (coEvents.size() == 0)
+	{
+		y += dy;
+		
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		
+		y += min_ty * dy + ny * 0.4f;
+	
+
+		if (ny != 0)
+		{
+			vy = 0;
+		}
+	}
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }

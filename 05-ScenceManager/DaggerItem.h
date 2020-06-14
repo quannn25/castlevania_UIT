@@ -4,9 +4,9 @@
 #include "Item.h"
 
 #define ITEMDAGGER_TIMEDISPLAYMAX 3000
-#define ITEMDAGGER_GRAVITY 0.25f
+#define ITEMDAGGER_GRAVITY 0.2f
 #define DAGGER_FRAMEWIDTH 32
-#define DAGGER_FRAMEHEIGHT 25 //18 // buggggggggggggggggggg
+#define DAGGER_FRAMEHEIGHT 18 //18 // buggggggggggggggggggg
 #define DAGGERITEM_TIMEWAITMAX 300
 
 

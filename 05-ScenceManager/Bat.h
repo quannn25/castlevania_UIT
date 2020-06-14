@@ -1,7 +1,7 @@
 ﻿#ifndef BAT_H
 #define BAT_H
 
-#include "GameObject.h" 
+#include "Enemy.h"
 #include "Simon.h"
 
 #define BAT_SPEED_X 0.3f 
@@ -12,7 +12,7 @@
 #define DeltaY 60
 
 
-class Bat : public CGameObject
+class Bat : public Enemy
 {
 private:
 	float deltaY;

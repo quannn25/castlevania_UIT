@@ -143,6 +143,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 			player->SetPosition(x, y);
 			player->SetId(id);
+			if (!player->isOnStair)
+			{
+				player->isJumping = 1;
+				player->vx = 0;
+				player->vy = 0;
+			}
 
 			// reset các ani_set của các Obj đc truyền qua
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id); // ani_set Simon
@@ -156,11 +162,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			objects.push_back(player); // add lai
 			return;
 		}
-		obj = new Simon(); 
+		obj = new Simon();
 		obj->SetType(eType::SIMON);
 
 		MainSimon::GetInstance()->SetSimon((Simon*)obj);
 		player = (Simon*)obj;
+		if (!player->isOnStair)
+		{
+			player->isJumping = 1;
+			player->vx = 0;
+			player->vy = 0;
+		}
+
 		break;
 	case OBJECT_TYPE_BRICK:
 		obj = new CBrick(OBJECT_TYPE_BRICK);

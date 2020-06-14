@@ -8,7 +8,8 @@
 #define ZOMBIE_GRAVITY 0.005f
 
 #include "Enemy.h"
-class Zombie : public CGameObject
+#include "Brick.h"
+class Zombie : public Enemy
 {
 public:
 	Zombie(int nx1 = 1);

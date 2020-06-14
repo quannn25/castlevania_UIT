@@ -27,6 +27,11 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isFinish = true;
 	}
 
+	if (x - Camera::GetInstance()->Getx() + HOLYWATER_FRAMEWIDTH < 0 || x - Camera::GetInstance()->Getx() > Camera::GetInstance()->GetScreenWidth())
+	{
+		isFinish = true;
+	}
+
 	if (isFinish)
 		return;
 
@@ -37,7 +42,7 @@ void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (coObjects->at(i)->GetType() == eType::BRICK)
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
 			listObject_Brick.push_back(coObjects->at(i));
 
 	vector<LPCOLLISIONEVENT> coEvents;

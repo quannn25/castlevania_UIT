@@ -45,48 +45,47 @@ void Zombie::GetBoundingBox(float & left, float & top, float & right, float & bo
 void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-	x += dx;
 
-	//vy += ZOMBIE_GRAVITY * dt;
+	vy += ZOMBIE_GRAVITY * dt;
 
-	//vector<LPGAMEOBJECT> listObject_Brick;
-	//listObject_Brick.clear();
-	//for (UINT i = 0; i < coObjects->size(); i++)
-	//{
-	//	if (coObjects->at(i)->GetType() == eType::BRICK)
-	//		listObject_Brick.push_back(coObjects->at(i));
-	//}
+	vector<LPGAMEOBJECT> listObject_Brick;
+	listObject_Brick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(coObjects->at(i)))
+			listObject_Brick.push_back(coObjects->at(i));
+	}
 
-	//vector<LPCOLLISIONEVENT> coEvents;
-	//vector<LPCOLLISIONEVENT> coEventsResult;
-	//coEvents.clear();
-	//CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm 
-	//if (coEvents.size() == 0)
-	//{
-	//	y += dy;
-	//	x += dx;
-	//}
-	//else
-	//{
-	//	float min_tx, min_ty, nx = 0, ny;
-	//	float rdx = 0;
-	//	float rdy = 0;
-	//	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-	//	x += min_tx * dx + nx * 0.4f;
-	//	y += min_ty * dy + ny * 0.4f;
-	//	if (nx != 0)
-	//	{
-	//		vx = -vx;
-	//		nx = -nx;
-	//	}
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	coEvents.clear();
+	CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm 
+	if (coEvents.size() == 0)
+	{
+		y += dy;
+		x += dx;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
+		if (nx != 0)
+		{
+			vx = -vx;
+			nx = -nx;
+		}
 
-	//	if (ny != 0)
-	//	{
-	//		vy = 0;
-	//	}
-	//}
-	//for (UINT i = 0; i < coEvents.size(); i++)
-	//	delete coEvents[i];
+		if (ny != 0)
+		{
+			vy = 0;
+		}
+	}
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void Zombie::Render()
