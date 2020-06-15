@@ -181,10 +181,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_SPECIALBRICK: // gạch bbox lớn
 	{
+		if (tokens.size() < 7)
+		{
+			DebugOut(L"[ERROR] SpecialBrick not found!\n");
+			return;
+		}
 		float w = atof(tokens[5].c_str());
 		float h = atof(tokens[6].c_str());
 
 		obj = new CBrick(w, h);
+		if (id == 1000)
+		{
+			obj->SetHealth(2);
+		}
 		obj->SetType(eType::SPECIALBRICK);
 	}
 		break;
@@ -202,6 +211,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_STAIR:
 		{
+		if (tokens.size() < 7)
+		{
+			DebugOut(L"[ERROR] Stair not found!\n");
+			return;
+		}
 			int t = atof(tokens[5].c_str()); //	1 up 2 down
 			int nx1 = atof(tokens[6].c_str());
 			obj = new Stair(x, y, t, nx1);
@@ -213,6 +227,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BLACKKNIGHT:
 	{
+		if (tokens.size() < 7)
+		{
+			DebugOut(L"[ERROR] BlackKinght not found!\n");
+			return;
+		}
+
 		float left_boundary = atof(tokens[5].c_str());
 		float right_boundary = atof(tokens[6].c_str());
 
@@ -268,6 +288,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 		break;
+	case OBJECT_TYPE_HIDDENOBJECT:
+	{
+		float xItem = atoi(tokens[5].c_str());
+		float yItem = atoi(tokens[6].c_str());
+
+		obj = new HiddenObject(x, y, xItem, yItem);
+		obj->SetType(eType::HIDDENOBJECT);
+	}
+	break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -544,7 +573,7 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < listEffect.size(); i++)
 	{
 		if (listEffect[i]->GetFinish() == false)
-			listEffect[i]->Update();
+			listEffect[i]->Update(dt);
 	}
 
 	// update enemy
@@ -947,7 +976,30 @@ void CPlayScene::CheckCollision()
 
 	CheckCollisionSimonWithItem();
 
+	CheckCollisionWithHiddenObject(coObjects);
+
 	CheckCollisionWithEnemy(); // kt vũ khí cới enemy và simon với enemy
+}
+
+void CPlayScene::CheckCollisionWithHiddenObject(vector<LPGAMEOBJECT> listObj)
+{
+	for (UINT i = 0; i < listObj.size(); i++)
+	{
+		if (listObj[i]->GetType() == eType::HIDDENOBJECT)
+		{
+			if (player->isCollitionObjectWithObject(listObj[i]))
+			{
+				HiddenObject *h = dynamic_cast<HiddenObject*>(listObj[i]);
+
+				if (h->getIsActive() == false) // nếu chưa hoạt động
+				{
+					listItem.push_back(GetNewItem(h->GetId(), h->GetType(), h->getXItem(), h->getYItem()));
+
+					h->setIsActive(true); // bật đã hoạt động rồi
+				}
+			}
+		}
+	}
 }
 
 void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
@@ -1148,11 +1200,68 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 						break;
 					}
 					default:
+						DebugOut(L"[ERROR] there is no case apply!\n");
 						break;
 					}
 				}
 
 			}
+		}
+	}
+
+	// main weapon with brokenBrick
+	for (UINT i = 0; i < listObj.size(); i++)
+	{
+		if (listObj[i]->GetType() == eType::SPECIALBRICK)
+		{
+			CGameObject * gameObject = dynamic_cast<CGameObject*>(listObj[i]);
+			if (gameObject->GetHealth() > 0)
+			{
+				switch (gameObject->GetId())
+				{
+				case 999:
+				{
+					if (player->mainWeapon->isCollision(listObj[i]) == true)
+					{
+						gameObject->beAttacked(1);
+						if (gameObject->GetHealth() <= 0)
+						{
+							//listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
+							listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
+						}
+
+					}
+					break;
+				}
+				case 1000:
+				{
+					if (player->mainWeapon->isCollision(listObj[i]) == true)
+					{
+						gameObject->beAttacked(1);
+						if (gameObject->GetHealth() <= 0)
+						{
+							listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
+							listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
+							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
+						}
+
+					}
+					break;
+				}
+				default:
+					break;
+				}
+			}
+
+
+
 		}
 	}
 }
@@ -1200,6 +1309,12 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					break;
 				}
 				case eType::MONNEY:
+				{
+					listItem[i]->SetFinish(true);
+					player->SetScore(player->GetScore() + 1000);
+					break;
+				}
+				case eType::CROWN:
 				{
 					listItem[i]->SetFinish(true);
 					player->SetScore(player->GetScore() + 1000);
@@ -1373,6 +1488,36 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 		}
 	}
 
+
+	if (type == eType::SPECIALBRICK)
+	{
+		switch (id)
+		{
+		case 1000:
+			return new Monney(x, y);
+			break;
+
+		default:
+			return new SmallHeart(x, y);
+			break;
+		}
+
+	}
+
+	if (type == eType::HIDDENOBJECT)
+	{
+		switch (id)
+		{
+		case 5:
+			return new Crown(x, y);
+			break;
+
+		default:
+			break;
+		}
+
+	}
+	DebugOut(L"[Create Item] Item duoc khoi tao khong xac dinh Obj cha\n");
 	return new LargeHeart(x, y);
 }
 
@@ -1386,7 +1531,7 @@ void CPlayScene::ResetResource()
 
 void CPlayScene::LoadAgain()
 {
-	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+	DebugOut(L"[INFO] Start loading AGAIN scene resources from : %s \n", sceneFilePath);
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -1423,7 +1568,7 @@ void CPlayScene::LoadAgain()
 
 	LoadResources();
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	DebugOut(L"[INFO] Done loading scene resources AGAIN %s\n", sceneFilePath);
 }
 
 bool CPlayScene::isOncam(float x1, float y1, float w1, float h1)

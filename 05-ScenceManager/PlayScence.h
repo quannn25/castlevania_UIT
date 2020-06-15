@@ -25,6 +25,9 @@
 #include "Bat.h"
 #include "HolyWater.h"
 #include "HolyWaterItem.h"
+#include "BrokenBrick.h"
+#include "HiddenObject.h"
+#include "Crown.h"
 
 class CPlayScene: public CScene
 {
@@ -78,6 +81,7 @@ public:
 	void CheckCollisionSimonWithItem();
 	void CheckCollisionWithEnemy();
 	void CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX);
+	void CheckCollisionWithHiddenObject(vector<LPGAMEOBJECT> listObj);
 
 	bool isOncam(float x1, float y1, float w1, float h1);
 

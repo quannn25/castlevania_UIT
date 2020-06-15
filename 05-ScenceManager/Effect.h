@@ -21,7 +21,7 @@ public:
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 	virtual void Render();
-	virtual void Update();
+	virtual void Update(DWORD dt);
 	bool GetFinish();
 	void SetFinish(int b);
 };

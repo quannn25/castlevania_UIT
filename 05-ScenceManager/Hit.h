@@ -9,7 +9,7 @@ public:
 	Hit(float x = 0, float y = 0);
 	~Hit();
 
-	void Update();
+	void Update(DWORD dt);
 };
 
 #endif

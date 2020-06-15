@@ -13,6 +13,6 @@ public:
 	Fire(float x = 0, float y = 0);
 	~Fire();
 
-	void Update();
+	void Update(DWORD dt);
 };
 #endif

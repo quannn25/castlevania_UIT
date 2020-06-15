@@ -57,9 +57,9 @@ void Simon::GetBoundingBox(float & left, float & top, float & right, float & bot
 	else
 	{
 		left = x;
-		top = y;
+		top = y + 1;
 		right = x + SIMON_BBOX_WIDTH;
-		bottom = y + SIMON_BBOX_HEIGHT;
+		bottom = y + SIMON_BBOX_HEIGHT - 1;
 	}
 
 }
@@ -419,7 +419,7 @@ void Simon::SetState(int state)
 		isWalking = 0;
 
 		if (isSitting == false) // nếu trước đó simon chưa ngồi
-			y = y + 16; // kéo simon xuống
+			y = y + 15; // kéo simon xuống
 
 		isSitting = 1;
 		break;
@@ -465,7 +465,7 @@ void Simon::SetState(int state)
 		if (isSitting == true) // nếu simon đang ngồi
 		{
 			isSitting = 0; // hủy trạng thái ngồi
-			y = y - 18; // kéo simon lên
+			y = y - 16; // kéo simon lên
 		}
 		break;
 	case SIMON_STATE_DIE:
@@ -489,7 +489,7 @@ void Simon::SetHurt(LPCOLLISIONEVENT e)
 	if (isSitting == true)
 	{
 		isSitting = 0; // hủy trạng thái ngồi
-		y = y - 18; 
+		y = y - 16; 
 	}
 
 	if (isOnStair == false)
@@ -551,31 +551,6 @@ void Simon::CollisionWithPortal(vector<LPGAMEOBJECT>* coObjects)
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
-		// block every object first!
-		//x += min_tx * dx + nx * 0.4f;
-		//y += min_ty * dy + ny * 0.4f;
-
-		/*if (nx != 0)
-			vx = 0;*/
-
-		//if (ny != 0)
-		//{
-		//	if (isJumping == true) // nếu simon đang nhảy
-		//	{
-		//		y = y - 18; // kéo simon lên
-		//	}
-		//	vy = 0;
-		//	isJumping = false;
-		//}
-
-		//if (nx != 0 || ny != 0)
-		//{
-		//	isHurting = 0;
-		//}
 
 
 		//
@@ -660,7 +635,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (isJumping == true) // nếu simon đang nhảy
 			{
-				y = y - 18; // kéo simon lên
+				y = y - 16; // kéo simon lên
 			}
 			vy = 0;
 			isJumping = false;
@@ -672,24 +647,6 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		}
 
 
-		//
-		// Collision logic with other objects
-		//
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				DebugOut(L"[INFO] Switching to scene %d", p->GetSceneId());
-				CGame::GetInstance()->SwitchScene(p->GetSceneId(), p->GetSwitchType()); // thực thi dòng này có bug, có thể nó đã xóa coEventsResult[i] - là Obj tồn tại ở scene hiện tại - thủ phạm là Unload() của scene. Xử lý: là portal thì dừng kiểm tra các va chạm còn lại
-
-				for (UINT i = 0; i < coEvents.size(); i++)
-					delete coEvents[i];
-				return;
-			}
-		}
 	}
 
 	// clean up collision events

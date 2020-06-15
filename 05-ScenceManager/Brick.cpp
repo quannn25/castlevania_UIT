@@ -35,6 +35,14 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
 	if (this->type == eType::SPECIALBRICK)
 	{
+		if (this->id == 999 || this->id == 1000) // broken brick 
+		{
+			l = x;
+			t = y - 64; // ko cho simon nhảy móc chân vào
+			r = x + width;
+			b = y + height;
+			return;
+		}
 		l = x;
 		t = y;
 		r = x + width;

@@ -198,6 +198,15 @@
     <ClCompile Include="HolyWaterItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="BrokenBrick.cpp">
+      <Filter>Framework\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="HiddenObject.cpp">
+      <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Crown.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -339,6 +348,15 @@
       <Filter>Object\weapon</Filter>
     </ClInclude>
     <ClInclude Include="HolyWaterItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenBrick.h">
+      <Filter>Framework\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="HiddenObject.h">
+      <Filter>Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Crown.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>

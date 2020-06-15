@@ -24,6 +24,8 @@
 109	textures\castle\enemy\Bat.png	255	0	255
 110	textures\castle\weapon\HolyWater.png	255	0	255
 111	textures\castle\item\4.png	255	0	255
+112	textures\castle\ground\BrokenBrick.png	255	0	255
+113	textures\castle\item\Crown.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -202,6 +204,16 @@
 #Holy Water Item
 81045	0	0	32	32	111
 
+#BrokenBrick
+81050	0	0	18	23	112
+81051	18	0	36	23	112
+
+#crown
+81053	0	0	32	32	113
+81054	32	0	64	32	113
+81055	64	0	96	32	113
+81056	96	0	128	32	113
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -338,6 +350,12 @@
 #holy water item
 1215	81035	10	81036	100	81037	100	81038	100
 
+#BrokenBrick
+1216	81050	200	81051	100
+
+#crown
+1217	81053	50	81054	50	81055	50	81056	50
+
 #====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
@@ -401,6 +419,12 @@
 #holy water
 59	1215	1214
 
+#BrokenBrick
+60	1216
+
+#Crown
+61	1217
+
 #====================[OBJECTS]===================================
 [OBJECTS]
 # type	x	y	ani_set_id	id	extra_settings per object type
@@ -413,9 +437,16 @@
 0	17	300	1	0
 
 # BRICK=== 1 default brick, 8 special brick, 9 special brick small(dung cho bbox nho lai)
-# special brick:
+# special brick: id = 999 broken brick
 #type	x	y	ani_set_id	id(ko quan trong)	width	height
-8	448	80	22	3	64	384
+#brick left
+8	448	80	22	3	64	160
+8	448	336	22	3	64	128
+
+#broken brick
+8	448	240	22	999	32	64
+8	448	272	22	1000	32	32
+
 
 #normal brick
 1	0	432	22	2
@@ -457,16 +488,16 @@
 1	288	240	22	27
 
 #RIGHT_1
-9	448	80	22	16
-9	448	112	22	17
-9	448	144	22	18
-9	448	176	22	19
-9	448	208	22	20
-9	448	240	22	21
-9	448	272	22	22
-9	448	336	22	3
-9	448	368	22	3
-9	448	400	22	3
+#9	448	80	22	16
+#9	448	112	22	17
+#9	448	144	22	18
+#9	448	176	22	19
+#9	448	208	22	20
+#9	448	240	22	21
+#9	448	272	22	22
+#9	448	336	22	3
+#9	448	368	22	3
+#9	448	400	22	3
 
 
 #Right_2
@@ -496,9 +527,9 @@
 1	32	304	22	3
 
 
-#Black Knight175y
+#Black Knight
 # type	x	y	ani_set_id	id	leftBoundary	rightBoundary
-5	120	90	55	15	70	285
+5	200	90	55	15	70	285
 
 #Bat
 # type	x	y	ani_set_id	id
@@ -509,12 +540,16 @@
 #type 4 in
 # type	x	y	ani_set_id	id	t(1 UP_ 2 DOWN)	nx
 4	205	405	0	900	1	1
-4	340	208	0	900	2	1
+4	340	213	0	900	2	1
 
 4	150	200	0	900	1	1
 
 
 
+
+# Hidden Object
+# type	x	y	ani_set_id	id	xItem	yitem
+49	400	290	0	5	300	300
 
 
 # --- SCENE PORTAL ---- 115 98 150 1

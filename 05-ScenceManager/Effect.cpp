@@ -17,7 +17,7 @@ void Effect::Render()
 	animation_set->at(0)->Render(x, y);
 }
 
-void Effect::Update()
+void Effect::Update(DWORD dt)
 {
 }
 

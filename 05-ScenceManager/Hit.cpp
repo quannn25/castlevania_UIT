@@ -15,7 +15,7 @@ Hit::~Hit()
 {
 }
 
-void Hit::Update()
+void Hit::Update(DWORD dt)
 {
 	if (animation_set->at(0)->getCurrentFrame() == 1) // nếu là frame cuối thì xong
 		isFinish = true;

@@ -524,7 +524,7 @@
 #type 4 in, 5 out
 # type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx
 #thang đôi thì DOWN(bbox nhỏ) có bbox thấp hơn UP(bbox lớn)
-4	113	300	0	900	1	1
+4	113	305	0	900	1	1
 4	113	310	0	900	2	-1
 
 #out thang doi

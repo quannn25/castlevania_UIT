@@ -8,7 +8,7 @@ BlackKnight::BlackKnight(float left_boundary1, float right_boundary1, int nx1)
 	this->left_boundary = left_boundary1;
 	this->right_boundary = right_boundary1;
 	this->delta = 0;
-	this->walkDelta = 100;
+	this->walkDelta = 130;
 
 	health = 2; // set máu
 	vx = BLACKKNIGHT_SPEED * this->nx;

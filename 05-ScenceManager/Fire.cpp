@@ -16,7 +16,7 @@ Fire::~Fire()
 {
 }
 
-void Fire::Update()
+void Fire::Update(DWORD dt)
 {
 	if (animation_set->at(0)->getCurrentFrame() == 3) // nếu là frame cuối thì xong
 	{
