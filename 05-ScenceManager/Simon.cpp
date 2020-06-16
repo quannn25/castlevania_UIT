@@ -18,6 +18,7 @@ Simon::Simon() : CGameObject()
 	isWalkingOnStair = 0;
 	isOnStair = 0;
 	walkHeight = 0;
+	FreeFallDown = 0;
 
 	isAutoGoX = 0;
 	isFreeze = 0;
@@ -589,7 +590,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	list_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i)->GetType() == eType::BRICK || coObjects->at(i)->GetType() == eType::SPECIALBRICK)
+		if (dynamic_cast<CBrick *> (coObjects->at(i)))
 			list_Brick.push_back(coObjects->at(i));
 	}
 
@@ -610,9 +611,16 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+		FreeFallDown += dy;
+		if (FreeFallDown >= 3) // biến fix simon đang rơi tự vẫn nhảy đc
+		{
+			isJumping = 1;
+		}
 	}
 	else
 	{
+		FreeFallDown = 0;
+
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
 		float rdy = 0;
@@ -631,7 +639,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		if (nx != 0)
 			vx = 0;
 		
-		if (ny != 0)
+		if (ny < 0) // va chạm bên trên brick
 		{
 			if (isJumping == true) // nếu simon đang nhảy
 			{
@@ -639,6 +647,11 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			}
 			vy = 0;
 			isJumping = false;
+		}
+
+		if (ny > 0) // va chạm dưới brick
+		{
+			vy = 0;
 		}
 
 		if (nx != 0 || ny != 0)
@@ -652,6 +665,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
+
 }
 
 void Simon::Attack(Weapon * w)
@@ -840,7 +854,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 								vector<LPGAMEOBJECT> list_Brick;
 								list_Brick.clear();
 								for (UINT i = 0; i < coObjects->size(); i++)
-									if (coObjects->at(i)->GetType() == eType::BRICK)
+									if (dynamic_cast<CBrick*>(coObjects->at(i)))
 										list_Brick.push_back(coObjects->at(i));
 								CalcPotentialCollisions(&list_Brick, coEvents);
 								if (coEvents.size() == 0)
@@ -890,7 +904,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 									vector<LPGAMEOBJECT> list_Brick;
 									list_Brick.clear();
 									for (UINT i = 0; i < coObjects->size(); i++)
-										if (coObjects->at(i)->GetType() == eType::BRICK)
+										if (dynamic_cast<CBrick*>(coObjects->at(i)))
 											list_Brick.push_back(coObjects->at(i));
 									CalcPotentialCollisions(&list_Brick, coEvents);
 									if (coEvents.size() == 0)
@@ -943,7 +957,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 			vector<LPGAMEOBJECT> list_Brick;
 			list_Brick.clear();
 			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::BRICK)
+				if (dynamic_cast<CBrick*>(coObjects->at(i)))
 					list_Brick.push_back(coObjects->at(i));
 			CalcPotentialCollisions(&list_Brick, coEvents);
 			if (coEvents.size() == 0)
@@ -1063,7 +1077,7 @@ void Simon::CollisionWhenOnStair(vector<LPGAMEOBJECT> *coObjects)
 			vector<LPGAMEOBJECT> list_Brick;
 			list_Brick.clear();
 			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::BRICK)
+				if (dynamic_cast<CBrick*>(coObjects->at(i)))
 					list_Brick.push_back(coObjects->at(i));
 			CalcPotentialCollisions(&list_Brick, coEvents);
 			if (coEvents.size() == 0)

@@ -527,7 +527,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
-	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+	DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{

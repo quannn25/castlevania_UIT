@@ -72,6 +72,8 @@ private:
 	bool isFreeze; // trạng thái đóng băng chóp chóp
 	DWORD TimeFreeze; // thời gian đã đóng băng
 
+	float FreeFallDown;
+
 
 public:
 	Weapon * mainWeapon;
