@@ -39,6 +39,7 @@ using namespace std;
 #define OBJECT_TYPE_SPECIALBRICK 8
 #define OBJECT_TYPE_SPECIALBRICKSMALL 9
 #define OBJECT_TYPE_BAT 10
+#define OBJECT_TYPE_GHOSTZONE 11
 #define OBJECT_TYPE_HIDDENOBJECT 49
 #define OBJECT_TYPE_PORTAL	50
 
@@ -61,6 +62,7 @@ using namespace std;
 #define HOLYWATER_ANI_SET_ID 59
 #define BROKENBRICK_ANI_SET_ID 60
 #define CROWN_ANI_SET_ID 61
+#define GHOST_ANI_SET_ID 62
 
 #define TIME_CREATE_GHOST 1000
 
@@ -129,7 +131,9 @@ enum eType
 
 	HIDDENOBJECT = 71,
 
-	CROWN = 72
+	CROWN = 72,
+
+	GHOST = 73
 
 };
 

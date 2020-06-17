@@ -15,6 +15,8 @@ ZombieZone::ZombieZone(float l, float t, float r, float b, float xZombie1, float
 
 	this->countZombie = 0;
 	this->lastTimeCreate = 0;
+
+	this->isSimonInZoneBefore = false;
 }
 
 bool ZombieZone::isSimonInZombieZone(Simon * simon)
@@ -86,4 +88,12 @@ void ZombieZone::RenderBoundingBox()
 
 ZombieZone::~ZombieZone()
 {
+}
+
+void ZombieZone::getBoundingBox(float &l, float &t, float &r, float &b)
+{
+	l = this->l;
+	t = this->t;
+	r = this->r;
+	b = this->b;
 }

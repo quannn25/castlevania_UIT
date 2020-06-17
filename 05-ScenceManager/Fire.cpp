@@ -7,8 +7,9 @@ Fire::Fire(float x1, float y1)
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(FIREEFFECT_ANI_SET_ID);
-
 	SetAnimationSet(ani_set);
+	isFinish = false;
+	animation_set->at(0)->setCurrentFrame(-1);
 }
 
 

@@ -6,6 +6,9 @@ BrokenBrick::BrokenBrick(int X, int Y, int type)
 	LPANIMATION_SET ani_set = animation_sets->Get(BROKENBRICK_ANI_SET_ID);
 	SetAnimationSet(ani_set);
 
+	isFinish = false;
+	animation_set->at(0)->setCurrentFrame(-1);
+
 	this->x = X;
 	this->y = Y;
 	dx = dy = vx = vy = 0;

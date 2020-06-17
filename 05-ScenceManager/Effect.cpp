@@ -4,7 +4,7 @@
 
 Effect::Effect()
 {
-	isFinish = 0;
+	isFinish = false;
 }
 
 

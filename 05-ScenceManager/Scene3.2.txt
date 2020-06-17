@@ -24,6 +24,8 @@
 109	textures\castle\enemy\Bat.png	255	0	255
 110	textures\castle\weapon\HolyWater.png	255	0	255
 111	textures\castle\item\4.png	255	0	255
+112	textures\castle\ground\BrokenBrick.png	255	0	255
+113	textures\castle\item\Crown.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -202,6 +204,16 @@
 #Holy Water Item
 81045	0	0	32	32	111
 
+#BrokenBrick
+81050	0	0	18	23	112
+81051	18	0	36	23	112
+
+#crown
+81053	0	0	32	32	113
+81054	32	0	64	32	113
+81055	64	0	96	32	113
+81056	96	0	128	32	113
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -338,6 +350,12 @@
 #holy water item
 1215	81035	10	81036	100	81037	100	81038	100
 
+#BrokenBrick
+1216	81050	200	81051	100
+
+#crown
+1217	81053	50	81054	50	81055	50	81056	50
+
 #====================[ANIMATION_SETS]===================================
 # id	ani0	ani1	ani2  (id.push_back(ani0...)
 # 
@@ -400,6 +418,12 @@
 58	1214
 #holy water
 59	1215	1214
+
+#BrokenBrick
+60	1216
+
+#Crown
+61	1217
 
 #====================[OBJECTS]===================================
 [OBJECTS]

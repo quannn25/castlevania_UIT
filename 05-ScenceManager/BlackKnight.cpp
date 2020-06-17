@@ -53,8 +53,17 @@ void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObject
 
 	}
 
-	if (x >= right_boundary || x <= left_boundary) // kiểm tra lại vượt biên
+	if (x > right_boundary || x < left_boundary) // kiểm tra lại vượt biên
 	{
+		if (x > right_boundary)
+		{
+			x = right_boundary;
+		}
+		if (x < left_boundary)
+		{
+			x = left_boundary;
+		}
+
 		nx = -nx;
 		dx = -dx;
 

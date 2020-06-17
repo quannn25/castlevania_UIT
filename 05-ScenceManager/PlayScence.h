@@ -28,6 +28,7 @@
 #include "BrokenBrick.h"
 #include "HiddenObject.h"
 #include "Crown.h"
+#include "Ghost.h"
 
 class CPlayScene: public CScene
 {
@@ -56,6 +57,9 @@ protected:
 	vector <LPGAMEOBJECT> listZombie; // hiện chỉ có zombie
 	DWORD TimeZombie; // thoi gian tao zombie vừa rồi /////////////////////////// chua deleteeeeeeeeeeeeeeeeeeeeeeeeeeee
 	vector <ZombieZone*> listZombieZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
+
+	vector <LPGAMEOBJECT> listGhost;
+	vector <ZombieZone*> listGhostZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -90,6 +94,7 @@ public:
 	Item * GetNewItem(int id, eType type, float x, float y);
 
 	void CreateZombie();
+	void CreateGhost();
 
 	void updateEnemy(DWORD dt);
 
