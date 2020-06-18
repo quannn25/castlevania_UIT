@@ -8,8 +8,6 @@ HolyWater::HolyWater()
 	LPANIMATION_SET ani_set = animation_sets->Get(HOLYWATER_ANI_SET_ID);
 	SetAnimationSet(ani_set);
 
-	//_spriteIcon = new GSprite(TextureManager::GetInstance()->GetTexture(eID::ITEMHOLYWATER), 200); // trong aniset->at(1)
-
 	type = eType::HOLYWATER;
 	isCollisionBrick = false;
 	isFinish = true;
@@ -92,7 +90,6 @@ void HolyWater::Create(float simonX, float simonY, int simonTrend)
 	vy = -HOLLYWATER_SPEED_Y;
 	isCollisionBrick = false;
 	animation_set->at(0)->setCurrentFrame(-1); // set về frame đầu
-	//_sprite->SelectIndex(0);
 }
 
 void HolyWater::GetBoundingBox(float & left, float & top, float & right, float & bottom)

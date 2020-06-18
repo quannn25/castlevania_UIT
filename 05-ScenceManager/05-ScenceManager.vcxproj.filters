@@ -207,6 +207,12 @@
     <ClCompile Include="Crown.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="StopWatch.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="StopWatchItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -357,6 +363,12 @@
       <Filter>Object\Ground</Filter>
     </ClInclude>
     <ClInclude Include="Crown.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatch.h">
+      <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="StopWatchItem.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>

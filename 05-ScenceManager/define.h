@@ -63,6 +63,7 @@ using namespace std;
 #define BROKENBRICK_ANI_SET_ID 60
 #define CROWN_ANI_SET_ID 61
 #define GHOST_ANI_SET_ID 62
+#define STOPWATCHITEM_ANI_SET_ID 63
 
 #define TIME_CREATE_GHOST 1000
 
@@ -133,7 +134,11 @@ enum eType
 
 	CROWN = 72,
 
-	GHOST = 73
+	GHOST = 73,
+
+	STOPWATCH = 74,
+
+	STOPWATCHITEM = 75
 
 };
 

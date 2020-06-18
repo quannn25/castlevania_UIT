@@ -545,6 +545,7 @@ void CPlayScene::LoadResources()
 	player->SetPositionBackup(SIMON_POSITION_DEFAULT);
 
 	TimeZombie = 0;
+	isStopWatch = false;
 
 	listItem.clear();
 	listEffect.clear();
@@ -580,6 +581,18 @@ void CPlayScene::Update(DWORD dt)
 			return;
 	}
 
+	if (player->subWeapon != NULL && player->subWeapon->GetType() == eType::STOPWATCH)
+	{
+		if (player->subWeapon->GetFinish() == false)
+		{
+			isStopWatch = true;
+		}
+		else
+			isStopWatch = false;
+	}
+	else
+		isStopWatch = false;
+
 	
 	grid->ResetOnCam(objects); // set lai trang thai onCam
 	
@@ -607,7 +620,8 @@ void CPlayScene::Update(DWORD dt)
 
 	// update enemy
 
-	updateEnemy(dt);
+	if(isStopWatch == false)
+		updateEnemy(dt);
 
 	CreateZombie();
 
@@ -710,7 +724,7 @@ void CPlayScene::Render()
 			listEffect[i]->Render();
 	}
 
-	boardGame->Render(player, 1, player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
+	boardGame->Render(player, CGame::GetInstance()->getCurrentSceneId(), player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
 
 	player->Render();
 
@@ -826,11 +840,38 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		simon->Attack(simon->mainWeapon);
 		break;
 	case DIK_Z:
-		if (simon->subWeapon != NULL && simon->subWeapon->GetFinish() == true && simon->GetHeartCollected() > 0)
+		if (simon->subWeapon != NULL && simon->subWeapon->GetFinish() == true)
 		{
-			simon->SetHeartCollected(simon->GetHeartCollected() - 1); // giảm 1 heart
-			simon->Attack(simon->subWeapon);
+			bool useSubWeapon = false;
+
+			switch (simon->subWeapon->GetType())
+			{
+			case eType::STOPWATCH:
+				if (simon->GetHeartCollected() >= 5)
+				{
+					simon->SetHeartCollected(simon->GetHeartCollected() - 5);
+					useSubWeapon = true;
+				}
+				break;
+
+			default:
+				if (simon->GetHeartCollected() > 0)
+				{
+					simon->SetHeartCollected(simon->GetHeartCollected() - 1);
+					useSubWeapon = true;
+				}
+				break;
+
+			}
+
+			if (useSubWeapon)
+				simon->Attack(simon->subWeapon);
+
 		}
+		break;
+	case DIK_I:
+		//((CPlayScene*)scence)->listItem.push_back(new DaggerItem(simon->GetX(), simon->GetY()));
+		((CPlayScene*)scence)->listItem.push_back(new StopWatchItem(simon->GetX(), simon->GetY()));
 		break;
 	case DIK_1:
 		CGame::GetInstance()->SwitchScene(1, 1);
@@ -1300,58 +1341,61 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 	}
 
 	// main weapon with brokenBrick
-	for (UINT i = 0; i < listObj.size(); i++)
+	if (player->mainWeapon->GetFinish() == false)
 	{
-		if (listObj[i]->GetType() == eType::SPECIALBRICK)
+		for (UINT i = 0; i < listObj.size(); i++)
 		{
-			CGameObject * gameObject = dynamic_cast<CGameObject*>(listObj[i]);
-			if (gameObject->GetHealth() > 0)
+			if (listObj[i]->GetType() == eType::SPECIALBRICK)
 			{
-				switch (gameObject->GetId())
+				CGameObject * gameObject = dynamic_cast<CGameObject*>(listObj[i]);
+				if (gameObject->GetHealth() > 0)
 				{
-				case 999:
-				{
-					if (player->mainWeapon->isCollision(listObj[i]) == true)
+					switch (gameObject->GetId())
 					{
-						gameObject->beAttacked(1);
-						if (gameObject->GetHealth() <= 0)
-						{
-							//listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
-							listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
-						}
-
-					}
-					break;
-				}
-				case 1000:
-				{
-					if (player->mainWeapon->isCollision(listObj[i]) == true)
+					case 999:
 					{
-						gameObject->beAttacked(1);
-						if (gameObject->GetHealth() <= 0)
+						if (player->mainWeapon->isCollision(listObj[i]) == true)
 						{
-							listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
-							listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
-							listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
-						}
+							gameObject->beAttacked(1);
+							if (gameObject->GetHealth() <= 0)
+							{
+								//listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
+								listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
+							}
 
+						}
+						break;
 					}
-					break;
+					case 1000:
+					{
+						if (player->mainWeapon->isCollision(listObj[i]) == true)
+						{
+							gameObject->beAttacked(1);
+							if (gameObject->GetHealth() <= 0)
+							{
+								listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
+								listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
+							}
+
+						}
+						break;
+					}
+					default:
+						break;
+					}
 				}
-				default:
-					break;
-				}
+
+
+
 			}
-
-
-
 		}
 	}
 }
@@ -1418,6 +1462,17 @@ void CPlayScene::CheckCollisionSimonWithItem()
 						player->subWeapon = NULL;
 					}
 					player->subWeapon = new HolyWater();
+					listItem[i]->SetFinish(true);
+					break;
+				}
+				case eType::STOPWATCHITEM:
+				{
+					if (player->subWeapon)
+					{
+						delete player->subWeapon;
+						player->subWeapon = NULL;
+					}
+					player->subWeapon = new StopWatch();
 					listItem[i]->SetFinish(true);
 					break;
 				}
@@ -1502,9 +1557,18 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	}
 
 
-	if (type == eType::ZOMBIE)
+	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST)
 	{
 		int random = rand() % 10;
+
+		if (dynamic_cast <MorningStar*> (player->mainWeapon))
+		{
+			while (dynamic_cast <MorningStar*> (player->mainWeapon)->getLevel() == 2 && random == 4)
+			{
+				random = rand() % 10;
+			}
+		}
+
 		switch (random)
 		{
 		case 0:
@@ -1521,6 +1585,12 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 			break;
 		case 4:
 			return new UpgradeMorningStar(x, y);
+			break;
+		case 5:
+			return new HolyWaterItem(x, y);
+			break;
+		case 6:
+			return new StopWatchItem(x, y);
 			break;
 		default: // 50% còn lại là SmallHeart
 			return new SmallHeart(x, y);
@@ -1528,57 +1598,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 		}
 	}
 
-	if (type == eType::BLACKKNIGHT)
-	{
-		int random = rand() % 10;
-		switch (random)
-		{
-		case 0:
-			return	new LargeHeart(x, y);
-			break;
-		case 1:
-			return	new SmallHeart(x, y);
-			break;
-		case 2:
-			return new DaggerItem(x, y);
-			break;
-		case 3:
-			return new Monney(x, y);
-			break;
-		case 4:
-			return new UpgradeMorningStar(x, y);
-			break;
-		default: // 50% còn lại là SmallHeart
-			return new SmallHeart(x, y);
-			break;
-		}
-	}
-
-	if (type == eType::BAT)
-	{
-		int random = rand() % 10;
-		switch (random)
-		{
-		case 0:
-			return	new LargeHeart(x, y);
-			break;
-		case 1:
-			return	new SmallHeart(x, y);
-			break;
-		case 2:
-			return new DaggerItem(x, y);
-			break;
-		case 3:
-			return new Monney(x, y);
-			break;
-		case 4:
-			return new UpgradeMorningStar(x, y);
-			break;
-		default: // 50% còn lại là SmallHeart
-			return new SmallHeart(x, y);
-			break;
-		}
-	}
+	
 
 
 	if (type == eType::SPECIALBRICK)

@@ -29,6 +29,8 @@
 #include "HiddenObject.h"
 #include "Crown.h"
 #include "Ghost.h"
+#include "StopWatch.h"
+#include "StopWatchItem.h"
 
 class CPlayScene: public CScene
 {
@@ -49,6 +51,8 @@ protected:
 	vector <Effect*> listEffect;
 
 	GameTime * gameTime; //unload()??? hay truyền
+
+	bool isStopWatch;
 
 	vector <LPGAMEOBJECT> listBlackKnight;
 

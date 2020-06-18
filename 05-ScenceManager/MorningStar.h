@@ -32,6 +32,8 @@ public:
 	bool isCollision(LPGAMEOBJECT obj);
 
 	void UpgradeLevel();
+
+	int getLevel();
 };
 
 #endif

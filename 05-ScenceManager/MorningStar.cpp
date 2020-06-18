@@ -8,8 +8,8 @@ MorningStar::MorningStar()
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(MORNINGSTAR_ANI_SET_ID);
-
 	SetAnimationSet(ani_set);
+
 	type = eType::MORNINGSTAR;
 	this->level = 0;
 
@@ -244,4 +244,9 @@ void MorningStar::Render()
 
 void MorningStar::RenderIcon(float x1, float y1)
 {
+}
+
+int MorningStar::getLevel()
+{
+	return level;
 }
