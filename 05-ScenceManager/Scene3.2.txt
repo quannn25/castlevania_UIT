@@ -27,6 +27,7 @@
 112	textures\castle\ground\BrokenBrick.png	255	0	255
 113	textures\castle\item\Crown.png	255	0	255
 114	textures\castle\enemy\Ghost.png	116	116	116
+115	textures\castle\item\StopWatch.png	116	116	116
 
 
 #====================[SPRITES]===================================
@@ -219,6 +220,9 @@
 81057	0	0	32	32	114
 81058	32	0	64	32	114
 
+#StopWatch
+81059	0	0	32	32	115
+
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -364,6 +368,9 @@
 #Ghost
 1218	81057	100	81058	100
 
+#StopWatch
+1219	81059	100
+
 
 
 
@@ -438,6 +445,9 @@
 
 #ghost
 62	1218
+
+#StopWatch
+63	1219
 
 #====================[OBJECTS]===================================
 [OBJECTS]

@@ -40,7 +40,9 @@ void Board::Render(Simon *simon , int state, Weapon * subWeapon, int RemainingTi
 		case eType::STOPWATCH:
 			subWeapon->RenderIcon(x1 + 315, y1 + 30);
 			break;
-
+		case eType::BOOMERANG:
+			subWeapon->RenderIcon(x1 + 315, y1 + 30);
+			break;
 		default:
 			DebugOut(L"[ERRO_BOARD] SubWeapon not found!\n");
 			break;

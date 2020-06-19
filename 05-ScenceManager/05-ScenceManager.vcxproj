@@ -129,6 +129,8 @@
     <ClCompile Include="BlackKnight.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardHealth.cpp" />
+    <ClCompile Include="Boomerang.cpp" />
+    <ClCompile Include="BoomerangItem.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrokenBrick.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -182,6 +184,8 @@
     <ClInclude Include="BlackKnight.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardHealth.h" />
+    <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="BoomerangItem.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrokenBrick.h" />
     <ClInclude Include="camera.h" />

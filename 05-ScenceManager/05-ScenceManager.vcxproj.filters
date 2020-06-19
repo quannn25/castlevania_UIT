@@ -213,6 +213,12 @@
     <ClCompile Include="StopWatchItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="BoomerangItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -369,6 +375,12 @@
       <Filter>Object\weapon</Filter>
     </ClInclude>
     <ClInclude Include="StopWatchItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangItem.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>

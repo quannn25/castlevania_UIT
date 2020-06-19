@@ -557,7 +557,7 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
-	DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
@@ -1151,16 +1151,19 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				}
 				case eType::BLACKKNIGHT:
 				{
-					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
-					gameObj->beAttacked(1);
-
-					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
-
-					if (rand() % 2 == 1) // tỉ lệ 50%
+					BlackKnight *gameObj = dynamic_cast<BlackKnight*>(listObj[i]);
+					if (!gameObj->isHurt)
 					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					}
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
 
+						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+
+						if (rand() % 2 == 1) // tỉ lệ 50%
+						{
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						}
+					}
 					break;
 				}
 				case eType::BAT:
@@ -1257,18 +1260,22 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				}
 				case eType::BLACKKNIGHT:
 				{
-					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
-					gameObj->beAttacked(1);
-
-					player->SetScore(player->GetScore() + 100);
-
-					isCollisonWithEnemy = true;
-
-					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
-
-					if (rand() % 2 == 1) // tỉ lệ 50%
+					BlackKnight *gameObj = dynamic_cast<BlackKnight*>(listObj[i]);
+					if (!gameObj->isHurt)
 					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
+
+						player->SetScore(player->GetScore() + 100);
+
+						isCollisonWithEnemy = true;
+
+						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+
+						if (rand() % 2 == 1) // tỉ lệ 50%
+						{
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						}
 					}
 
 					break;
@@ -1476,6 +1483,18 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
+
+				case eType::BOOMERANGITEM:
+				{
+					if (player->subWeapon)
+					{
+						delete player->subWeapon;
+						player->subWeapon = NULL;
+					}
+					player->subWeapon = new Boomerang();
+					listItem[i]->SetFinish(true);
+					break;
+				}
 				default:
 					DebugOut(L"[CheckCollisionSimonWithItem] Loi nhat item\n");
 					break;
@@ -1559,6 +1578,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST)
 	{
+		return new BoomerangItem(x, y);
 		int random = rand() % 10;
 
 		if (dynamic_cast <MorningStar*> (player->mainWeapon))
@@ -1630,7 +1650,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 	}
 	DebugOut(L"[Create Item] Item duoc khoi tao khong xac dinh Obj cha\n");
-	return new LargeHeart(x, y);
+	return new BoomerangItem(x, y);
 }
 
 void CPlayScene::ResetResource()

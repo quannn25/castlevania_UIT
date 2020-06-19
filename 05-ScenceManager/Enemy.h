@@ -5,6 +5,8 @@
 class Enemy : public CGameObject
 {
 public:
+	bool isHurt;
+public:
 	Enemy();
 	~Enemy();
 

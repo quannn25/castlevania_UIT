@@ -4,6 +4,8 @@
 #include "Enemy.h"
 #include "Simon.h"
 
+#define BLACKKNIGHT_HURT_TIME 300
+
 #define BLACKKNIGHT_SPEED 0.05f
 #define BLACKKNIGHT_GRAVITY 0.02f //0.005
 
@@ -18,6 +20,8 @@ protected:
 
 	float delta; // đoạn đường đã đi được từ lần cuối đổi hướng
 	float walkDelta; // đoạn đường phải đi để đươc đổi hướng (nx)
+
+	DWORD hurtTime;
 public:
 	BlackKnight(float left_boundary, float right_boundary, int nx1 = 1);
 	~BlackKnight();

@@ -31,6 +31,9 @@
 #include "Ghost.h"
 #include "StopWatch.h"
 #include "StopWatchItem.h"
+#include "BoomerangItem.h"
+#include "Boomerang.h"
+// kiểm tra define_H các file
 
 class CPlayScene: public CScene
 {
@@ -52,7 +55,7 @@ protected:
 
 	GameTime * gameTime; //unload()??? hay truyền
 
-	bool isStopWatch;
+	bool isStopWatch; // unload ?
 
 	vector <LPGAMEOBJECT> listBlackKnight;
 

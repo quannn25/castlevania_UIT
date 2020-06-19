@@ -12,7 +12,8 @@ BlackKnight::BlackKnight(float left_boundary1, float right_boundary1, int nx1)
 
 	health = 2; // set máu
 	vx = BLACKKNIGHT_SPEED * this->nx;
-	
+	isHurt = 0;
+	hurtTime = 0;
 }
 
 BlackKnight::~BlackKnight()
@@ -30,6 +31,13 @@ void BlackKnight::GetBoundingBox(float & left, float & top, float & right, float
 void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
+
+	if (isHurt)
+	{
+		hurtTime += dt;
+		if (hurtTime >= BLACKKNIGHT_HURT_TIME)
+			isHurt = false;
+	}
 
 	//DebugOut(L"[INFO] BK_health = %d\n", this->health);
 	if (simon->GetY() >= this->y - 10 && simon->GetY() <= this->y + 10) // simon trong tầm thì hướng về simon

@@ -115,7 +115,6 @@ void HolyWater::UpdatePositionFitSimon()
 void HolyWater::RenderIcon(float X, float Y)
 {
 	animation_set->at(1)->Render(X, Y);
-	//_spriteIcon->Draw(X, Y);
 }
 
 bool HolyWater::isCollision(LPGAMEOBJECT obj)
