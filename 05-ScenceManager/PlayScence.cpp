@@ -1495,6 +1495,17 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
+				case eType::AXEITEM:
+				{
+					if (player->subWeapon)
+					{
+						delete player->subWeapon;
+						player->subWeapon = NULL;
+					}
+					player->subWeapon = new Axe();
+					listItem[i]->SetFinish(true);
+					break;
+				}
 				default:
 					DebugOut(L"[CheckCollisionSimonWithItem] Loi nhat item\n");
 					break;
@@ -1578,7 +1589,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST)
 	{
-		return new BoomerangItem(x, y);
+		return new AxeItem(x, y);
 		int random = rand() % 10;
 
 		if (dynamic_cast <MorningStar*> (player->mainWeapon))

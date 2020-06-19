@@ -219,6 +219,12 @@
     <ClCompile Include="BoomerangItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Axe.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="AxeItem.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -382,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="BoomerangItem.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="AxeItem.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe.h">
+      <Filter>Object\weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

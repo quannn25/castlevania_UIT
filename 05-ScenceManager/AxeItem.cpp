@@ -1,36 +1,39 @@
-﻿#include "DaggerItem.h"
+﻿#include "AxeItem.h"
 
 
 
-DaggerItem::DaggerItem(float x1, float y1)
+AxeItem::AxeItem(float X, float Y)
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
-	LPANIMATION_SET ani_set = animation_sets->Get(DAGGER_ANI_SET_ID);
-
+	LPANIMATION_SET ani_set = animation_sets->Get(AXEITEM_ANI_SET_ID);
 	SetAnimationSet(ani_set);
 
-	type = eType::DAGGERITEM;
-	this->x = x1;
-	this->y = y1;
-	vy = ITEMDAGGER_GRAVITY;
-	TimeDisplayMax = ITEMDAGGER_TIMEDISPLAYMAX;
+	type = eType::AXEITEM;
+	this->x = X;
+	this->y = Y;
+	vy = AXEITEM_GRAVITY;
+	TimeDisplayMax = AXEITEM_TIMEDISPLAYMAX;
 	TimeDisplayed = 0;
 	TimeWaited = 0;
-	TimeWaitMax = DAGGERITEM_TIMEWAITMAX;
-	this->nx = -1;
+	TimeWaitMax = AXEITEM_TIMEWAITMAX;
 }
 
-void DaggerItem::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+
+AxeItem::~AxeItem()
+{
+}
+
+void AxeItem::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	left = x;
 	top = y;
-	right = x + DAGGER_FRAMEWIDTH;
-	bottom = y + DAGGER_FRAMEHEIGHT;
+	right = x + AXEITEM_FRAMEWIDTH;
+	bottom = y + AXEITEM_FRAMEHEIGHT;
 }
 
-void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
+void AxeItem::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
-	if (TimeWaited < TimeWaitMax) // chưa xuất hiện thì out ko update
+	if (TimeWaited < TimeWaitMax)
 	{
 		TimeWaited += dt;
 		return;
@@ -43,7 +46,7 @@ void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
 		return;
 	}
 
-	Item::Update(dt);
+	Item::Update(dt); // Update dt, dx, dy
 
 
 	vector<LPGAMEOBJECT> listObject_Brick;
@@ -59,7 +62,10 @@ void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
 
 	coEvents.clear();
 
+
 	CalcPotentialCollisions(&listObject_Brick, coEvents); // Lấy danh sách các va chạm
+
+
 
 	if (coEvents.size() == 0)
 	{
@@ -82,16 +88,8 @@ void DaggerItem::Update(DWORD dt, vector<LPGAMEOBJECT> *listObject)
 		}
 	}
 
+
 	for (UINT i = 0; i < coEvents.size(); i++)
-	{
 		delete coEvents[i];
-	}
 
-}
-
-
-
-
-DaggerItem::~DaggerItem()
-{
 }

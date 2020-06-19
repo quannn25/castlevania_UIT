@@ -66,6 +66,8 @@ using namespace std;
 #define STOPWATCHITEM_ANI_SET_ID 63
 #define BOOMERANGITEM_ANI_SET_ID 64
 #define BOOMERANG_ANI_SET_ID 65
+#define AXEITEM_ANI_SET_ID 66
+#define AXE_ANI_SET_ID 67
 
 #define TIME_CREATE_GHOST 1000
 
@@ -144,7 +146,11 @@ enum eType
 
 	BOOMERANG = 76,
 
-	BOOMERANGITEM = 77
+	BOOMERANGITEM = 77,
+
+	AXE = 78,
+
+	AXEITEM = 79
 
 };
 

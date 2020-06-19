@@ -125,6 +125,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="AxeItem.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BlackKnight.cpp" />
     <ClCompile Include="Board.cpp" />
@@ -180,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Axe.h" />
+    <ClInclude Include="AxeItem.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BlackKnight.h" />
     <ClInclude Include="Board.h" />

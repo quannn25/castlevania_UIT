@@ -27,6 +27,9 @@
 113	textures\castle\item\Crown.png	255	0	255
 114	textures\castle\enemy\Ghost.png	116	116	116
 115	textures\castle\item\StopWatch.png	116	116	116
+116	textures\castle\weapon\Boomerang.png	116	116	116
+117	textures\castle\weapon\Axe.png	116	116	116
+
 
 
 #====================[SPRITES]===================================
@@ -222,6 +225,16 @@
 #StopWatch
 81059	0	0	32	32	115
 
+#Boomerang
+81060	0	0	32	32	116
+81061	32	0	64	32	116
+81062	64	0	96	32	116
+
+#Axe
+81063	0	0	32	32	117
+81064	32	0	64	32	117
+81065	64	0	96	32	117
+81066	96	0	128	32	117
 
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -370,6 +383,19 @@
 #StopWatch
 1219	81059	100
 
+#Boomerang_item
+1220	81061	100
+
+#Boomerang
+1221	81060	100	81061	100	81062	100
+1222	81060	100	81062	100	81061	100
+
+#Axe_item
+1223	81063	100
+
+#Axe
+1224	81063	100	81064	100	81065	100	81066	100
+
 
 
 
@@ -447,6 +473,18 @@
 
 #StopWatch
 63	1219
+
+#Boomerang item
+64	1220
+
+#boomerang
+65	1221	1220	1222
+
+#AxeItem
+66	1223
+
+#Axe
+67	1224	1223
 
 
 #====================[OBJECTS]===================================

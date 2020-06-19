@@ -33,6 +33,8 @@
 #include "StopWatchItem.h"
 #include "BoomerangItem.h"
 #include "Boomerang.h"
+#include "AxeItem.h"
+#include "Axe.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene
