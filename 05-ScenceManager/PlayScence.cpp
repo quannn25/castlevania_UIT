@@ -1142,11 +1142,11 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 					
 					// if health <= 0 moi rot item
-					if (rand() % 2 == 1) // tỉ lệ 50%
-					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					}
-					
+					//if (rand() % 2 == 1) // tỉ lệ 50%
+					//{
+					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					//}
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
 				case eType::BLACKKNIGHT:
@@ -1159,10 +1159,11 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 
-						if (rand() % 2 == 1) // tỉ lệ 50%
-						{
-							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-						}
+						//if (rand() % 2 == 1) // tỉ lệ 50%
+						//{
+						//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						//}
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					}
 					break;
 				}
@@ -1173,10 +1174,11 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
-					if (rand() % 2 == 1) // tỉ lệ 50%
-					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					}
+					//if (rand() % 2 == 1) // tỉ lệ 50%
+					//{
+					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					//}
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
 					break;
 				}
@@ -1187,11 +1189,11 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
-					if (rand() % 2 == 1) // tỉ lệ 50%
-					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					}
-
+					//if (rand() % 2 == 1) // tỉ lệ 50%
+					//{
+					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					//}
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
 
@@ -1589,7 +1591,6 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST)
 	{
-		return new AxeItem(x, y);
 		int random = rand() % 10;
 
 		if (dynamic_cast <MorningStar*> (player->mainWeapon))
@@ -1622,6 +1623,12 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 			break;
 		case 6:
 			return new StopWatchItem(x, y);
+			break;
+		case 7:
+			return new BoomerangItem(x, y);
+			break;
+		case 8:
+			return new AxeItem(x, y);
 			break;
 		default: // 50% còn lại là SmallHeart
 			return new SmallHeart(x, y);
@@ -1753,7 +1760,7 @@ void CPlayScene::CreateZombie()
 							// zombie chạy từ phải qua trái
 							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 							{
-								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), listZombieZone[i]->yZombie1, -1));
 							}
 							else // tạo theo tọa độ parse vào
 							{
@@ -1766,7 +1773,7 @@ void CPlayScene::CreateZombie()
 							// zombie chạy từ bên trái qua phải
 							if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 							{
-								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+								listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), listZombieZone[i]->yZombie1, 1));
 							}
 							else // tạo theo tọa độ parse vào
 							{
@@ -1780,7 +1787,7 @@ void CPlayScene::CreateZombie()
 							{
 								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 								{
-									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), 326, 1));
+									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx(), listZombieZone[i]->yZombie1, 1));
 								}
 								else // tạo theo tọa độ parse vào
 								{
@@ -1791,7 +1798,7 @@ void CPlayScene::CreateZombie()
 							{
 								if (listZombieZone[i]->getFlag() == -1) // tạo theo camera
 								{
-									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), 326, -1));
+									listZombie.push_back(new Zombie(Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth(), listZombieZone[i]->yZombie1, -1));
 								}
 								else // tạo theo tọa độ parse vào
 								{

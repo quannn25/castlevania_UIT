@@ -592,6 +592,15 @@
 
 
 
+#ZombieZone
+#type	l	t	r	b	xZom1(-1 => default Camera)	yZom1(y->create_cam)	xZom2	yZom2	time	count
+7	0	240	800	400	-1	230	300	200	7000	5
+
+7	48	90	220	200	250	200	472	200	7000	5
+
+7	0	240	800	400	-1	350	300	200	7000	5
+
+
 #Stair 
 #type 4 in, 5 out
 # type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx

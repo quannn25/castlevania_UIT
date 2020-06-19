@@ -5,7 +5,7 @@
 
 class ZombieZone
 {
-private:
+public:
 	float l, t, r, b; // tọa độ Simon trong Box này thì trong vùng cần xuất zombie
 	float xZombie1, xZombie2; // biên x muốn Zombie xuất hiện khi Simon trong zone _ x1 biên trái, x2 biên phải __ -1 theo camera
 	float yZombie1, yZombie2; // biên y muốn Zombie xuất hiện khi Simon trong zone

@@ -37,7 +37,7 @@ Zombie::~Zombie()
 void Zombie::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	left = x;
-	top = y;
+	top = y + 3;
 	right = x + ZOMBIE_FRAMEWIDTH;
 	bottom = y + ZOMBIE_FRAMEHEIGHT;
 }
@@ -75,8 +75,8 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y += min_ty * dy + ny * 0.4f;
 		if (nx != 0)
 		{
-			vx = -vx;
-			nx = -nx;
+			//vx = -vx;
+			//nx = -nx;
 		}
 
 		if (ny != 0)

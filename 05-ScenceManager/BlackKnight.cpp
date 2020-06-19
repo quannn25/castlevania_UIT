@@ -40,7 +40,7 @@ void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObject
 	}
 
 	//DebugOut(L"[INFO] BK_health = %d\n", this->health);
-	if (simon->GetY() >= this->y - 10 && simon->GetY() <= this->y + 10) // simon trong tầm thì hướng về simon
+	if (simon->GetY() >= this->y - 10 && simon->GetY() <= this->y + 10 && (abs(simon->GetX() - left_boundary) <= 60 || abs(simon->GetX() - right_boundary) <= 60)) // simon trong tầm thì hướng về simon
 	{
 		if (simon->GetX() <= this->x) // kiểm tra vị trí simon
 		{

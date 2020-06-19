@@ -568,11 +568,7 @@
 2	1300	335	33	103
 2	1400	335	33	104
 
-#ZombieZone
-#type	l	t	r	b	xZom1(-1 => default Camera)	yZom1	xZom2	yZom2	time	count
-7	300	200	400	500	-1	200	300	200	7000	3
 
-7	600	200	800	500	600	300	800	300	7000	3
 
 
 

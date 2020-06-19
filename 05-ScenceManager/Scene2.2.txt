@@ -621,6 +621,15 @@
 9	928	304	22	3
 
 
+#Black Knight
+# type	x	y	ani_set_id	id	leftBoundary	rightBoundary
+5	645	250	55	15	641	670
+5	220	100	55	15	194	288
+
+#Bat
+# type	x	y	ani_set_id	id
+10	590	140	57	10
+
 
 
 #Stair 

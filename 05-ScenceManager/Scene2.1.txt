@@ -615,7 +615,7 @@
 
 # Hidden Object
 # type	x	y	ani_set_id	id	xItem	yitem
-49	400	290	0	5	300	300
+49	455	290	0	5	250	432
 
 
 # --- SCENE PORTAL ---- 115 98 150 1
