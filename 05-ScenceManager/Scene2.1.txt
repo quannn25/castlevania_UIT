@@ -595,7 +595,7 @@
 
 #Black Knight
 # type	x	y	ani_set_id	id	leftBoundary	rightBoundary
-5	100	90	55	15	70	285
+5	200	90	55	15	70	285
 
 #Bat
 # type	x	y	ani_set_id	id

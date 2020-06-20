@@ -913,126 +913,157 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		return;
 	}
 
-	if (simon->isJumping && simon->isWalking)
-	{
-		if(simon->GetNx() > 0) // tiến vào sát gạch cao nhảy ko dc // mở ra dính lỗi nhảy lên tường
-			simon->SetState(SIMON_STATE_WALKING_RIGHT);
-		else
-			simon->SetState(SIMON_STATE_WALKING_LEFT);
-		return;
-	}
 	// disable control key when Mario die 
 	if (simon->GetState() == SIMON_STATE_DIE) return;
 
 	if (simon->isAutoGoX == true)
 		return;
 
-	if (simon->isJumping == false)
+	if (game->IsKeyDown(DIK_UP) && game->IsKeyDown(DIK_C) && simon->isWalkingOnStair == 0 && !simon->isAttacking && simon->subWeapon != NULL && simon->subWeapon->GetFinish() == true)
 	{
-		if (game->IsKeyDown(DIK_UP)) // if (UP) else (if (DOWN) else (ko làm gì))
-		{
-			if (simon->isOnStair == false) // nếu đang ko trên thang
+		bool useSubWeapon = false;
+
+			switch (simon->subWeapon->GetType())
 			{
-				for (UINT i = 0; i < _coObjects.size(); i++)
+			case eType::STOPWATCH:
+				if (simon->GetHeartCollected() >= 5)
 				{
-					if (_coObjects[i]->GetType() == eType::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
-					{
-						Stair* obj = dynamic_cast<Stair*>(_coObjects[i]);
-						simon->NxStair = obj->GetNx();
-
-						simon->SetNx(simon->NxStair); // hướng simon theo hướng thang
-						simon->ny = -1; // hướng lên
-						simon->isOnStair = true;
-						simon->walkHeight = 0;
-						
-						if (simon->GetX() < obj->GetX())
-						{
-							simon->SetAutoGoX(1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
-						}
-						else
-							simon->SetAutoGoX(-1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
-						
-						return;
-					}
+					simon->SetHeartCollected(simon->GetHeartCollected() - 5);
+					useSubWeapon = true;
 				}
-			}
-			else // nếu đang trên thang rồi thì bật xử lý, walking = 1
-			{
-				simon->isWalking = true;
+				break;
 
-				simon->ny = -1;
+			default:
+				if (simon->GetHeartCollected() > 0)
+				{
+					simon->SetHeartCollected(simon->GetHeartCollected() - 1);
+					useSubWeapon = true;
+				}
+				break;
 
-				simon->isWalkingOnStair = 1;
-
-				simon->SetNx(simon->NxStair);
-
-				simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
-				return;
 			}
 
-		}
-		else // DOWN
+			if (useSubWeapon)
+				simon->Attack(simon->subWeapon);
+	}
+	else
+	{
+		if (simon->isJumping == false && simon->isAttacking == false)
 		{
-			if (game->IsKeyDown(DIK_DOWN))
+			if (game->IsKeyDown(DIK_UP)) // if (UP) else (if (DOWN) else (ko làm gì))
 			{
-				if (simon->isOnStair == false) // chưa trên stair
+				if (simon->isOnStair == false) // nếu đang ko trên thang
 				{
 					for (UINT i = 0; i < _coObjects.size(); i++)
 					{
-						if (_coObjects[i]->GetType() == eType::STAIR_DOWN)
+						if (_coObjects[i]->GetType() == eType::STAIR_UP && simon->isCollitionObjectWithObject(_coObjects[i]) == true)
 						{
-							if (simon->isCollitionObjectWithObject(_coObjects[i]))
+							Stair* obj = dynamic_cast<Stair*>(_coObjects[i]);
+							simon->NxStair = obj->GetNx();
+
+							simon->SetNx(simon->NxStair); // hướng simon theo hướng thang
+							simon->ny = -1; // hướng lên
+							simon->isOnStair = true;
+							simon->walkHeight = 0;
+
+							if (simon->GetX() < obj->GetX())
 							{
-								Stair* obj = dynamic_cast<Stair*>(_coObjects[i]);
-								simon->NxStair = obj->GetNx(); // lưu hướng của stair
-								simon->ny = 1;// hướng đi xuống
-								simon->SetNx(simon->NxStair * -1);// set hướng simon
-
-								simon->isOnStair = true; // set trạng thái stair
-								simon->walkHeight = 0;
-
-								if (simon->GetX() < obj->GetX())
-								{
-									simon->SetAutoGoX(1, - obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
-								}
-								else
-								{
-									simon->SetAutoGoX(-1, -obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
-								}
-
-								return;
+								simon->SetAutoGoX(1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
 							}
+							else
+								simon->SetAutoGoX(-1, obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
+
+							return;
+						}
+					}
+				}
+				else // nếu đang trên thang rồi thì bật xử lý, walking = 1
+				{
+					simon->isWalking = true;
+
+					simon->ny = -1;
+
+					simon->isWalkingOnStair = 1;
+
+					simon->SetNx(simon->NxStair);
+
+					simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, -1 * SIMON_SPEED_ONSTAIR);
+					return;
+				}
+
+			}
+			else // DOWN
+			{
+				if (game->IsKeyDown(DIK_DOWN))
+				{
+					if (simon->isOnStair == false) // chưa trên stair
+					{
+						for (UINT i = 0; i < _coObjects.size(); i++)
+						{
+							if (_coObjects[i]->GetType() == eType::STAIR_DOWN)
+							{
+								if (simon->isCollitionObjectWithObject(_coObjects[i]))
+								{
+									Stair* obj = dynamic_cast<Stair*>(_coObjects[i]);
+									simon->NxStair = obj->GetNx(); // lưu hướng của stair
+									simon->ny = 1;// hướng đi xuống
+									simon->SetNx(simon->NxStair * -1);// set hướng simon
+
+									simon->isOnStair = true; // set trạng thái stair
+									simon->walkHeight = 0;
+
+									if (simon->GetX() < obj->GetX())
+									{
+										simon->SetAutoGoX(1, -obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
+									}
+									else
+									{
+										simon->SetAutoGoX(-1, -obj->GetNx(), obj->GetX(), SIMON_WALKING_SPEED);
+									}
+
+									return;
+								}
+							}
+						}
+
+						simon->SetState(SIMON_STATE_SITTING);
+						if (game->IsKeyDown(DIK_RIGHT))
+							simon->SetState(SIMON_STATE_RIGHT);
+
+						if (game->IsKeyDown(DIK_LEFT))
+							simon->SetState(SIMON_STATE_LEFT);
+						return;
+
+					}
+					else // đã trên stair
+					{
+						if (simon->isWalkingOnStair == 0 || simon->isWalkingOnStair == 3) // kết thúc xử lí trước đó
+						{
+							simon->isWalking = true;
+							simon->isWalkingOnStair = 1;
+							simon->ny = 1;// hướng đi xuống
+							simon->SetNx(simon->NxStair*-1);// đi xuống thì ngược so với stair
+							simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
 						}
 					}
 
-					simon->SetState(SIMON_STATE_SITTING);
-					if (game->IsKeyDown(DIK_RIGHT))
-						simon->SetState(SIMON_STATE_RIGHT);
-
-					if (game->IsKeyDown(DIK_LEFT))
-						simon->SetState(SIMON_STATE_LEFT);
-					return;
-
 				}
-				else // đã trên stair
+				else
 				{
-					if (simon->isWalkingOnStair == 0 || simon->isWalkingOnStair == 3) // kết thúc xử lí trước đó
-					{
-						simon->isWalking = true;
-						simon->isWalkingOnStair = 1;
-						simon->ny = 1;// hướng đi xuống
-						simon->SetNx(simon->NxStair*-1);// đi xuống thì ngược so với stair
-						simon->SetSpeed(simon->GetNx()* SIMON_SPEED_ONSTAIR, SIMON_SPEED_ONSTAIR);
-					}
+					simon->SetState(SIMON_STATE_STOP);
 				}
 
 			}
-			else
-			{
-				simon->SetState(SIMON_STATE_STOP);
-			}
-
 		}
+	}
+
+	if (simon->isJumping && simon->isWalking)
+	{
+		if (simon->GetNx() > 0) // tiến vào sát gạch cao nhảy ko dc // mở ra dính lỗi nhảy lên tường
+			simon->SetState(SIMON_STATE_WALKING_RIGHT);
+		else
+			simon->SetState(SIMON_STATE_WALKING_LEFT);
+		return;
 	}
 	
 
