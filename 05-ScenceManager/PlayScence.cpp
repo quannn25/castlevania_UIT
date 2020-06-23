@@ -197,6 +197,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetType(eType::SPECIALBRICK);
 	}
 		break;
+	case OBJECT_TYPE_MOVINGBRICK: // gạch chuyển động
+	{
+		if (tokens.size() < 7)
+		{
+			DebugOut(L"[ERROR] SpecialBrick not found!\n");
+			return;
+		}
+		float left_boundary = atof(tokens[5].c_str());
+		float right_boundary = atof(tokens[6].c_str());
+
+		obj = new CBrick(left_boundary, right_boundary, OBJECT_TYPE_MOVINGBRICK);
+
+		obj->SetType(eType::MOVINGBRICK);
+	}
+	break;
 	case OBJECT_TYPE_SPECIALBRICKSMALL: //gạch bbox nhỏ
 		obj = new CBrick(OBJECT_TYPE_SPECIALBRICKSMALL);
 		obj->SetType(eType::SPECIALBRICKSMALL);
@@ -835,6 +850,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		simon->isOnStair = 0;
 		simon->isWalkingOnStair = 0;
 		simon->isAutoGoX = 0;
+		simon->isOnMovingBrick = 0;
 		break;
 	case DIK_X:
 		simon->Attack(simon->mainWeapon);
@@ -919,7 +935,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (simon->isAutoGoX == true)
 		return;
 
-	if (game->IsKeyDown(DIK_UP) && game->IsKeyDown(DIK_C) && simon->isWalkingOnStair == 0 && !simon->isAttacking && simon->subWeapon != NULL && simon->subWeapon->GetFinish() == true)
+	if (game->IsKeyDown(DIK_UP) && game->IsKeyDown(DIK_X) && simon->isWalkingOnStair == 0 && !simon->isAttacking && simon->subWeapon != NULL && simon->subWeapon->GetFinish() == true)
 	{
 		bool useSubWeapon = false;
 

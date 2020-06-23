@@ -8,7 +8,7 @@ CBrick::CBrick(float w, float h) : CGameObject()
 
 CBrick::CBrick(int type1) : CGameObject()
 {
-	if (type1 == 9) //brick ko bbox
+	if (type1 == OBJECT_TYPE_SPECIALBRICKSMALL) //brick ko bbox
 	{
 		this->width = 0;
 		this->height = 0;
@@ -18,9 +18,56 @@ CBrick::CBrick(int type1) : CGameObject()
 	this->height = BRICK_BBOX_HEIGHT;
 }
 
+CBrick::CBrick(float left_boundary, float right_boundary, int type1) : CGameObject()
+{
+	if (type1 == OBJECT_TYPE_MOVINGBRICK) // moving brick
+	{
+		this->left_boundary = left_boundary;
+		this->right_boundary = right_boundary;
+
+		this->vx = MOVINGBRICK_SPEED_X;
+		return;
+	}
+	this->width = BRICK_BBOX_WIDTH;
+	this->height = BRICK_BBOX_HEIGHT;
+}
+
 CBrick::~CBrick()
 {
 
+}
+
+void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+{
+	if (this->type == eType::MOVINGBRICK)
+	{
+		vx = MOVINGBRICK_SPEED_X * nx;
+		CGameObject::Update(dt);
+		x += dx;
+
+		if (x > right_boundary || x < left_boundary) // kiểm tra lại vượt biên
+		{
+			if (x > right_boundary)
+			{
+				x = right_boundary;
+			}
+			if (x < left_boundary)
+			{
+				x = left_boundary;
+			}
+
+			nx = -nx;
+		}
+
+		/*if (MainSimon::GetInstance()->GetSimon()->isOnMovingBrick)
+		{
+			if (MainSimon::GetInstance()->GetSimon()->movingBrick->id == this->id)
+			{
+				MainSimon::GetInstance()->GetSimon()->x = this->x;
+			}
+		}*/
+		
+	}
 }
 
 void CBrick::Render()
@@ -55,6 +102,14 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 		t = y + 10;
 		r = x + 15;
 		b = y + 15;
+		return;
+	}
+	if (this->type == eType::MOVINGBRICK)
+	{
+		l = x;
+		t = y;
+		r = x + 64;
+		b = y + 16;
 		return;
 	}
 	l = x;

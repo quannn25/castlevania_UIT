@@ -24,6 +24,7 @@ Simon::Simon() : CGameObject()
 	isFreeze = 0;
 	TimeFreeze = 0;
 	isHurting = 0;
+	isOnMovingBrick = 0;
 
 	health = SIMON_DEFAULT_HEALTH;
 	live = SIMON_DEFAULT_HEARTCOLLECT;
@@ -438,6 +439,7 @@ void Simon::SetState(int state)
 		y -= 16;
 		vy = -SIMON_JUMP_SPEED_Y;
 		isJumping = true;
+		isOnMovingBrick = 0;
 		break;
 	case SIMON_STATE_IDLE:
 		vx = 0;
@@ -487,6 +489,7 @@ void Simon::SetHurt(LPCOLLISIONEVENT e)
 	isWalking = 0;
 	isAttacking = 0;
 	isJumping = 0;
+	isOnMovingBrick = 0;
 	if (isSitting == true)
 	{
 		isSitting = 0; // hủy trạng thái ngồi
@@ -588,11 +591,20 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 	vector<LPGAMEOBJECT> list_Brick;
 	list_Brick.clear();
+	/*vector<LPGAMEOBJECT> list_movingBrick;
+	list_movingBrick.clear();*/
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (dynamic_cast<CBrick *> (coObjects->at(i)))
+		if (dynamic_cast<CBrick *> (coObjects->at(i)))// && coObjects->at(i)->GetType() != eType::MOVINGBRICK)
 			list_Brick.push_back(coObjects->at(i));
+
+		/*if (dynamic_cast<CBrick *> (coObjects->at(i)) && coObjects->at(i)->GetType() == eType::MOVINGBRICK)
+			list_movingBrick.push_back(coObjects->at(i));*/
 	}
+
+	/*CollisionWithMovingBrick(&list_movingBrick);
+	if (isOnMovingBrick)
+		return;*/
 
 
 	// turn off collision when die 
@@ -602,20 +614,47 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 	// reset untouchable timer if untouchable time has passed
 	/*if (GetTickCount() - untouchable_start > SIMON_UNTOUCHABLE_TIME)
 	{
-		untouchable_start = 0;
-		untouchable = 0;
+	untouchable_start = 0;
+	untouchable = 0;
 	}*/
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
-		x += dx;
-		y += dy;
-		FreeFallDown += dy;
-		if (FreeFallDown >= 3) // biến fix simon đang rơi tự vẫn nhảy đc
+		if (isOnMovingBrick)
 		{
-			isJumping = 1;
+			if (vx < 0)
+			{
+				if (movingBrick->vx < 0)
+					vx = vx + movingBrick->vx;
+				else
+					vx = -abs(abs(vx) + abs(movingBrick->vx));
+			}
+
+			if (vx > 0)
+			{
+				if (movingBrick->vx < 0)
+					vx = abs(abs(vx) + abs(movingBrick->vx));
+				else
+					vx = vx + movingBrick->vx;
+			}
+			if (vx == 0)
+				vx = movingBrick->vx;
+			dx = vx * dt;
+			x += dx;
+			y += dy;
 		}
+		else
+		{
+			x += dx;
+			y += dy;
+			FreeFallDown += dy;
+			if (FreeFallDown >= 3) // biến fix simon đang rơi tự vẫn nhảy đc
+			{
+				isJumping = 1;
+			}
+		}
+		
 	}
 	else
 	{
@@ -627,18 +666,45 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		int flag = 0;
+		int flag2 = 0;
+		for (int i = 0; i < coEventsResult.size(); i++)
+		{
+			if (coEventsResult.at(i)->obj->GetType() == eType::MOVINGBRICK)
+			{
+				if (coEventsResult.at(i)->ny < 0)
+				{
+					flag++;
+					isOnMovingBrick = 1;
+					this->movingBrick = dynamic_cast<CBrick*>(coEventsResult.at(i)->obj);
+				}
+
+				if (coEventsResult.at(i)->nx != 0)
+					flag2++;
+			}
+
+		}
+		if (flag == 0)
+			isOnMovingBrick = 0;
+		if (flag != 0)
+		{
+			this->vx = movingBrick->vx;
+			CGameObject::Update(this->dt);
+		}
 
 		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
 		//	x += nx*abs(rdx); 
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.2f;
+		if (flag2 == 0)
+			x += min_tx * dx + nx * 0.4f;
+		if (!isOnMovingBrick)
+			y += min_ty * dy + ny * 0.2f;
 
 		if (nx != 0)
 			vx = 0;
-		
+
 		if (ny < 0) // va chạm bên trên brick
 		{
 			if (isJumping == true) // nếu simon đang nhảy
@@ -667,6 +733,8 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		delete coEvents[i];
 
 }
+
+
 
 void Simon::Attack(Weapon * w)
 {
@@ -750,6 +818,7 @@ bool Simon::LoseLife()
 	isSitting = 0;
 	isWalking = 0;
 	isFreeze = 0;
+	isOnMovingBrick = 0;
 
 	nx = 1;
 

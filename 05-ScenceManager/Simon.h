@@ -112,6 +112,10 @@ public:
 	bool isAutoGoX;
 	int NxAfterAuto; //Nx mong muốn sao khi auto
 
+	bool isOnMovingBrick;
+	float speedMovingbirck;
+	CBrick * movingBrick;
+
 public:
 	Simon();
 	~Simon();

@@ -30,6 +30,7 @@
 115	textures\castle\item\StopWatch.png	116	116	116
 116	textures\castle\weapon\Boomerang.png	116	116	116
 117	textures\castle\weapon\Axe.png	116	116	116
+118	textures\castle\ground\MovingBrick.png	255	255	255
 
 
 
@@ -237,6 +238,9 @@
 81065	64	0	96	32	117
 81066	96	0	128	32	117
 
+#movingBrick
+81067	0	0	64	16	118
+
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -397,6 +401,9 @@
 #Axe
 1224	81063	100	81064	100	81065	100	81066	100
 
+#MovingBrick
+1225	81067	100
+
 
 
 
@@ -487,6 +494,9 @@
 #Axe
 67	1224	1223
 
+#movingBrick
+68	1225
+
 
 
 #====================[OBJECTS]===================================
@@ -499,6 +509,13 @@
 
 # MARIO
 0	250	0	1	0
+
+
+#MovingBrick
+#type	x	y	ani_set_id	id	left_b	right_b
+12	64	240	68	3	64	128
+
+
 
 # BRICK 
 #Final Brick
