@@ -225,6 +225,9 @@
     <ClCompile Include="AxeItem.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Hunchback.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="Axe.h">
       <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Hunchback.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

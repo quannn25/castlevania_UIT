@@ -35,6 +35,7 @@
 #include "Boomerang.h"
 #include "AxeItem.h"
 #include "Axe.h"
+#include "Hunchback.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene
@@ -70,6 +71,9 @@ protected:
 	vector <LPGAMEOBJECT> listGhost;
 	vector <ZombieZone*> listGhostZone; // list các vùng simon vào thì cho zombie ra tại các vị trí dc parse vào
 
+	vector <LPGAMEOBJECT> listHunchback;
+	vector <ZombieZone*> listHunchbackZone;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -104,6 +108,7 @@ public:
 
 	void CreateZombie();
 	void CreateGhost();
+	void CreateHunchback();
 
 	void updateEnemy(DWORD dt);
 

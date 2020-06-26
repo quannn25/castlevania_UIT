@@ -106,36 +106,36 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (isWalking == true)
 		{
-			walkHeight = walkHeight + abs(vy) * 16.0f;
+			walkHeight = walkHeight + abs(vy) * SIMON_WALKING_HEIGHT_STAIR;
 
-			if (walkHeight >= 8.0f && isWalkingOnStair == 1)
+			if (walkHeight >= (SIMON_WALKING_HEIGHT_STAIR / 2.0f) && isWalkingOnStair == 1)
 				isWalkingOnStair++;
 
-			if (walkHeight >= 16.0f)
+			if (walkHeight >= SIMON_WALKING_HEIGHT_STAIR)
 			{
 				isWalkingOnStair++;
 
 				// di hon 16px
 				if (nx == 1 && ny == -1) // đi lên bên phải
 				{
-					x -= (walkHeight - 16.0f);
-					y += (walkHeight - 16.0f);
+					x -= (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
+					y += (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
 				}
 				if (nx == -1 && ny == -1) // đi lên bên trái
 				{
-					x += (walkHeight - 16.0f);
-					y += (walkHeight - 16.0f);
+					x += (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
+					y += (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
 				}
 
 				if (nx == 1 && ny == 1) // đi xuống bên phải
 				{
-					x -= (walkHeight - 16.0f);
-					y -= (walkHeight - 16.0f);
+					x -= (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
+					y -= (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
 				}
 				if (nx == -1 && ny == 1) // đi xuống bên trái
 				{
-					x += (walkHeight - 16.0f);
-					y -= (walkHeight - 16.0f);
+					x += (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
+					y -= (walkHeight - SIMON_WALKING_HEIGHT_STAIR);
 				}
 
 				walkHeight = 0;
@@ -156,8 +156,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		this->dt = dt;
-		dx = vx * 16;
-		dy = vy * 16;
+		dx = vx * SIMON_WALKING_HEIGHT_STAIR;
+		dy = vy * SIMON_WALKING_HEIGHT_STAIR;
 	}
 
 	if (isAutoGoX == true) // fix vx = 0 khi autoGo
@@ -436,7 +436,6 @@ void Simon::SetState(int state)
 			return;
 		if (isHurting)
 			return;
-		y -= 16;
 		vy = -SIMON_JUMP_SPEED_Y;
 		isJumping = true;
 		isOnMovingBrick = 0;
@@ -468,7 +467,7 @@ void Simon::SetState(int state)
 		if (isSitting == true) // nếu simon đang ngồi
 		{
 			isSitting = 0; // hủy trạng thái ngồi
-			y = y - 16; // kéo simon lên
+			y = y - SIMON_POS_FIX; // kéo simon lên
 		}
 		break;
 	case SIMON_STATE_DIE:
@@ -493,10 +492,10 @@ void Simon::SetHurt(LPCOLLISIONEVENT e)
 	if (isSitting == true)
 	{
 		isSitting = 0; // hủy trạng thái ngồi
-		y = y - 16; 
+		y = y - SIMON_POS_FIX;
 	}
 
-	if (isOnStair == false)
+	if (isOnStair == false && isAutoGoX == false)
 	{
 		if (e->nx != 0)// hướng bay ra
 		{
@@ -709,10 +708,10 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (isJumping == true) // nếu simon đang nhảy
 			{
-				y = y - 16; // kéo simon lên
+				isJumping = false;
+				y = y - SIMON_POS_FIX; // kéo simon lên
 			}
 			vy = 0;
-			isJumping = false;
 		}
 
 		if (ny > 0) // va chạm dưới brick

@@ -152,6 +152,7 @@
     <ClCompile Include="Hit.cpp" />
     <ClCompile Include="HolyWater.cpp" />
     <ClCompile Include="HolyWaterItem.cpp" />
+    <ClCompile Include="Hunchback.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="LargeHeart.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Hit.h" />
     <ClInclude Include="HolyWater.h" />
     <ClInclude Include="HolyWaterItem.h" />
+    <ClInclude Include="Hunchback.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="LargeHeart.h" />
