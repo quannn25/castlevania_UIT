@@ -34,6 +34,7 @@ public:
 	void setCurrentFrame(int curFrame) { this->currentFrame = curFrame; }
 	int getFramesSize() { return frames.size(); }
 	int getLastFrameTime() { return lastFrameTime; }
+	void setLastFrameTime(DWORD time) { lastFrameTime = time; }
 	void Render(float x, float y, int alpha = 255, bool isLeft = true);
 };
 

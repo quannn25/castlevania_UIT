@@ -351,6 +351,35 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 	break;
+	case OBJECT_TYPE_SKELETONZONE:
+	{
+		if (tokens.size() < 11)
+		{
+			DebugOut(L"[ERROR] SkeletonZone not found!\n");
+			return;
+		}
+
+		float l1 = atof(tokens[1].c_str()); // bbox zone zombie
+		float t1 = atof(tokens[2].c_str());
+		float r1 = atof(tokens[3].c_str());
+		float b1 = atof(tokens[4].c_str());
+
+		float x1 = atof(tokens[5].c_str()); // tọa độ tạo ghost
+		float y1 = atof(tokens[6].c_str());
+
+		float left_boundary = atof(tokens[7].c_str()); // vùng đệm tạo
+		float right_boundary = atof(tokens[8].c_str());
+
+		int time = atof(tokens[9].c_str()); //ko quan trọng
+		int count = atof(tokens[10].c_str()); //ko quan trọng
+
+		ZombieZone *z = new ZombieZone(l1, t1, r1, b1, x1, y1, left_boundary, right_boundary, time, count);
+
+		listSkeletonZone.push_back(z);
+
+		return;
+	}
+	break;
 	case OBJECT_TYPE_BAT:
 	{
 		obj = new Bat(x, y);
@@ -674,6 +703,8 @@ void CPlayScene::Update(DWORD dt)
 
 	CreateHunchback();
 
+	CreateSkeleton();
+
 	// check collision
 	CheckCollision();
 
@@ -695,17 +726,20 @@ void CPlayScene::Render()
 {
 	tileMap->DrawMap(Camera::GetInstance());
 
+	// coObj=================
 	for (int i = 0; i < coObjects.size(); i++)
 	{
 		coObjects[i]->Render();
 	}
 
+	// ListItem=================
 	for (int i = 0; i < listItem.size(); i++)
 	{
 		if (listItem[i]->GetFinish() == false)
 			listItem[i]->Render();
 	}
 
+	// listZombie==================
 	for (UINT i = 0; i < listZombie.size(); i++)
 	{
 		if (listZombie[i]->GetHealth() > 0)
@@ -717,6 +751,7 @@ void CPlayScene::Render()
 		listZombieZone[i]->RenderBoundingBox();
 	}
 
+	// listGhost=====================
 	for (UINT i = 0; i < listGhost.size(); i++)
 	{
 		if (listGhost[i]->GetHealth() > 0)
@@ -728,6 +763,7 @@ void CPlayScene::Render()
 		//listGhostZone[i]->RenderBoundingBox();
 	}
 
+	// listHunchback=====================
 	for (UINT i = 0; i < listHunchback.size(); i++)
 	{
 		if (listHunchback[i]->GetHealth() > 0)
@@ -739,6 +775,20 @@ void CPlayScene::Render()
 		//listHunchbackZone[i]->RenderBoundingBox();
 	}
 
+
+	// listSkeleton==========================
+	for (UINT i = 0; i < listSkeleton.size(); i++)
+	{
+		if (listSkeleton[i]->GetHealth() > 0)
+			listSkeleton[i]->Render();
+	}
+
+	for (UINT i = 0; i < listSkeletonZone.size(); i++)
+	{
+		//listSkeletonZone[i]->RenderBoundingBox();
+	}
+
+	// listBlackKnight===============================
 	for (UINT i = 0; i < listBlackKnight.size(); i++)
 	{
 		float l, t, r, b;
@@ -757,6 +807,8 @@ void CPlayScene::Render()
 			
 	}
 
+
+	// listBat==================================
 	for (UINT i = 0; i < listBat.size(); i++)
 	{
 		float l, t, r, b;
@@ -775,7 +827,7 @@ void CPlayScene::Render()
 	}
 
 
-
+	// listEffect=========================
 	for (int i = 0; i < listEffect.size(); i++)
 	{
 		if (listEffect[i]->GetFinish() == false)
@@ -858,6 +910,17 @@ void CPlayScene::Unload()
 		delete listHunchbackZone[i];
 
 	listHunchbackZone.clear();
+
+	// Skeleton==========================
+	for (int i = 0; i < listSkeleton.size(); i++)
+		delete listSkeleton[i];
+
+	listSkeleton.clear();
+
+	for (int i = 0; i < listSkeletonZone.size(); i++)
+		delete listSkeletonZone[i];
+
+	listSkeletonZone.clear();
 
 	//BlackKnight========================
 	for (int i = 0; i < listBlackKnight.size(); i++)
@@ -1306,6 +1369,15 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
+				case eType::SKELETON:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					break;
+				}
 
 				default:
 					break;
@@ -1430,6 +1502,24 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					break;
 				}
 				case eType::HUNCHBACK:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					player->SetScore(player->GetScore() + 100);
+
+					isCollisonWithEnemy = true;
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+				case eType::SKELETON:
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
@@ -1654,6 +1744,7 @@ void CPlayScene::CheckCollisionWithEnemy()
 	CheckCollisionWeapon(listBat);
 	CheckCollisionWeapon(listGhost);
 	CheckCollisionWeapon(listHunchback);
+	CheckCollisionWeapon(listSkeleton);
 
 	// kiểm tra va chạm simon với enemy
 	CheckCollisionSimonWithEnemy(listZombie);
@@ -1661,6 +1752,7 @@ void CPlayScene::CheckCollisionWithEnemy()
 	CheckCollisionSimonWithEnemy(listBat);
 	CheckCollisionSimonWithEnemy(listGhost);
 	CheckCollisionSimonWithEnemy(listHunchback);
+	CheckCollisionSimonWithEnemy(listSkeleton);
 }
 
 void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
@@ -1719,7 +1811,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	}
 
 
-	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST || type == eType::HUNCHBACK)
+	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST || type == eType::HUNCHBACK || type == eType::SKELETON)
 	{
 		int random = rand() % 10;
 
@@ -2041,6 +2133,47 @@ void CPlayScene::CreateHunchback()
 
 }
 
+void CPlayScene::CreateSkeleton()
+{
+	DWORD now = GetTickCount();
+
+	for (int i = 0; i < listSkeletonZone.size(); i++)
+	{
+		if (listSkeletonZone[i]->isSimonInZombieZone(player)) // nếu simon trong zone
+		{
+			if (listSkeletonZone[i]->isSimonInZoneBefore == false) // nếu simon vừa ngoài vào thì cb tạo ghost
+			{
+				float l, t, r, b;
+				listSkeletonZone[i]->getBoundingBox(l, t, r, b);
+
+				float x1, y1, left_boundary, right_boundary; //x1,y1 là tọa độ tạo ghost, left right là vùng đệm theo chiều x
+				listSkeletonZone[i]->getCreateLocation(x1, y1, left_boundary, right_boundary);
+
+				if (player->GetX() > l + left_boundary && player->GetX() < r - right_boundary) //vào vùng đệm để đảm bảo ghost tạo ra (x1,y1) luôn trong camera an toàn
+				{
+
+					if (player->GetNx() > 0) // di sang phai
+					{
+						listSkeleton.push_back(new Skeleton(x1, y1, -1));
+					}
+					else
+					{
+						listSkeleton.push_back(new Skeleton(x1, y1, 1));
+					}
+
+					listSkeletonZone[i]->isSimonInZoneBefore = true;
+				}
+			}
+
+		}
+		else
+		{
+			listSkeletonZone[i]->isSimonInZoneBefore = false;
+		}
+	}
+
+}
+
 void CPlayScene::updateEnemy(DWORD dt)
 {
 	//Zombie========================
@@ -2145,6 +2278,33 @@ void CPlayScene::updateEnemy(DWORD dt)
 	for (UINT i = 0; i < listHunchback.size(); i++)
 	{
 		Hunchback * enemy = dynamic_cast<Hunchback *>(listHunchback[i]);
+		if (enemy->GetHealth() > 0) // còn máu
+		{
+			float l, t, r, b;
+			float widthEnemy, heightEnemy;
+			enemy->GetBoundingBox(l, t, r, b);
+			widthEnemy = b - t;
+			heightEnemy = r - l;
+
+			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
+			{
+
+				enemy->SetHealth(0); // ra khỏi cam thì coi như chết
+
+			}
+			else
+			{
+				enemy->Update(dt, player, &coObjects);
+			}
+		}
+	}
+
+
+	// Skeleton=================================
+
+	for (UINT i = 0; i < listSkeleton.size(); i++)
+	{
+		Skeleton * enemy = dynamic_cast<Skeleton *>(listSkeleton[i]);
 		if (enemy->GetHealth() > 0) // còn máu
 		{
 			float l, t, r, b;

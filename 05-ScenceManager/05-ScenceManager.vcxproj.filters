@@ -228,6 +228,12 @@
     <ClCompile Include="Hunchback.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Object\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -399,6 +405,12 @@
       <Filter>Object\weapon</Filter>
     </ClInclude>
     <ClInclude Include="Hunchback.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Object\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

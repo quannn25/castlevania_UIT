@@ -1,22 +1,27 @@
-#ifndef AXE_H
-#define AXE_H
+#ifndef BONE_H
+#define BONE_H
 
-#define AXE_FRAMEWIDTH 32
-#define AXE_FRAMEHEIGHT 32
-#define AXE_SPEED_X 0.2f
-#define AXE_SPEED_Y 0.55f
-#define AXE_GRAVITY 0.0015f
+#define BONE_FRAMEWIDTH 32
+#define BONE_FRAMEHEIGHT 32
+#define BONE_SPEED_X 0.2f
+#define BONE_SPEED_Y 0.55f
+#define BONE_GRAVITY 0.0015f
+#define COUNT_BONE_FRAME 3
 
 
 #include "Weapon.h"
-class Axe : public Weapon
+#include "MainSimon.h"
+class Bone : public Weapon
 {
 public:
+	int curFrame;
+	DWORD lastFrameTime;
 
-	Axe();
-	~Axe();
+	Bone();
+	~Bone();
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
+	void Render();
 	void Create(float simonX, float simonY, int simonNx);
 	virtual void RenderIcon(float X, float Y);
 	virtual void ReSetAniSetSwitchScene();

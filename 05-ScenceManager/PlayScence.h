@@ -36,6 +36,7 @@
 #include "AxeItem.h"
 #include "Axe.h"
 #include "Hunchback.h"
+#include "Skeleton.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene
@@ -74,6 +75,9 @@ protected:
 	vector <LPGAMEOBJECT> listHunchback;
 	vector <ZombieZone*> listHunchbackZone;
 
+	vector <LPGAMEOBJECT> listSkeleton;
+	vector <ZombieZone*> listSkeletonZone;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -109,6 +113,7 @@ public:
 	void CreateZombie();
 	void CreateGhost();
 	void CreateHunchback();
+	void CreateSkeleton();
 
 	void updateEnemy(DWORD dt);
 

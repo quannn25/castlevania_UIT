@@ -31,7 +31,8 @@
 117	textures\castle\weapon\Axe.png	116	116	116
 118	textures\castle\ground\MovingBrick.png	255	255	255
 119	textures\castle\enemy\Hunchback.png	116	116	116
-
+120	textures\castle\weapon\Bone.png	116	116	116
+121	textures\castle\enemy\Skeleton.png	116	116	116
 
 
 #====================[SPRITES]===================================
@@ -245,6 +246,17 @@
 81068	0	0	32	32	119
 81069	32	0	64	32	119
 
+#Bone
+81070	0	0	32	32	120
+81071	32	0	64	32	120
+81072	64	0	96	32	120
+
+#Skeleton
+81073	0	0	32	64	121
+81074	32	0	64	64	121
+
+
+
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -412,6 +424,12 @@
 1226	81068	100
 1227	81068	100	81069	100
 
+#Bone
+1228	81072	100	81070	100	81071	100
+
+#Skeleton
+1229	81073	100	81074	100
+
 
 
 
@@ -507,6 +525,12 @@
 
 #Hunchback
 69	1226	1227	1226	1227
+
+#Bone
+70	1228
+
+#Skeleton
+71	1229
 
 
 
@@ -658,12 +682,19 @@
 
 #ghost Zone
 #type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
-11	700	150	1400	450	1311	300	390	250	1	1
+#11	700	150	1400	450	1311	300	390	250	1	1
+
+
 
 #Hunback Zone
 #type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
-13	296	150	1340	450	847	280	349	253	1	1
-13	296	150	1340	450	592	280	89	514	1	1
+#13	296	150	1340	450	847	280	349	253	1	1
+#13	296	150	1340	450	592	280	89	514	1	1
+
+
+#Skeleton Zone
+#type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
+14	60	20	700	450	70	250	0	420	1	1
 
 
 
