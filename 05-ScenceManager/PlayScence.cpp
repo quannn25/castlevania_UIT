@@ -351,6 +351,35 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 	break;
+	case OBJECT_TYPE_RAVENZONE:
+	{
+		if (tokens.size() < 11)
+		{
+			DebugOut(L"[ERROR] RavenZone not found!\n");
+			return;
+		}
+
+		float l1 = atof(tokens[1].c_str()); // bbox zone zombie
+		float t1 = atof(tokens[2].c_str());
+		float r1 = atof(tokens[3].c_str());
+		float b1 = atof(tokens[4].c_str());
+
+		float x1 = atof(tokens[5].c_str()); // tọa độ tạo ghost
+		float y1 = atof(tokens[6].c_str());
+
+		float left_boundary = atof(tokens[7].c_str()); // vùng đệm tạo
+		float right_boundary = atof(tokens[8].c_str());
+
+		int time = atof(tokens[9].c_str()); //ko quan trọng
+		int count = atof(tokens[10].c_str()); //ko quan trọng
+
+		ZombieZone *z = new ZombieZone(l1, t1, r1, b1, x1, y1, left_boundary, right_boundary, time, count);
+
+		listRavenZone.push_back(z);
+
+		return;
+	}
+	break;
 	case OBJECT_TYPE_SKELETONZONE:
 	{
 		if (tokens.size() < 11)
@@ -632,6 +661,7 @@ void CPlayScene::Update(DWORD dt)
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
 	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
+	srand((int)time(0));
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
@@ -705,6 +735,8 @@ void CPlayScene::Update(DWORD dt)
 
 	CreateSkeleton();
 
+	CreateRaven();
+
 	// check collision
 	CheckCollision();
 
@@ -773,6 +805,18 @@ void CPlayScene::Render()
 	for (UINT i = 0; i < listHunchbackZone.size(); i++)
 	{
 		//listHunchbackZone[i]->RenderBoundingBox();
+	}
+
+	// listRaven=====================
+	for (UINT i = 0; i < listRaven.size(); i++)
+	{
+		if (listRaven[i]->GetHealth() > 0)
+			listRaven[i]->Render();
+	}
+
+	for (UINT i = 0; i < listRavenZone.size(); i++)
+	{
+		//listRavenZone[i]->RenderBoundingBox();
 	}
 
 
@@ -910,6 +954,17 @@ void CPlayScene::Unload()
 		delete listHunchbackZone[i];
 
 	listHunchbackZone.clear();
+
+	// Raven=======================
+	for (int i = 0; i < listRaven.size(); i++)
+		delete listRaven[i];
+
+	listRaven.clear();
+
+	for (int i = 0; i < listRavenZone.size(); i++)
+		delete listRavenZone[i];
+
+	listRavenZone.clear();
 
 	// Skeleton==========================
 	for (int i = 0; i < listSkeleton.size(); i++)
@@ -1378,6 +1433,15 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
+				case eType::RAVEN:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					break;
+				}
 
 				default:
 					break;
@@ -1520,6 +1584,24 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					break;
 				}
 				case eType::SKELETON:
+				{
+					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
+					gameObj->beAttacked(1);
+
+					player->SetScore(player->GetScore() + 100);
+
+					isCollisonWithEnemy = true;
+
+					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+
+					if (rand() % 2 == 1) // tỉ lệ 50%
+					{
+						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
+
+					break;
+				}
+				case eType::RAVEN:
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
@@ -1745,6 +1827,7 @@ void CPlayScene::CheckCollisionWithEnemy()
 	CheckCollisionWeapon(listGhost);
 	CheckCollisionWeapon(listHunchback);
 	CheckCollisionWeapon(listSkeleton);
+	CheckCollisionWeapon(listRaven);
 
 	// kiểm tra va chạm simon với enemy
 	CheckCollisionSimonWithEnemy(listZombie);
@@ -1753,6 +1836,7 @@ void CPlayScene::CheckCollisionWithEnemy()
 	CheckCollisionSimonWithEnemy(listGhost);
 	CheckCollisionSimonWithEnemy(listHunchback);
 	CheckCollisionSimonWithEnemy(listSkeleton);
+	//CheckCollisionSimonWithEnemy(listRaven); // cho Raven chết luôn khi chạm
 }
 
 void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
@@ -1811,7 +1895,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	}
 
 
-	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST || type == eType::HUNCHBACK || type == eType::SKELETON)
+	if (type == eType::ZOMBIE || type == eType::BLACKKNIGHT || type == eType::BAT || type == eType::GHOST || type == eType::HUNCHBACK || type == eType::SKELETON || type == eType::RAVEN)
 	{
 		int random = rand() % 10;
 
@@ -2133,6 +2217,47 @@ void CPlayScene::CreateHunchback()
 
 }
 
+void CPlayScene::CreateRaven()
+{
+	DWORD now = GetTickCount();
+
+	for (int i = 0; i < listRavenZone.size(); i++)
+	{
+		if (listRavenZone[i]->isSimonInZombieZone(player)) // nếu simon trong zone
+		{
+			if (listRavenZone[i]->isSimonInZoneBefore == false) // nếu simon vừa ngoài vào thì cb tạo ghost
+			{
+				float l, t, r, b;
+				listRavenZone[i]->getBoundingBox(l, t, r, b);
+
+				float x1, y1, left_boundary, right_boundary; //x1,y1 là tọa độ tạo ghost, left right là vùng đệm theo chiều x
+				listRavenZone[i]->getCreateLocation(x1, y1, left_boundary, right_boundary);
+
+				if (player->GetX() > l + left_boundary && player->GetX() < r - right_boundary) //vào vùng đệm để đảm bảo ghost tạo ra (x1,y1) luôn trong camera an toàn
+				{
+
+					if (player->GetNx() > 0) // di sang phai
+					{
+						listRaven.push_back(new Raven(x1, y1, -1));
+					}
+					else
+					{
+						listRaven.push_back(new Raven(x1, y1, 1));
+					}
+
+					listRavenZone[i]->isSimonInZoneBefore = true;
+				}
+			}
+
+		}
+		else
+		{
+			listRavenZone[i]->isSimonInZoneBefore = false;
+		}
+	}
+
+}
+
 void CPlayScene::CreateSkeleton()
 {
 	DWORD now = GetTickCount();
@@ -2305,6 +2430,32 @@ void CPlayScene::updateEnemy(DWORD dt)
 	for (UINT i = 0; i < listSkeleton.size(); i++)
 	{
 		Skeleton * enemy = dynamic_cast<Skeleton *>(listSkeleton[i]);
+		if (enemy->GetHealth() > 0) // còn máu
+		{
+			float l, t, r, b;
+			float widthEnemy, heightEnemy;
+			enemy->GetBoundingBox(l, t, r, b);
+			widthEnemy = b - t;
+			heightEnemy = r - l;
+
+			if (isOncam(enemy->GetX(), enemy->GetY(), widthEnemy, heightEnemy) == false)  // ra khoi cam
+			{
+
+				enemy->SetHealth(0); // ra khỏi cam thì coi như chết
+
+			}
+			else
+			{
+				enemy->Update(dt, player, &coObjects);
+			}
+		}
+	}
+
+
+	// Raven=================================
+	for (UINT i = 0; i < listRaven.size(); i++)
+	{
+		Raven * enemy = dynamic_cast<Raven *>(listRaven[i]);
 		if (enemy->GetHealth() > 0) // còn máu
 		{
 			float l, t, r, b;

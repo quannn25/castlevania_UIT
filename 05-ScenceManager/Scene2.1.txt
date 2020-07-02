@@ -31,7 +31,9 @@
 116	textures\castle\weapon\Boomerang.png	116	116	116
 117	textures\castle\weapon\Axe.png	116	116	116
 118	textures\castle\ground\MovingBrick.png	255	255	255
-
+119	textures\castle\enemy\Hunchback.png	116	116	116
+120	textures\castle\weapon\Bone.png	116	116	116
+121	textures\castle\enemy\Skeleton.png	116	116	116
 
 
 #====================[SPRITES]===================================
@@ -241,6 +243,21 @@
 #movingBrick
 81067	0	0	64	16	118
 
+#Hunchback
+81068	0	0	32	32	119
+81069	32	0	64	32	119
+
+#Bone
+81070	0	0	32	32	120
+81071	32	0	64	32	120
+81072	64	0	96	32	120
+
+#Skeleton
+81073	0	0	32	64	121
+81074	32	0	64	64	121
+
+
+
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -404,6 +421,16 @@
 #MovingBrick
 1225	81067	100
 
+#Hunchback
+1226	81068	100
+1227	81068	100	81069	100
+
+#Bone
+1228	81072	100	81070	100	81071	100
+
+#Skeleton
+1229	81073	100	81074	100
+
 
 
 
@@ -496,6 +523,16 @@
 
 #movingBrick
 68	1225
+
+#Hunchback
+69	1226	1227	1226	1227
+
+#Bone
+70	1228
+
+#Skeleton
+71	1229
+
 
 
 

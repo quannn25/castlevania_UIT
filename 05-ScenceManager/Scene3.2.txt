@@ -31,7 +31,10 @@
 116	textures\castle\weapon\Boomerang.png	116	116	116
 117	textures\castle\weapon\Axe.png	116	116	116
 118	textures\castle\ground\MovingBrick.png	255	255	255
-
+119	textures\castle\enemy\Hunchback.png	116	116	116
+120	textures\castle\weapon\Bone.png	116	116	116
+121	textures\castle\enemy\Skeleton.png	116	116	116
+122	textures\castle\enemy\Raven.png	255	0	255
 
 
 #====================[SPRITES]===================================
@@ -241,6 +244,27 @@
 #movingBrick
 81067	0	0	64	16	118
 
+#Hunchback
+81068	0	0	32	32	119
+81069	32	0	64	32	119
+
+#Bone
+81070	0	0	32	32	120
+81071	32	0	64	32	120
+81072	64	0	96	32	120
+
+#Skeleton
+81073	0	0	32	64	121
+81074	32	0	64	64	121
+
+#Raven
+81075	0	0	32	32	122
+81076	32	0	64	32	122
+81077	64	0	96	32	122
+81078	96	0	128	32	122
+
+
+
 #====================[ANIMATIONS]===================================
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -404,6 +428,20 @@
 #MovingBrick
 1225	81067	100
 
+#Hunchback
+1226	81068	100
+1227	81068	100	81069	100
+
+#Bone
+1228	81072	100	81070	100	81071	100
+
+#Skeleton
+1229	81073	100	81074	100
+
+#Raven
+1230	81075	100
+1231	81076	100	81077	100	81078	100
+
 
 
 
@@ -497,6 +535,18 @@
 #movingBrick
 68	1225
 
+#Hunchback
+69	1226	1227	1226	1227
+
+#Bone
+70	1228
+
+#Skeleton
+71	1229
+
+#Raven
+72	1230	1231
+
 
 #====================[OBJECTS]===================================
 [OBJECTS]
@@ -580,7 +630,7 @@
 8	1088	272	22	3	64	32
 9	1120	272	22	3
 
-1	960	432	22	3	128	32
+8	960	432	22	3	128	32
 9	992	432	22	3
 9	1024	432	22	3
 9	1056	432	22	3
@@ -618,6 +668,15 @@
 1	1504	432	22	3
 
 
+
+#Skeleton Zone
+#type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
+#14	270	20	1500	450	714	320	222	0	1	1
+#14	270	20	1500	450	1290	320	830	0	1	1
+
+#RavenZone
+#type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
+15	270	20	1500	450	714	200	222	0	1	1
 
 
 

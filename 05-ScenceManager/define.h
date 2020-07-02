@@ -43,6 +43,7 @@ using namespace std;
 #define OBJECT_TYPE_MOVINGBRICK 12
 #define OBJECT_TYPE_HUNCHBACKZONE 13
 #define OBJECT_TYPE_SKELETONZONE 14
+#define OBJECT_TYPE_RAVENZONE 15
 #define OBJECT_TYPE_HIDDENOBJECT 49
 #define OBJECT_TYPE_PORTAL	50
 
@@ -80,6 +81,7 @@ using namespace std;
 #define HUNCHBACK_ANI_SET_ID 69
 #define BONE_ANI_SET_ID 70
 #define SKELETON_ANI_SET_ID 71
+#define RAVEN_ANI_SET_ID 72
 
 #define TIME_CREATE_GHOST 1000
 
@@ -170,7 +172,9 @@ enum eType
 
 	BONE = 82,
 
-	SKELETON = 83
+	SKELETON = 83,
+
+	RAVEN = 84
 
 };
 

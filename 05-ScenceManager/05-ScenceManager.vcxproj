@@ -162,6 +162,7 @@
     <ClCompile Include="Monney.cpp" />
     <ClCompile Include="MorningStar.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Raven.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SmallHeart.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Monney.h" />
     <ClInclude Include="MorningStar.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="Raven.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="SmallHeart.h" />

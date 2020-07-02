@@ -234,6 +234,9 @@
     <ClCompile Include="Skeleton.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Raven.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -411,6 +414,9 @@
       <Filter>Object\weapon</Filter>
     </ClInclude>
     <ClInclude Include="Skeleton.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
