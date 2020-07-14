@@ -9,8 +9,11 @@ class Camera
 protected:
 	float x;
 	float y;
+
 	int screen_width;
 	int screen_height;
+
+	bool isBlockCamera;
 
 public:
 	Camera(int w, int h);
@@ -28,6 +31,9 @@ public:
 
 	void SetScreenWidth(int width) { this->screen_width = width; }
 	void SetScreenHeight(int height) { this->screen_height = height; }
+
+	bool getIsBlockCamera() { return isBlockCamera; }
+	void setIsBlockCamera(bool a) { this->isBlockCamera = a; }
 
 	static Camera * GetInstance();
 	

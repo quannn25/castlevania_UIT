@@ -13,6 +13,18 @@ HiddenObject::HiddenObject(float x1, float y1, float xItem1, float yItem1)
 	isActive = false;
 }
 
+HiddenObject::HiddenObject(float x1, float y1)
+{
+	this->x = x1;
+	this->y = y1;
+	this->xItem = 0;
+	this->yItem = 0;
+
+	width = 32;
+	height = 300;
+	isActive = false;
+}
+
 HiddenObject::~HiddenObject()
 {
 }

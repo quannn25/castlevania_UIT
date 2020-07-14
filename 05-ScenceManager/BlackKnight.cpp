@@ -36,7 +36,10 @@ void BlackKnight::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObject
 	{
 		hurtTime += dt;
 		if (hurtTime >= BLACKKNIGHT_HURT_TIME)
+		{
 			isHurt = false;
+			hurtTime = 0;
+		}
 	}
 
 	//DebugOut(L"[INFO] BK_health = %d\n", this->health);

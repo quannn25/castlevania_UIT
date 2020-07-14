@@ -20,7 +20,7 @@ HolyWater::~HolyWater()
 
 void HolyWater::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (animation_set->at(0)->getCurrentFrame() == 3) // là frame cuối cùng thì kết thúc
+	if (animation_set->at(0)->getCurrentFrame() == HOLYWATER_COUNTFRAME - 1) // là frame cuối cùng thì kết thúc
 	{
 		isFinish = true;
 	}

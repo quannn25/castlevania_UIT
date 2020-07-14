@@ -14,6 +14,7 @@ protected:
 	bool isActive; // đã hoạt động hay chưa
 public:
 	HiddenObject(float x1, float y1, float xItem, float yItem);
+	HiddenObject(float x1, float y1);
 	~HiddenObject();
 	virtual void Render();
 	virtual void GetBoundingBox(float &l, float &t, float &r, float &b);

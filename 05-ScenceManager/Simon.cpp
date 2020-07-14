@@ -70,10 +70,11 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
 	// Không cho lọt khỏi camera 
-	if (x < -12) // -12 do sprite render to hơn bbox 12
-		x = -12.0f;
-	if (x + SIMON_BBOX_WIDTH > MapWidth)
-		x = float(MapWidth - SIMON_BBOX_WIDTH);
+	if (x < Camera::GetInstance()->Getx()) // -12 do sprite render to hơn bbox 12
+		x = (float)Camera::GetInstance()->Getx();
+	if (x + SIMON_BBOX_WIDTH > Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth())
+		x = float((Camera::GetInstance()->Getx() + Camera::GetInstance()->GetScreenWidth()) - SIMON_BBOX_WIDTH);
+
 
 	if (isAttacking == true)
 	{

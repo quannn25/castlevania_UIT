@@ -155,13 +155,13 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 
 		if (abs(simon->GetX() - x) > ZONEATTACK_MAX && state != SKELETON_STATE_IDLE)
 		{
-			if (coEvents.size() != 0)
+			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
 				vx = SKELETON_SPEED_X * nx;
 		}
 
 		if (abs(simon->GetX() - x) < ZONEATTACK_MIN && state != SKELETON_STATE_IDLE)
 		{
-			if (coEvents.size() != 0)
+			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
 				vx = -SKELETON_SPEED_X * nx;
 		}
 	}

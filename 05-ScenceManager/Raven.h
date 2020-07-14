@@ -1,4 +1,4 @@
-#ifndef RAVEN_H
+﻿#ifndef RAVEN_H
 #define RAVEN_H
 
 
@@ -29,8 +29,8 @@ class Raven : public Enemy
 {
 	bool isActive;
 	DWORD timeReady;
-	float randX;
-	float randY;
+	float randX; // đoạn x cần bay
+	float randY; // đoạn y cần bay
 	int ny;
 public:
 	Raven(float x1, float y1, int nx1);

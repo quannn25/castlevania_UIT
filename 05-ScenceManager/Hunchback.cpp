@@ -31,7 +31,7 @@ void Hunchback::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 
 		vy += HUNCHBACK_GRAVITY * dt;
 
-		if (x >= simon->GetX())
+		if (x >= simon->GetX()) // đảm bảo vụ luôn quay mặt về simon
 			nx = -1;
 		else
 			nx = 1;
@@ -108,7 +108,9 @@ void Hunchback::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 					{
 						nx = 1;
 					}
-					SetState(HUNCHBACK_STATE_ATTACK);
+					SetState(HUNCHBACK_STATE_ATTACK); // state này set vận tốc thay đổi khi hb vượt khỏi AttackZone - ra khỏi AttackZone thì vận tốc đi về hướng simon - còn trong zone vẫn tiếp tục vận tốc cũ
+													// có nghĩa là nó vẫn đảm bảo có thể đi ra xa simon khi mặt vẫn hướng về simon
+													// có hiện tượng hb nhảy như chạm tường trong không trung
 				}
 			}
 			else if (x > simon->GetX())
@@ -123,7 +125,7 @@ void Hunchback::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 
-			if ((rand() % 10000 < 300))
+			if ((rand() % 100 < 3))
 			{
 				if (isJumping == false && (abs(simon->GetX() - x) < HUNCHBACK_ATTACKZONE))
 				{

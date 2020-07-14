@@ -12,6 +12,7 @@ Camera::Camera(int w, int h)
 {
 	screen_width = w;
 	screen_height = h;
+	isBlockCamera = false;
 }
 
 void Camera::Update()

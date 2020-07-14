@@ -8,6 +8,7 @@
 
 #define HOLYWATER_FRAMEWIDTH 32
 #define HOLYWATER_FRAMEHEIGHT 26
+#define HOLYWATER_COUNTFRAME 7
 #include "Weapon.h"
 
 

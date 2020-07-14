@@ -161,6 +161,8 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Monney.cpp" />
     <ClCompile Include="MorningStar.cpp" />
+    <ClCompile Include="ObjectCreateBoss.cpp" />
+    <ClCompile Include="PhantomBat.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Raven.cpp" />
     <ClCompile Include="Simon.cpp" />
@@ -222,6 +224,8 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="Monney.h" />
     <ClInclude Include="MorningStar.h" />
+    <ClInclude Include="ObjectCreateBoss.h" />
+    <ClInclude Include="PhantomBat.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Raven.h" />
     <ClInclude Include="Simon.h" />

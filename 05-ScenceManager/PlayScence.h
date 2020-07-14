@@ -38,12 +38,16 @@
 #include "Hunchback.h"
 #include "Skeleton.h"
 #include "Raven.h"
+#include "PhantomBat.h"
+#include "ObjectCreateBoss.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene
 {
 protected: 
 	Simon *player;					// A play scene has to have player, right? 
+
+	PhantomBat *boss;
 	
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> coObjects; // các obj trong vùng camera
@@ -107,6 +111,7 @@ public:
 	void CheckCollisionWithEnemy();
 	void CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX);
 	void CheckCollisionWithHiddenObject(vector<LPGAMEOBJECT> listObj);
+	void CheckCollisionWithBoss();
 
 	bool isOncam(float x1, float y1, float w1, float h1);
 

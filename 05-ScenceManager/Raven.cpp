@@ -50,7 +50,7 @@ void Raven::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 		if (isActive == true && timeReady <= TIME_READY)
 		{
 			timeReady += dt;
-			SetState(RAVEN_STATE_READY);
+			SetState(RAVEN_STATE_READY); // cho bay tạo chỗ
 			return;
 		}
 
@@ -59,8 +59,8 @@ void Raven::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 
 		if (this->state == RAVEN_STATE_FIND_TARGET)
 		{
-			randX = rand() % RANDX_READY;
-			randY = abs(this->y - ((rand() % SIMON_BBOX_HEIGHT) + simon->GetY()));
+			randX = rand() % RANDX_READY; // chọn random 1 khoảng x
+			randY = abs(this->y - ((rand() % SIMON_BBOX_HEIGHT) + simon->GetY())); // chọn y trong khoảng từ đầu simon tới chân simon
 
 			SetState(RAVEN_STATE_GO_TARGET);
 		}
@@ -73,13 +73,13 @@ void Raven::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			randX -= abs(dx);
 			randY -= abs(dy);
 
-			if (randX <= 0)
+			if (randX <= 0) // đủ khoảng randX thì ko bay chiều x nữa
 				vx = 0;
 
-			if (randY <= 0)
+			if (randY <= 0) //...
 				vy = 0;
 
-			if (randX <= 0 && randY <= 0)
+			if (randX <= 0 && randY <= 0) // bay đủ chiều x y (đủ go_target) thì tấn công theo chiều x
 			{
 				randX = abs(this->x - simon->GetX());
 				randY = 0;
@@ -101,10 +101,10 @@ void Raven::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			if (randY <= 0)
 				vy = 0;
 
-			if (randX <= 0 && randY <= 0)
+			if (randX <= 0 && randY <= 0) // đủ go_attack thì bay xuyên simon với randX randY mới
 			{
-				randX = 96 + rand() % (150 + 1 - 96);
-				randY = 0 + rand() % (64 + 1 - 0);
+				randX = 96 + rand() % (150 + 1 - 96); // bay thêm 1 khoảng qua simon từ 96-150
+				randY = 0 + rand() % (64 + 1 - 0); // y thì random trong khoảng độ cao người simon
 
 				SetState(RAVEN_STATE_GO_RANDOM);
 			}
@@ -124,9 +124,9 @@ void Raven::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			if (randY <= 0)
 				vy = 0;
 
-			if (randX <= 0 && randY <= 0)
+			if (randX <= 0 && randY <= 0) // xong go_random thì tìm target mới
 			{
-				randX = 2 * (rand() % (int)(abs(this->x - simon->GetX())));
+				randX = 2 * (rand() % (int)(abs(this->x - simon->GetX()))); // cái này ko cần? qua find target again ko cần
 				randY = abs(this->y - (rand() % SIMON_BBOX_HEIGHT) + simon->GetY());
 				SetState(RAVEN_STATE_FIND_TARGET_AGAIN);
 			}

@@ -429,6 +429,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetType(eType::HIDDENOBJECT);
 	}
 	break;
+	case OBJECT_TYPE_HIDDENOBJECTCREATEBOSS:
+	{
+		float xboss = atoi(tokens[5].c_str());
+		float yboss = atoi(tokens[6].c_str());
+
+		float leftBoundaryBoss = atoi(tokens[7].c_str());
+		float rightBoundaryBoss = atoi(tokens[8].c_str());
+
+		obj = new ObjectCreateBoss(x, y, xboss, yboss, leftBoundaryBoss, rightBoundaryBoss);
+		obj->SetType(eType::HIDDENOBJECTCREATEBOSS);
+	}
+	break;
+	case OBJECT_TYPE_HIDDENOBJECTBLOCKCAMERA:
+	{
+		obj = new HiddenObject(x, y);
+		obj->SetType(eType::HIDDENOBJECTBLOCKCAMERA);
+	}
+	break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[5].c_str());
@@ -661,7 +679,7 @@ void CPlayScene::Update(DWORD dt)
 
 	//DebugOut(L"[Grid] Object = %d\n", objects.size());
 	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
-	srand((int)time(0));
+	//srand((int)time(0));
 
 	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
 	{
@@ -737,21 +755,28 @@ void CPlayScene::Update(DWORD dt)
 
 	CreateRaven();
 
+	if (boss != NULL)
+		boss->Update(dt, &coObjects);
+
 	// check collision
 	CheckCollision();
 
 	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
+	bool _isBlockCamera = Camera::GetInstance()->getIsBlockCamera();
+	if (_isBlockCamera == false)
+	{
+		float cx, cy;
+		player->GetPosition(cx, cy);
 
-	int w = Camera::GetInstance()->GetScreenWidth();
-	int h = Camera::GetInstance()->GetScreenHeight();
+		int w = Camera::GetInstance()->GetScreenWidth();
+		int h = Camera::GetInstance()->GetScreenHeight();
 
-	cx -= w / 2;
-	cy -= h / 2;
+		cx -= w / 2;
+		cy -= h / 2;
 
-	Camera::GetInstance()->SetPosition(cx, 0.0f);
-	Camera::GetInstance()->Update();
+		Camera::GetInstance()->SetPosition(cx, 0.0f);
+		Camera::GetInstance()->Update();
+	}
 }
 
 void CPlayScene::Render()
@@ -780,7 +805,7 @@ void CPlayScene::Render()
 
 	for (UINT i = 0; i < listZombieZone.size(); i++)
 	{
-		listZombieZone[i]->RenderBoundingBox();
+		//listZombieZone[i]->RenderBoundingBox();
 	}
 
 	// listGhost=====================
@@ -869,6 +894,10 @@ void CPlayScene::Render()
 			}
 		}
 	}
+
+	// boss================
+	if (boss != NULL)
+		boss->Render();
 
 
 	// listEffect=========================
@@ -988,6 +1017,13 @@ void CPlayScene::Unload()
 		delete listBat[i];
 
 	listBat.clear();
+
+	// boss===============================
+	delete boss;
+	boss = NULL;
+
+	// camera=============================
+	Camera::GetInstance()->setIsBlockCamera(false);
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting... quản lý state
@@ -995,6 +1031,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	Simon *simon = ((CPlayScene*)scence)->player;
+
 
 	if (simon->isHurting)
 		return;
@@ -1057,6 +1094,21 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 
 		}
 		break;
+	case DIK_Q:
+	{
+		if (simon->subWeapon)
+		{
+			delete simon->subWeapon;
+			simon->subWeapon = NULL;
+		}
+		simon->subWeapon = new HolyWater();
+	}
+	break;
+	case DIK_W:
+	{
+		simon->SetHealth(16);
+	}
+	break;
 	case DIK_I:
 		//((CPlayScene*)scence)->listItem.push_back(new DaggerItem(simon->GetX(), simon->GetY()));
 		((CPlayScene*)scence)->listItem.push_back(new StopWatchItem(simon->GetX(), simon->GetY()));
@@ -1296,6 +1348,8 @@ void CPlayScene::CheckCollision()
 	CheckCollisionWithHiddenObject(coObjects);
 
 	CheckCollisionWithEnemy(); // kt vũ khí cới enemy và simon với enemy
+
+	CheckCollisionWithBoss();
 }
 
 void CPlayScene::CheckCollisionWithHiddenObject(vector<LPGAMEOBJECT> listObj)
@@ -1311,6 +1365,39 @@ void CPlayScene::CheckCollisionWithHiddenObject(vector<LPGAMEOBJECT> listObj)
 				if (h->getIsActive() == false) // nếu chưa hoạt động
 				{
 					listItem.push_back(GetNewItem(h->GetId(), h->GetType(), h->getXItem(), h->getYItem()));
+
+					h->setIsActive(true); // bật đã hoạt động rồi
+				}
+			}
+		}
+
+		if (listObj[i]->GetType() == eType::HIDDENOBJECTCREATEBOSS)
+		{
+			if (player->isCollitionObjectWithObject(listObj[i]))
+			{
+				ObjectCreateBoss *h = dynamic_cast<ObjectCreateBoss*>(listObj[i]);
+
+				if (h->getIsActive() == false) // nếu chưa hoạt động
+				{
+					boss = new PhantomBat(h->xBoss, h->yBoss, h->leftBoundaryBoss, h->rightBoundaryBoss, player);
+
+					h->setIsActive(true); // bật đã hoạt động rồi
+				}
+			}
+		}
+
+		if (listObj[i]->GetType() == eType::HIDDENOBJECTBLOCKCAMERA)
+		{
+			if (player->isCollitionObjectWithObject(listObj[i]))
+			{
+				HiddenObject *h = dynamic_cast<HiddenObject*>(listObj[i]);
+
+				if (h->getIsActive() == false) // nếu chưa hoạt động
+				{
+					if (boss != NULL)
+						boss->Start();
+					Camera *cam = Camera::GetInstance();
+					cam->setIsBlockCamera(true);
 
 					h->setIsActive(true); // bật đã hoạt động rồi
 				}
@@ -1360,11 +1447,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 					
-					// if health <= 0 moi rot item
-					//if (rand() % 2 == 1) // tỉ lệ 50%
-					//{
-					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					//}
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
@@ -1378,10 +1460,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 
-						//if (rand() % 2 == 1) // tỉ lệ 50%
-						//{
-						//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-						//}
 						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					}
 					break;
@@ -1393,10 +1471,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
-					//if (rand() % 2 == 1) // tỉ lệ 50%
-					//{
-					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					//}
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
 					break;
@@ -1408,10 +1482,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 
-					//if (rand() % 2 == 1) // tỉ lệ 50%
-					//{
-					//	listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-					//}
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					break;
 				}
@@ -1440,6 +1510,18 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					break;
+				}
+				case eType::PHANTOMBAT:
+				{
+					PhantomBat *gameObj = dynamic_cast<PhantomBat*>(listObj[i]);
+					if (!gameObj->isHurt)
+					{
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
+
+						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					}
 					break;
 				}
 
@@ -1619,6 +1701,21 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 					break;
 				}
+				case eType::PHANTOMBAT:
+				{
+					PhantomBat *gameObj = dynamic_cast<PhantomBat*>(listObj[i]);
+					if (!gameObj->isHurt)
+					{
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
+
+						isCollisonWithEnemy = true;
+
+						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+					}
+
+					break;
+				}
 
 				default:
 					break;
@@ -1706,6 +1803,47 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 			}
 		}
+	}
+}
+
+void CPlayScene::CheckCollisionWithBoss()
+{
+	if (boss == NULL)
+		return;
+
+	vector<CGameObject*> listObj{ boss };
+	CheckCollisionWeapon(listObj); // enemy bt
+
+
+
+
+	if (GetTickCount() - player->getUntouchable_start() > SIMON_UNTOUCHABLE_TIME)
+	{
+		player->setUntouchable_start(0);
+		player->setUntouchable(false);
+	}
+
+	if (player->getUntouchable() == false) // đã tắt chế độ ko cho chạm
+	{
+
+		if (boss->GetHealth() > 0) // còn sống
+		{
+			LPCOLLISIONEVENT e = player->SweptAABBEx(boss);
+			if (e->t > 0 && e->t <= 1) // có va chạm, chưa AABB
+			{
+				player->SetHurt(e);
+				return; // ko cần xét tiếp vì đang untouchable
+			}
+
+			if (player->isCollitionObjectWithObject(boss)) // chủ yếu dùng hàm này để có AABBcheck, chứ nếu có (e->t > 0 && e->t <= 1) == true thì nó dính if ở trên
+			{
+				LPCOLLISIONEVENT e = new CCollisionEvent(1, -player->GetNx(), 0, NULL); // player->nx đẩy hướng ngược lại
+
+				player->SetHurt(e);
+				return;
+			}
+		}
+
 	}
 }
 
