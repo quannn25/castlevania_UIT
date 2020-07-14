@@ -17,7 +17,7 @@ private:
 	BoardHealth boardHealth;
 public:
 	Board(float x, float y);
-	void Render(Simon *simon, int state, Weapon * subWeapon, int RemainingTime);
+	void Render(Simon *simon, int state, Weapon * subWeapon, int RemainingTime, LPGAMEOBJECT boss);
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 	string FillNumber(string s, int MaxNumber);
 	~Board();

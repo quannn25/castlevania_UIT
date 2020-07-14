@@ -3,7 +3,7 @@
 #include "Simon.h"
 #include "Enemy.h"
 
-#define PHANTOMBAT_DEFAULT_HEALTH 5
+#define PHANTOMBAT_DEFAULT_HEALTH 2
 #define PHANTOMBAT_HURT_TIME 1000
 
 #define PHANTOMBAT_FRAMEWIDTH 96

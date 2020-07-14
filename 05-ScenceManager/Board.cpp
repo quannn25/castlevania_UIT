@@ -11,7 +11,7 @@ Board::Board(float x1, float y1)
 	y = y1;
 }
 
-void Board::Render(Simon *simon , int state, Weapon * subWeapon, int RemainingTime)
+void Board::Render(Simon *simon , int state, Weapon * subWeapon, int RemainingTime, LPGAMEOBJECT boss)
 {
 	float x1 = Camera::GetInstance()->Getx();
 	float y1 = Camera::GetInstance()->Gety();
@@ -24,7 +24,12 @@ void Board::Render(Simon *simon , int state, Weapon * subWeapon, int RemainingTi
 	font.Draw(x1 + 400 + 15, y1 + 15 + 18 + 18, FillNumber(std::to_string(simon->GetLive()), 2)); // LIVE
 	font.Draw(x1 + 290, y1 + 15, FillNumber(std::to_string(RemainingTime), 4)); //TIME
 
-	boardHealth.Draw(x1 + 110, y1 + 30, simon->GetHealth(), 5);
+	int Enemyheal = 16;
+	if (boss != NULL)
+	{
+		Enemyheal = boss->GetHealth();
+	}
+	boardHealth.Draw(x1 + 110, y1 + 30, simon->GetHealth(), Enemyheal);
 
 	if (subWeapon != NULL)
 	{

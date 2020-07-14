@@ -907,7 +907,7 @@ void CPlayScene::Render()
 			listEffect[i]->Render();
 	}
 
-	boardGame->Render(player, CGame::GetInstance()->getCurrentSceneId(), player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime());
+	boardGame->Render(player, CGame::GetInstance()->getCurrentSceneId(), player->subWeapon, GAMETIME_SCENE_1 - gameTime->GetTime(), boss);
 
 	player->Render();
 
@@ -1459,8 +1459,8 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 						gameObj->isHurt = true;
 
 						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
-
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						if (gameObj->GetHealth() <= 0)
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 					}
 					break;
 				}
@@ -1517,10 +1517,25 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					PhantomBat *gameObj = dynamic_cast<PhantomBat*>(listObj[i]);
 					if (!gameObj->isHurt)
 					{
-						gameObj->beAttacked(1);
+						MorningStar *m = dynamic_cast<MorningStar*>(player->mainWeapon);
+						if (m->getLevel() == 0)
+							gameObj->beAttacked(1);
+						else
+							gameObj->beAttacked(2);
 						gameObj->isHurt = true;
 
-						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+						if (gameObj->GetHealth() <= 0)
+						{
+							for (int u = 0; u < 2; u++)
+							{
+								for (int v = 0; v < 3; v++)
+								{
+									listEffect.push_back(new Fire((int)gameObj->GetX() + v * FIRE_WIDTH, (int)gameObj->GetY() + u * FIRE_HEIGHT - 10)); // hiệu ứng lửa
+								}
+							}
+						}
+						else
+							listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 					}
 					break;
 				}
@@ -1711,7 +1726,19 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 						isCollisonWithEnemy = true;
 
-						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
+						if (gameObj->GetHealth() <= 0)
+						{
+							for (int u = 0; u < 2; u++)
+							{
+								for (int v = 0; v < 3; v++)
+								{
+									listEffect.push_back(new Fire((int)gameObj->GetX() + v * FIRE_WIDTH, (int)gameObj->GetY() + u * FIRE_HEIGHT - 10)); // hiệu ứng lửa
+								}
+							}
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						}
+						else
+							listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
 					}
 
 					break;
@@ -1809,6 +1836,8 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 void CPlayScene::CheckCollisionWithBoss()
 {
 	if (boss == NULL)
+		return;
+	if (boss->GetHealth() <= 0)
 		return;
 
 	vector<CGameObject*> listObj{ boss };
@@ -2017,6 +2046,11 @@ void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
 
 Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 {
+	if (type == eType::PHANTOMBAT)
+	{
+		return new DaggerItem(x, y);
+	}
+
 	if (type == eType::TORCH)
 	{
 		if (id == 99)

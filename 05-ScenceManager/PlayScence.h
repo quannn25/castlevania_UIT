@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <thread>
 #include "Game.h"
 #include "Textures.h"
 #include "Scence.h"
