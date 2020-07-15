@@ -14,8 +14,10 @@ Skeleton::Skeleton(float X, float Y, int Nx)
 	vy = 0;
 	this->type = eType::SKELETON;
 	SetState(SKELETON_STATE_IDLE);
-	isJumping = false;
+	isJumping = true;
 	isAllowJump = false;
+	FreeFallDown = 0; // có khoảng rơi tự do >= 2 mới đc phép nhảy
+	deltaX = 0;
 }
 
 Skeleton::~Skeleton()
@@ -39,6 +41,9 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
+		vy += SIMON_GRAVITY * dt;
+		CGameObject::Update(dt);
+
 		vector<LPGAMEOBJECT> listObject_Brick;
 		listObject_Brick.clear();
 		for (UINT i = 0; i < coObjects->size(); i++)
@@ -57,11 +62,19 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			x += dx;
 			y += dy;
 
-			if (isAllowJump)
-				isJumping = true;
+			if (isJumping == false)
+			{
+				FreeFallDown += dy;
+				if (FreeFallDown >= 2)
+				{
+					isJumping = true;
+					//FreeFallDown = 0;
+				}
+			}
 		}
 		else
 		{
+
 			float min_tx, min_ty, nx = 0, ny;
 			float rdx = 0;
 			float rdy = 0;
@@ -71,40 +84,59 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			x += min_tx * dx + nx * 0.4f;
 			y += min_ty * dy + ny * 0.1f;
 
-			for (UINT i = 0; i < coEventsResult.size(); i++)
+			if (ny < 0)
 			{
-				LPCOLLISIONEVENT e = coEventsResult[i];
-
-				if (e->ny != 0)
+				if (isJumping == true)
 				{
-					if (e->ny == -1)
-					{
-						vy = 0;
-						isAllowJump = true;
-					}
-					else
-						y += dy;
+					isJumping = false;
 				}
+				vy = 0;
+				FreeFallDown = 0;// có va chạm gạch thì set lại freeFallDown
+			}
 
-				if (e->nx != 0)
-				{
-					vx *= -1;
-				}
+			if (ny > 0) // va chạm dưới brick
+			{
+				vy = 0;
+			}
+
+			if (nx != 0)
+			{
+				vx = -vx;
+				deltaX = 0;
 			}
 		}
 		for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-		CGameObject::Update(dt);
-		vy += SIMON_GRAVITY * dt;
-
-		if (isJumping)
+		if (isJumping == true && FreeFallDown != 0) // nếu có 'cờ nhảy' và 'rơi tự do' != 0 thì nhảy
 		{
 			vy = -SKELETON_SPEED_Y;
-			isAllowJump = false;
-			isJumping = false;
+			FreeFallDown = 0; // gán lại 0 để ko nhảy nữa
 		}
 
 
+		deltaX += abs(dx); // update deltaX
+
+		if (abs(simon->GetX() - x) > ZONEATTACK_MAX && deltaX >= SKELETON_DELTAX && state != SKELETON_STATE_IDLE)
+		{
+			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
+			{
+				vx = SKELETON_SPEED_X * nx;
+				deltaX = 0;
+			}
+		}
+
+		if (abs(simon->GetX() - x) < ZONEATTACK_MIN && deltaX >= SKELETON_DELTAX && state != SKELETON_STATE_IDLE)
+		{
+			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
+			{
+				vx = -SKELETON_SPEED_X * nx;
+				deltaX = 0;
+			}
+		}
+
+
+
+		// update Bone của nó
 		int b = rand() % 50;
 		if (b == 0)
 		{
@@ -116,7 +148,6 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		// update Bone của nó
 
 		for (int i = 0; i < listBone.size(); i++)
 		{
@@ -151,19 +182,6 @@ void Skeleton::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 		// end Update Bone
-
-
-		if (abs(simon->GetX() - x) > ZONEATTACK_MAX && state != SKELETON_STATE_IDLE)
-		{
-			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
-				vx = SKELETON_SPEED_X * nx;
-		}
-
-		if (abs(simon->GetX() - x) < ZONEATTACK_MIN && state != SKELETON_STATE_IDLE)
-		{
-			if (coEvents.size() != 0) // tránh hiện tượng đổi vx trên không trung
-				vx = -SKELETON_SPEED_X * nx;
-		}
 	}
 }
 

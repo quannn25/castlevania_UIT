@@ -1,4 +1,4 @@
-#ifndef SKELETON_H
+﻿#ifndef SKELETON_H
 #define SKELETON_H
 
 #include "Enemy.h"
@@ -21,10 +21,16 @@
 #define SKELETON_STATE_ATTACK 1
 #define SKELETON_STATE_JUMP 2
 
+#define SKELETON_DELTAX 50
+
 class Skeleton : public Enemy
 {
 	bool isJumping;
 	bool isAllowJump;
+	float FreeFallDown; // biến kiểm soát khi rơi khỏi gạch, như simon
+
+	float deltaX; // khoảng cách đi đc
+
 	vector <Bone*> listBone;
 public:
 	Skeleton(float X, float Y, int Nx);
