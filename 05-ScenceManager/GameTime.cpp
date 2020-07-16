@@ -11,7 +11,6 @@ GameTime *GameTime::GetInstance()
 GameTime::GameTime()
 {
 	this->accumulationTime = 0;
-	frameStart = GetTickCount();
 	SetTime(0);
 }
 
@@ -20,12 +19,8 @@ GameTime::~GameTime()
 {
 }
 
-void GameTime::Update()
+void GameTime::Update(DWORD dt)
 {
-	DWORD now = GetTickCount();
-	DWORD dt = now - frameStart;
-
-
 	if (accumulationTime + dt < 1000)
 	{
 		accumulationTime += dt;
@@ -35,8 +30,6 @@ void GameTime::Update()
 		accumulationTime = (accumulationTime + dt) % 1000;
 		time++;
 	}
-
-	frameStart = now;
 }
 
 void GameTime::SetTime(int t)

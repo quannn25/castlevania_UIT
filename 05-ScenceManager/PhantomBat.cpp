@@ -73,10 +73,10 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			xBefore = x;
 			yBefore = y;
 
-			xTarget = 1380;
-			yTarget = 201; // tương đối, vì process_2 xét xTarget
+			xTarget = PHANTOMBAT_PROCESS_START2_X;
+			yTarget = PHANTOMBAT_PROCESS_START2_Y; // tương đối, vì process_2 xét xTarget
 
-			vx = ((xTarget - xBefore) / (1500.0f)); // Vận tốc cần để đi đến target trong 1.5s
+			vx = ((xTarget - xBefore) / (PHANTOMBAT_PROCESS_START2_SECOND)); // Vận tốc cần để đi đến target trong 1.5s
 			vy = 0.12f;
 		}
 		break;
@@ -87,7 +87,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (!isWaiting)
 		{
 			// tạo độ cong
-			vy -= 0.0001f * dt;
+			vy -= PHANTOMBAT_PROCESS_START2_V * dt;
 			if (vy < 0)
 				vy = 0;
 
@@ -104,7 +104,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 		{
 			TimeWaited += dt;
-			if (TimeWaited >= (UINT)(2000 + rand() % 1500))
+			if (TimeWaited >= (UINT)(2000 + rand() % PHANTOMBAT_PROCESS_START2_RANDOM))
 			{
 				isWaiting = false; // ngừng chờ
 
@@ -274,7 +274,7 @@ float PhantomBat::getPt(float n1, float n2, float perc)
 
 void PhantomBat::ProcessSmart()
 {
-	if (simon->isJumping && sqrt((simon->GetX() - x)*(simon->GetX() - x) + (simon->GetY() - y)*(simon->GetY() - y)) <= 150.0f) // nếu nhảy lên & khoảng cách nhỏ hơn 150 thì random cách xử lí
+	if (simon->isJumping && sqrt((simon->GetX() - x)*(simon->GetX() - x) + (simon->GetY() - y)*(simon->GetY() - y)) <= PROCESS_SMART_DISTANCE) // nếu nhảy lên & khoảng cách nhỏ hơn 150 thì random cách xử lí
 	{
 		int random = rand() % 6;
 		switch (random)
@@ -304,7 +304,7 @@ void PhantomBat::Start()
 {
 	StatusProcessing = PHANTOMBAT_PROCESS_START_1;
 	yBefore = y;
-	vy = 0.05f;
+	vy = PHANTOMBAT_PROCESS_START1_VY;
 	vx = 0.0f;
 	yTarget = y + 40; // lúc đầu thì đi xuống 40px
 }

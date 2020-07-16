@@ -681,27 +681,42 @@ void CPlayScene::Update(DWORD dt)
 	//DebugOut(L"x = %f, y = %f\n", MainSimon::GetInstance()->GetSimon()->GetX(), MainSimon::GetInstance()->GetSimon()->GetY());
 	//srand((int)time(0));
 
-	if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
-	{
-		if (player->GetLive() == 0) // xử lý...
-			return;
-		bool result = player->LoseLife();
-		if (result == true) // còn mạng để chơi tiếp
-		{
-			ResetResource(); // reset lại game
-		}
-		return;
-	}
-	else
-		gameTime->Update();
-
-
 	if (player->GetFreeze() == true)
 	{
 		player->UpdateFreeze(dt);
 		if (player->GetFreeze() == true)
 			return;
 	}
+
+	// end game
+	ProcessEndGame(dt);
+	if (!isAllowProcessClearState)
+	{
+		// xử lý gameTime và máu
+		if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
+		{
+			if (player->GetLive() == 0)
+				return;
+
+			bool result = player->LoseLife();
+
+			if (result == true) // còn mạng để chơi tiếp, giảm mạng reset máu xong
+			{
+				ResetResource(); // reset lại game
+			}
+			return;
+		}
+		else
+		{
+			if (isAllowProcessClearState == false)
+			{
+				gameTime->Update(dt);
+			}
+		}
+		// end
+
+	}
+	//end game
 
 	if (player->subWeapon != NULL && player->subWeapon->GetType() == eType::STOPWATCH)
 	{
@@ -1096,17 +1111,17 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)// tạo is jumping, sitting..
 		break;
 	case DIK_Q:
 	{
-		if (simon->subWeapon)
-		{
-			delete simon->subWeapon;
-			simon->subWeapon = NULL;
-		}
-		simon->subWeapon = new HolyWater();
+		((CPlayScene*)scence)->listItem.push_back(new HolyWaterItem(simon->GetX(), simon->GetY()));
 	}
 	break;
 	case DIK_W:
 	{
 		simon->SetHealth(16);
+	}
+	break;
+	case DIK_E:
+	{
+		simon->SetHeartCollected(16);
 	}
 	break;
 	case DIK_I:
@@ -1533,6 +1548,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 									listEffect.push_back(new Fire((int)gameObj->GetX() + v * FIRE_WIDTH, (int)gameObj->GetY() + u * FIRE_HEIGHT - 10)); // hiệu ứng lửa
 								}
 							}
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 						}
 						else
 							listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
@@ -1764,7 +1780,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 						break;
 					}
 					default:
-						DebugOut(L"[ERROR] there is no case apply!\n");
+						//DebugOut(L"[ERROR] there is no case apply!\n");
 						break;
 					}
 				}
@@ -1975,6 +1991,13 @@ void CPlayScene::CheckCollisionSimonWithItem()
 					listItem[i]->SetFinish(true);
 					break;
 				}
+				case eType::REDBALL:
+				{
+					listItem[i]->SetFinish(true);
+					player->SetScore(player->GetScore() + 1000);
+					isAllowProcessClearState = true;
+					break;
+				}
 				default:
 					DebugOut(L"[CheckCollisionSimonWithItem] Loi nhat item\n");
 					break;
@@ -2048,7 +2071,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 {
 	if (type == eType::PHANTOMBAT)
 	{
-		return new DaggerItem(x, y);
+		return new RedBall(x, y);
 	}
 
 	if (type == eType::TORCH)
@@ -2646,6 +2669,88 @@ void CPlayScene::updateEnemy(DWORD dt)
 			{
 				enemy->Update(dt, player, &coObjects);
 			}
+		}
+	}
+}
+
+void CPlayScene::ProcessEndGame(DWORD dt)
+{
+	if (isAllowProcessClearState)
+	{
+		switch (StatusProcessClearState)
+		{
+		case CLEARSTATE_PROCESS_HEALTH:
+		{
+			TimeWaited_ClearState += dt;
+			if (TimeWaited_ClearState >= CLEARSTATE_LIMITTIMEWAIT_PROCESS_HEALTH)
+			{
+				TimeWaited_ClearState = 0;
+
+				if (player->GetHealth() < 16)
+				{
+					player->SetHealth(player->GetHealth() + 1);
+				}
+				else
+				{
+					StatusProcessClearState = CLEARSTATE_PROCESS_GETSCORE_TIME;
+				}
+			}
+			break;
+		}
+
+		case CLEARSTATE_PROCESS_GETSCORE_TIME:
+		{
+			TimeWaited_ClearState += dt;
+			if (TimeWaited_ClearState >= CLEARSTATE_LIMITTIMEWAIT_PROCESS_GETSCORE_TIME)
+			{
+				TimeWaited_ClearState = 0;
+
+				if (GAMETIME_SCENE_1 - gameTime->GetTime() > 0) // thời gian còn lại lớn hơn 0
+				{
+					player->SetScore(player->GetScore() + 10); // mỗi giây +10 điểm
+					gameTime->SetTime(gameTime->GetTime() + 1);// giảm giây còn lại
+				}
+				else
+				{
+					StatusProcessClearState = CLEARSTATE_PROCESS_GETSCORE_HEART;
+					TimeWaited_ClearState = 0;
+				}
+			}
+
+			break;
+		}
+
+		case CLEARSTATE_PROCESS_GETSCORE_HEART:
+		{
+			TimeWaited_ClearState += dt;
+			if (TimeWaited_ClearState >= CLEARSTATE_LIMITTIMEWAIT_PROCESS_GETSCORE_HEART)
+			{
+				TimeWaited_ClearState = 0;
+
+				if (player->GetHeartCollected() > 0) // thời gian còn lại lớn hơn 0
+				{
+					player->SetScore(player->GetScore() + 100); // mỗi giây +10 điểm
+					player->SetHeartCollected(player->GetHeartCollected() - 1); // giảm 1 heart
+				}
+				else
+				{
+					StatusProcessClearState = CLEARSTATE_PROCESS_DONE;
+
+				}
+			}
+
+			break;
+		}
+
+		case CLEARSTATE_PROCESS_DONE:
+		{
+
+
+			break;
+		}
+
+		default:
+			break;
 		}
 	}
 }

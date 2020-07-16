@@ -11,12 +11,11 @@ class GameTime
 private:
 	DWORD accumulationTime; // thời gian đã tích lũy
 	int time; // time game
-	DWORD frameStart;
 
 public:
 	GameTime();
 	~GameTime();
-	void Update();
+	void Update(DWORD dt);
 	void SetTime(int t);
 	int GetTime();
 

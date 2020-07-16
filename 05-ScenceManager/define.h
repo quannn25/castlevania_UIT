@@ -12,12 +12,13 @@
 #include <string>
 using namespace std;
 
-
+// width height Screen
 #define SCREEN_WIDTH 512
 #define SCREEN_HEIGHT 499 //448
 
 #define ID_SPRITE_TILEMAP	50001
 
+// parse
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3
@@ -28,7 +29,7 @@ using namespace std;
 #define SCENE_SECTION_LOADSIMON_0	8
 #define SCENE_SECTION_LOADSIMON_1	9
 
-
+// obj type
 #define OBJECT_TYPE_SIMON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_TORCH	2
@@ -49,8 +50,10 @@ using namespace std;
 #define OBJECT_TYPE_HIDDENOBJECT 49
 #define OBJECT_TYPE_PORTAL	50
 
+// parse
 #define MAX_SCENE_LINE 1024
 
+// ANI_SET_ID
 #define SIMON_ANI_SET_ID 1
 #define BRICK_ANI_SET_ID 22
 #define STAIRBRICK_ANI_SET_ID 23
@@ -85,8 +88,20 @@ using namespace std;
 #define SKELETON_ANI_SET_ID 71
 #define RAVEN_ANI_SET_ID 72
 #define PHANTOMBAT_ANI_SET_ID 73
+#define REDBALL_ANI_SET_ID 74
 
+// define time create ghost
 #define TIME_CREATE_GHOST 1000
+
+// Clear state
+#define CLEARSTATE_PROCESS_HEALTH 0 // xử lí làm đầy máu
+#define CLEARSTATE_PROCESS_GETSCORE_TIME 1 // xử lí quy đổi thời gian dư ra điểm
+#define CLEARSTATE_PROCESS_GETSCORE_HEART 2 // xử lí quy đổi thời gian dư ra điểm
+#define CLEARSTATE_PROCESS_DONE 3 // xử lí xong
+
+#define CLEARSTATE_LIMITTIMEWAIT_PROCESS_HEALTH 200 // thời gian chờ tăng mỗi đơn vị máu
+#define CLEARSTATE_LIMITTIMEWAIT_PROCESS_GETSCORE_TIME 10 // thời gian chờ cộng điểm cho time dư
+#define CLEARSTATE_LIMITTIMEWAIT_PROCESS_GETSCORE_HEART 200 // thời gian chờ cộng điểm cho hear dư
 
 extern int Window_Width;
 extern int Window_Height;
@@ -183,7 +198,9 @@ enum eType
 
 	HIDDENOBJECTCREATEBOSS = 86,
 
-	HIDDENOBJECTBLOCKCAMERA = 87
+	HIDDENOBJECTBLOCKCAMERA = 87,
+
+	REDBALL = 88
 
 };
 

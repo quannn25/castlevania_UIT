@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <thread>
 #include "Game.h"
 #include "Textures.h"
 #include "Scence.h"
@@ -41,6 +40,7 @@
 #include "Raven.h"
 #include "PhantomBat.h"
 #include "ObjectCreateBoss.h"
+#include "RedBall.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene
@@ -87,6 +87,12 @@ protected:
 	vector <LPGAMEOBJECT> listRaven;
 	vector <ZombieZone*> listRavenZone;
 
+	// xu ly end game
+	bool isAllowProcessClearState;
+	int StatusProcessClearState;
+	DWORD TimeWaited_ClearState;
+	DWORD LimitTimeWait_ClearState;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -119,6 +125,8 @@ public:
 	void ResetResource(); // reset lai resource khi simon mất 1 mạng
 
 	Item * GetNewItem(int id, eType type, float x, float y);
+
+	void ProcessEndGame(DWORD dt);
 
 	void CreateZombie();
 	void CreateGhost();
