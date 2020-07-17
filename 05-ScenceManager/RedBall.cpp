@@ -9,8 +9,8 @@ RedBall::RedBall(float x, float y)
 	SetAnimationSet(ani_set);
 
 	type = eType::REDBALL;
-	this->x = 1420;
-	this->y = 100;
+	this->x = REDBALL_DEFAULT_X;
+	this->y = REDBALL_DEFAULT_Y;
 	vy = REDBALL_GRAVITY;
 	TimeDisplayMax = REDBALL_TIMEDISPLAYMAX; // set time hiển thị tối đa
 	TimeDisplayed = 0;

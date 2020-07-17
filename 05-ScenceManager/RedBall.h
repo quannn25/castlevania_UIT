@@ -9,6 +9,9 @@
 #define REDBALL_FRAMEHEIGHT 32
 #define REDBALL_TIMEWAITMAX 300
 
+#define REDBALL_DEFAULT_X 1260
+#define REDBALL_DEFAULT_Y 100
+
 class RedBall : public Item
 {
 public:

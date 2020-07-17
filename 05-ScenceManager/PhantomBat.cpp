@@ -129,7 +129,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 
-
+		 // tính vy dựa vào vx (vx đã định trước từ khi bắt đầu chơi Curves) 
 		float perc = (x - xBefore) / (xTarget - xBefore); // sử dụng phần trăm đã đi được tương ứng t của Bézier curve
 
 		float ya = getPt(y1, y2, perc);

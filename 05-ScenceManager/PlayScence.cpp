@@ -2026,7 +2026,7 @@ void CPlayScene::CheckCollisionWithEnemy()
 	CheckCollisionSimonWithEnemy(listGhost);
 	CheckCollisionSimonWithEnemy(listHunchback);
 	CheckCollisionSimonWithEnemy(listSkeleton);
-	//CheckCollisionSimonWithEnemy(listRaven); // cho Raven chết luôn khi chạm
+	CheckCollisionSimonWithEnemy(listRaven); // cho Raven chết luôn khi chạm
 }
 
 void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
@@ -2042,26 +2042,59 @@ void CPlayScene::CheckCollisionSimonWithEnemy(vector<LPGAMEOBJECT> listEnemyX)
 	{
 		for (UINT i = 0; i < listEnemyX.size(); i++)
 		{
-			CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemyX[i]);
-			if (gameobj->GetHealth() > 0) // còn sống
+			if (dynamic_cast<Raven *> (listEnemyX[i])) // nếu là Raven
 			{
-				LPCOLLISIONEVENT e = player->SweptAABBEx(gameobj);
-				if (e->t > 0 && e->t <= 1) // có va chạm, chưa AABB
+				CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemyX[i]);
+				if (gameobj->GetHealth() > 0) // còn sống
 				{
-					player->SetHurt(e);
-					return; // ko cần xét tiếp vì đang untouchable
+					LPCOLLISIONEVENT e = player->SweptAABBEx(gameobj);
+					if (e->t > 0 && e->t <= 1) // có va chạm, chưa AABB
+					{
+						player->SetHurt(e);
+
+						gameobj->beAttacked(1);
+						listEffect.push_back(new Fire(gameobj->GetX() - 5, gameobj->GetY() + 8)); // hiệu ứng
+						return; // ko cần xét tiếp vì đang untouchable
+					}
+
+					if (player->isCollitionObjectWithObject(gameobj)) // chủ yếu dùng hàm này để có AABBcheck, chứ nếu có (e->t > 0 && e->t <= 1) == true thì nó dính if ở trên
+					{
+						LPCOLLISIONEVENT e = new CCollisionEvent(1, -player->GetNx(), 0, NULL); // player->nx đẩy hướng ngược lại
+
+						player->SetHurt(e);
+
+						gameobj->beAttacked(1);
+						listEffect.push_back(new Fire(gameobj->GetX() - 5, gameobj->GetY() + 8)); // hiệu ứng
+						return;
+					}
+
 				}
-
-				if (player->isCollitionObjectWithObject(gameobj)) // chủ yếu dùng hàm này để có AABBcheck, chứ nếu có (e->t > 0 && e->t <= 1) == true thì nó dính if ở trên
-				{
-					LPCOLLISIONEVENT e = new CCollisionEvent(1, -player->GetNx(), 0, NULL); // player->nx đẩy hướng ngược lại
-
-					player->SetHurt(e);
-					return;
-				}
-
 			}
+			else // ko phải Raven
+			{
+				CGameObject * gameobj = dynamic_cast<CGameObject *> (listEnemyX[i]);
+				if (gameobj->GetHealth() > 0) // còn sống
+				{
+					LPCOLLISIONEVENT e = player->SweptAABBEx(gameobj);
+					if (e->t > 0 && e->t <= 1) // có va chạm, chưa AABB
+					{
+						player->SetHurt(e);
+						return; // ko cần xét tiếp vì đang untouchable
+					}
+
+					if (player->isCollitionObjectWithObject(gameobj)) // chủ yếu dùng hàm này để có AABBcheck, chứ nếu có (e->t > 0 && e->t <= 1) == true thì nó dính if ở trên
+					{
+						LPCOLLISIONEVENT e = new CCollisionEvent(1, -player->GetNx(), 0, NULL); // player->nx đẩy hướng ngược lại
+
+						player->SetHurt(e);
+						return;
+					}
+
+				}
+			}
+
 		}
+
 	}
 
 
