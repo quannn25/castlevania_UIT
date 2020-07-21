@@ -1,8 +1,7 @@
 ﻿#include "Grid.h"
 
-Grid::Grid(vector<LPGAMEOBJECT> ListObj)
+Grid::Grid()
 {
-	LoadGrid(ListObj);
 }
 
 Grid::~Grid()
@@ -10,16 +9,6 @@ Grid::~Grid()
 
 }
 
-void Grid::LoadGrid(vector<LPGAMEOBJECT> ListObj)// list tổng playScence, trừ Simon
-{
-	//id x, y ,w,h
-	float l, t, r, b;
-	for (size_t i = 1; i < ListObj.size(); i++)
-	{
-		ListObj[i]->GetBoundingBox(l, t, r, b);
-		Insert(ListObj[i], l, t, r - l, b - t);
-	}
-}
 
 void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj)
 {
@@ -51,9 +40,13 @@ void Grid::GetListObject(vector<LPGAMEOBJECT>& ListObj)
 		}
 	}
 }
+void Grid::BigBBox(LPGAMEOBJECT obj)
+{
+	for (int i = 0; i < GRID_MAX_ROW; i++)
+		for (int j = 0; j < GRID_MAX_COL; j++)
+			cells[i][j].push_back(obj);
 
-
-
+}
 
 void Grid::ResetOnCam(vector<LPGAMEOBJECT>& ListObj) // list obj bao gom simon, but ko duyet qua simon
 {
@@ -63,22 +56,25 @@ void Grid::ResetOnCam(vector<LPGAMEOBJECT>& ListObj) // list obj bao gom simon, 
 	}
 }
 
-void Grid::Insert(LPGAMEOBJECT dtObj, float x, float y, float w, float h)
+void Grid::Insert(LPGAMEOBJECT dtObj, int row, int col)
 {
-	int Top = floor(y / (float)GRID_CELL_HEIGHT);
+	/*int Top = floor(y / (float)GRID_CELL_HEIGHT);
 	int Bottom = floor((y + h) / (float)GRID_CELL_HEIGHT);
 
 	int Left = floor(x / (float)GRID_CELL_WIDTH);
-	int Right = floor((x + w) / (float)GRID_CELL_WIDTH);
+	int Right = floor((x + w) / (float)GRID_CELL_WIDTH);*/
+
+	//dtObj->SetOnCam(false);
+
+	//for (int row = Top; row <= Bottom; row++) // 1 Obj có thể ở 2 hàng
+	//{
+	//	for (int col = Left; col <= Right; col++) // 1 Obj có thể ở 2 cột
+	//	{
+	//		cells[row][col].push_back(dtObj); // ở mỗi "ô" (hàng r cột l) thì có 1 vector Obj tương ứng
+	//	}
+	//}
 
 	dtObj->SetOnCam(false);
-
-	for (int row = Top; row <= Bottom; row++) // 1 Obj có thể ở 2 hàng
-	{
-		for (int col = Left; col <= Right; col++) // 1 Obj có thể ở 2 cột
-		{
-			cells[row][col].push_back(dtObj); // ở mỗi "ô" (hàng r cột l) thì có 1 vector Obj tương ứng
-		}
-	}
+	cells[row][col].push_back(dtObj);
 
 }

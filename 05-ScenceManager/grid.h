@@ -13,25 +13,27 @@
 
 using namespace std;
 
-#define GRID_CELL_WIDTH 96 //256
-#define GRID_CELL_HEIGHT 96 //224
+#define GRID_CELL_WIDTH 256 //256
+#define GRID_CELL_HEIGHT 224 //224
 
+#define GRID_MAX_ROW 10
+#define GRID_MAX_COL 10
 
 
 class Grid
 {
 private:
-	vector<LPGAMEOBJECT> cells[500][500];
+	vector<LPGAMEOBJECT> cells[GRID_MAX_ROW][GRID_MAX_COL];
 public:
 	void GetListObject(vector<LPGAMEOBJECT>& ListObj);
 
 	void ResetOnCam(vector<LPGAMEOBJECT>& ListObj);
 
-	void Insert(LPGAMEOBJECT obj, float x, float y, float w, float h); //Thêm object vào grid
+	void Insert(LPGAMEOBJECT obj, int row, int col); //Thêm object vào grid
 
-	void LoadGrid(vector<LPGAMEOBJECT> ListObj);
+	void BigBBox(LPGAMEOBJECT obj); //Thêm object vào grid
 
-	Grid(vector<LPGAMEOBJECT> ListObj);
+	Grid();
 	~Grid();
 };
 

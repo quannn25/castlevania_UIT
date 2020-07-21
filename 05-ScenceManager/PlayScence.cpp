@@ -115,6 +115,8 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
+	if (grid == NULL)
+		grid = new Grid();
 	vector<string> tokens = split(line);
 
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
@@ -136,6 +138,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_SIMON:
+	{
+
+
 		if (MainSimon::GetInstance()->GetSimon() != NULL)  // reset
 		{
 			DebugOut(L"[ERROR] MARIO object was created before! \n");
@@ -155,7 +160,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player->SetAnimationSet(ani_set);
 
 			player->mainWeapon->ReSetAniSetSwitchScene(); // weapon
-			if(player->subWeapon != NULL) // subWeapon
+			if (player->subWeapon != NULL) // subWeapon
 				player->subWeapon->ReSetAniSetSwitchScene();
 
 
@@ -174,11 +179,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			player->vy = 0;
 		}
 
-		break;
-	case OBJECT_TYPE_BRICK:
-		obj = new CBrick(OBJECT_TYPE_BRICK);
-		obj->SetType(eType::BRICK);
-		break;
+	}
+	break;
 	case OBJECT_TYPE_SPECIALBRICK: // gạch bbox lớn
 	{
 		if (tokens.size() < 7)
@@ -195,6 +197,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj->SetHealth(2);
 		}
 		obj->SetType(eType::SPECIALBRICK);
+		grid->BigBBox(obj);
 	}
 		break;
 	case OBJECT_TYPE_MOVINGBRICK: // gạch chuyển động
@@ -210,35 +213,72 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(left_boundary, right_boundary, OBJECT_TYPE_MOVINGBRICK);
 
 		obj->SetType(eType::MOVINGBRICK);
+
+		grid->BigBBox(obj);
 	}
 	break;
+	case OBJECT_TYPE_BRICK:
+	{
+		obj = new CBrick(OBJECT_TYPE_BRICK);
+		obj->SetType(eType::BRICK);
+
+		int grid_i = atoi(tokens[5].c_str());
+		int grid_j = atoi(tokens[6].c_str());
+		grid->Insert(obj, grid_i, grid_j);
+	}
+		break;
 	case OBJECT_TYPE_SPECIALBRICKSMALL: //gạch bbox nhỏ
+	{
 		obj = new CBrick(OBJECT_TYPE_SPECIALBRICKSMALL);
 		obj->SetType(eType::SPECIALBRICKSMALL);
+
+		int grid_i = atoi(tokens[5].c_str());
+		int grid_j = atoi(tokens[6].c_str());
+		grid->Insert(obj, grid_i, grid_j);
+	}
 		break;
 	case OBJECT_TYPE_TORCH:
+	{
 		obj = new Torch();
 		obj->SetType(eType::TORCH);
+
+		int grid_i = atoi(tokens[5].c_str());
+		int grid_j = atoi(tokens[6].c_str());
+		grid->Insert(obj, grid_i, grid_j);
+	}
 		break;
 	case OBJECT_TYPE_CANDLE:
+	{
 		obj = new Candle();
 		obj->SetType(eType::CANDLE);
+
+		int grid_i = atoi(tokens[5].c_str());
+		int grid_j = atoi(tokens[6].c_str());
+		grid->Insert(obj, grid_i, grid_j);
+	}
 		break;
 	case OBJECT_TYPE_STAIR:
-		{
+	{
+
+
 		if (tokens.size() < 7)
 		{
 			DebugOut(L"[ERROR] Stair not found!\n");
 			return;
 		}
-			int t = atof(tokens[5].c_str()); //	1 up 2 down
-			int nx1 = atof(tokens[6].c_str());
-			obj = new Stair(x, y, t, nx1);
-			if (t == 1)
-				obj->SetType(eType::STAIR_UP);
-			else
-				obj->SetType(eType::STAIR_DOWN);
-		}
+		int t = atof(tokens[5].c_str()); //	1 up 2 down
+		int nx1 = atof(tokens[6].c_str());
+		obj = new Stair(x, y, t, nx1);
+		if (t == 1)
+			obj->SetType(eType::STAIR_UP);
+		else
+			obj->SetType(eType::STAIR_DOWN);
+
+		int grid_i = atoi(tokens[7].c_str());
+		int grid_j = atoi(tokens[8].c_str());
+		grid->Insert(obj, grid_i, grid_j);
+		DebugOut(L"[INFO] This have no ani_set!\n");
+	}
 		break;
 	case OBJECT_TYPE_BLACKKNIGHT:
 	{
@@ -427,6 +467,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = new HiddenObject(x, y, xItem, yItem);
 		obj->SetType(eType::HIDDENOBJECT);
+
+		grid->BigBBox(obj);
+		DebugOut(L"[INFO] This have no ani_set!\n");
 	}
 	break;
 	case OBJECT_TYPE_HIDDENOBJECTCREATEBOSS:
@@ -439,12 +482,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		obj = new ObjectCreateBoss(x, y, xboss, yboss, leftBoundaryBoss, rightBoundaryBoss);
 		obj->SetType(eType::HIDDENOBJECTCREATEBOSS);
+
+		grid->BigBBox(obj);
+		DebugOut(L"[INFO] This have no ani_set!\n");
 	}
 	break;
 	case OBJECT_TYPE_HIDDENOBJECTBLOCKCAMERA:
 	{
 		obj = new HiddenObject(x, y);
 		obj->SetType(eType::HIDDENOBJECTBLOCKCAMERA);
+
+		grid->BigBBox(obj);
+		DebugOut(L"[INFO] This have no ani_set!\n");
 	}
 	break;
 	case OBJECT_TYPE_PORTAL:
@@ -456,6 +505,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 			obj = new CPortal(x, y, r, b, scene_id, switchType);
 			obj->SetType(eType::PORTAL);
+
+			grid->BigBBox(obj);
+			DebugOut(L"[INFO] This have no ani_set!\n");
 		}
 		break;
 	default:
@@ -657,7 +709,7 @@ void CPlayScene::LoadSimonState(int SwitchType)
 void CPlayScene::LoadResources()
 {
 	Camera::GetInstance()->SetPosition(0.0f, 0.0f);
-	grid = new Grid(objects);
+	//grid = new Grid(objects);
 	boardGame = new Board(0, 0);
 
 	gameTime = GameTime::GetInstance();
@@ -1633,7 +1685,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
 
-						if (rand() % 2 == 1) // tỉ lệ 50%
+						if (gameObj->GetHealth() <= 0)
 						{
 							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 						}
