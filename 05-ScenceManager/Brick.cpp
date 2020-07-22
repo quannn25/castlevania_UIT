@@ -82,7 +82,7 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
 	if (this->type == eType::SPECIALBRICK)
 	{
-		if (this->id == 999 || this->id == 1000) // broken brick 
+		if (this->id == BROKEN_CROWN1 || this->id == BROKEN_CROWN2) // broken brick 
 		{
 			l = x;
 			t = y - 96; // ko cho simon nhảy móc chân vào

@@ -192,7 +192,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float h = atof(tokens[6].c_str());
 
 		obj = new CBrick(w, h);
-		if (id == 1000)
+		if (id == BROKEN_CROWN2)
 		{
 			obj->SetHealth(2);
 		}
@@ -1853,7 +1853,25 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				{
 					switch (gameObject->GetId())
 					{
-					case 999:
+					case BROKEN_HEART:
+					{
+						if (player->mainWeapon->isCollision(listObj[i]) == true)
+						{
+							gameObject->beAttacked(1);
+							if (gameObject->GetHealth() <= 0)
+							{
+								listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
+								listEffect.push_back(new Hit((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14));
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 1)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 2)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 3)); // hiệu ứng BrokenBrick
+								listEffect.push_back(new BrokenBrick((int)gameObject->GetX() + 14, (int)gameObject->GetY() + 14, 4)); // hiệu ứng BrokenBrick 
+							}
+
+						}
+						break;
+					}
+					case BROKEN_CROWN1:
 					{
 						if (player->mainWeapon->isCollision(listObj[i]) == true)
 						{
@@ -1871,7 +1889,7 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 						}
 						break;
 					}
-					case 1000:
+					case BROKEN_CROWN2:
 					{
 						if (player->mainWeapon->isCollision(listObj[i]) == true)
 						{
@@ -2231,7 +2249,10 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 	{
 		switch (id)
 		{
-		case 1000:
+		case BROKEN_HEART:
+			return new AxeItem(x, y);
+			break;
+		case BROKEN_CROWN2:
 			return new Monney(x, y);
 			break;
 
