@@ -1989,13 +1989,15 @@ void CPlayScene::CheckCollisionSimonWithItem()
 				case eType::MONNEY:
 				{
 					listItem[i]->SetFinish(true);
-					player->SetScore(player->GetScore() + 1000);
+					player->SetScore(player->GetScore() + 100);
+					listEffect.push_back(new EffectMoney(listItem[i]->GetX(), listItem[i]->GetY(), eType::EFFECT_MONEY_100));
 					break;
 				}
 				case eType::CROWN:
 				{
 					listItem[i]->SetFinish(true);
 					player->SetScore(player->GetScore() + 1000);
+					listEffect.push_back(new EffectMoney(listItem[i]->GetX(), listItem[i]->GetY(), eType::EFFECT_MONEY_1000));
 					break;
 				}
 				case eType::HOLYWATERITEM:
@@ -2165,7 +2167,7 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 			return new DaggerItem(x, y);
 
 		if (id == 100 || id == 101)
-			return new HolyWaterItem(x, y);
+			return new Monney(x, y);
 
 	}
 

@@ -88,8 +88,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (subWeapon != NULL)
 			{
-				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == 2 || 
-					animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame() == 2 || animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->getCurrentFrame() == 2);
+				isAttacking = !(animation_set->at(SIMON_ANI_SIT_ATTACK)->getCurrentFrame() == SIMON_END_FRAME_ATTACK || animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame() == SIMON_END_FRAME_ATTACK ||
+					animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame() == SIMON_END_FRAME_ATTACK || animation_set->at(SIMON_ANI_STAIR_DOWN_ATTACK)->getCurrentFrame() == SIMON_END_FRAME_ATTACK);
 				//DebugOut(L"ani = %d\n", animation_set->at(SIMON_ANI_STAIR_UP_ATTACK)->getCurrentFrame());
 				//DebugOut(L"aniiiiiiiiiiiiiiiiiii = %d\n", animation_set->at(SIMON_ANI_STAND_ATTACK)->getCurrentFrame());
 			}

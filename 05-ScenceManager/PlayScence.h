@@ -41,6 +41,7 @@
 #include "PhantomBat.h"
 #include "ObjectCreateBoss.h"
 #include "RedBall.h"
+#include "EffectMoney.h"
 // kiểm tra define_H các file
 
 class CPlayScene: public CScene

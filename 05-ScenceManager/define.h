@@ -89,6 +89,8 @@ using namespace std;
 #define RAVEN_ANI_SET_ID 72
 #define PHANTOMBAT_ANI_SET_ID 73
 #define REDBALL_ANI_SET_ID 74
+#define EFFECT100_ANI_SET_ID 75
+#define EFFECT1000_ANI_SET_ID 76
 
 // define time create ghost
 #define TIME_CREATE_GHOST 1000
@@ -200,7 +202,11 @@ enum eType
 
 	HIDDENOBJECTBLOCKCAMERA = 87,
 
-	REDBALL = 88
+	REDBALL = 88,
+
+	EFFECT_MONEY_100 = 89,
+
+	EFFECT_MONEY_1000 = 90
 
 };
 

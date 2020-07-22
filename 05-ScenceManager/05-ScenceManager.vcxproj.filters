@@ -246,6 +246,9 @@
     <ClCompile Include="RedBall.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="EffectMoney.cpp">
+      <Filter>Framework\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Goomba.h">
@@ -436,6 +439,9 @@
     </ClInclude>
     <ClInclude Include="RedBall.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMoney.h">
+      <Filter>Framework\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

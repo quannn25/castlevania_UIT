@@ -77,7 +77,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			yTarget = PHANTOMBAT_PROCESS_START2_Y; // tương đối, vì process_2 xét xTarget
 
 			vx = ((xTarget - xBefore) / (PHANTOMBAT_PROCESS_START2_SECOND)); // Vận tốc cần để đi đến target trong 1.5s
-			vy = 0.12f;
+			vy = PHANTOM_P1_VY;
 		}
 		break;
 	}
@@ -104,7 +104,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 		{
 			TimeWaited += dt;
-			if (TimeWaited >= (UINT)(2000 + rand() % PHANTOMBAT_PROCESS_START2_RANDOM))
+			if (TimeWaited >= (UINT)(PHANTOM_TIMEWAIT_2000 + rand() % PHANTOMBAT_PROCESS_START2_RANDOM))
 			{
 				isWaiting = false; // ngừng chờ
 
@@ -173,7 +173,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 		{
 			TimeWaited += dt;
-			if (TimeWaited >= 3000)
+			if (TimeWaited >= PHANTOM_TIMEWAIT_3000)
 			{
 				isWaiting = false; // ngừng chờ
 
@@ -231,18 +231,7 @@ void PhantomBat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		case PHANTOMBAT_PROCESS_STRAIGHT_2:
 		{
-			int random = rand() % 3;
-			switch (random)
-			{
-			case 0: //33 %
-				//
-				break;
-
-			default: // 66%
-				StartCurves();
-
-				break;
-			}
+			StartCurves();
 
 			break;
 		}
@@ -282,10 +271,8 @@ void PhantomBat::ProcessSmart()
 		case 0:
 			StartStaight();
 			return;
-		case 1:
-			StartCurves();
-			return;
 		default:
+			StartCurves();
 			break;
 		}
 	}
@@ -306,7 +293,7 @@ void PhantomBat::Start()
 	yBefore = y;
 	vy = PHANTOMBAT_PROCESS_START1_VY;
 	vx = 0.0f;
-	yTarget = y + 40; // lúc đầu thì đi xuống 40px
+	yTarget = y + PHANTOM_TARGET_RANDOM1; // lúc đầu thì đi xuống 40px
 }
 
 void PhantomBat::StartCurves()
@@ -326,16 +313,17 @@ void PhantomBat::StartCurves()
 	int heightCam = Camera::GetInstance()->GetScreenHeight();
 
 	if (simon->GetX() < x) // simon bên trái boss
-		xTarget = xCam - 100 + rand() % ((int)(simon->GetX() - xCam + 100)); // -100 để đảm bảo simon đứng sát cạnh trái cam vẫn bị boss sát thương
+		xTarget = xCam - PHANTOM_TARGET_FIT_CAMERA + rand() % ((int)(simon->GetX() - xCam + PHANTOM_TARGET_FIT_CAMERA)); // -100 để đảm bảo simon đứng sát cạnh trái cam vẫn bị boss sát thương
 	else // simon bên phải boss
 		xTarget = simon->GetX() + SIMON_BBOX_WIDTH;
 
-	yTarget = simon->GetY() - 40; // điểm p3(là y3) trong bezier cao hơn xíu so với p2 (là y2) để lượng vòng chữ u
+	yTarget = simon->GetY() - PHANTOM_TARGET_RANDOM1; // điểm p3(là y3) trong bezier cao hơn xíu so với p2 (là y2) để lượng vòng chữ u
 
 	x3 = xTarget;
 	y3 = yTarget;
 
-	vx = -(x - xTarget) / (abs(xTarget - xBefore)*1000.0f / 150); // vận tốc cần để đi đến Target // quy ước: cứ 1 giây đi 150px
+	//vx = -(x - xTarget) / (abs(xTarget - xBefore)*PHANTOM_TARGET_CONST / PHANTOM_TARGET_VX); // vận tốc cần để đi đến Target
+	vx = -(x - xTarget) / PHANTOM_TARGET_CONST;
 	vy = 0;
 
 	isUseBezierCurves = true;
@@ -359,6 +347,6 @@ void PhantomBat::StartStaight()
 	yTarget = 80.0f + rand() % (190 - 80); // khoảng 80 190
 
 
-	vx = (xTarget - xBefore) / (1000); // cho đi 1 giây
-	vy = (yTarget - yBefore) / (1000);
+	vx = (xTarget - xBefore) / (PHANTOM_TARGET_CONST); // cho đi 1 giây
+	vy = (yTarget - yBefore) / (PHANTOM_TARGET_CONST);
 }
