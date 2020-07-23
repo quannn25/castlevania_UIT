@@ -7,10 +7,12 @@ Ghost::Ghost(int nx1)
 	SetAnimationSet(ani_set);
 
 	this->nx = nx1;
-	health = 1;
+	health = 2;
 	vx = GHOST_SPEED_X * this->nx;
 	this->type = eType::GHOST;
 	isAuto = false;
+	isHurt = 0;
+	hurtTime = 0;
 }
 
 Ghost::Ghost(float x1, float y1, int nx1)
@@ -22,10 +24,12 @@ Ghost::Ghost(float x1, float y1, int nx1)
 	this->x = x1;
 	this->y = y1;
 	this->nx = nx1;
-	health = 1;
+	health = 2;
 	vx = GHOST_SPEED_X * this->nx;
-	this->type = eType::ZOMBIE;
+	this->type = eType::GHOST;
 	isAuto = false;
+	isHurt = 0;
+	hurtTime = 0;
 }
 
 Ghost::~Ghost()
@@ -42,6 +46,16 @@ void Ghost::GetBoundingBox(float & left, float & top, float & right, float & bot
 
 void Ghost::Update(DWORD dt, Simon * simon, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (isHurt)
+	{
+		hurtTime += dt;
+		if (hurtTime >= GHOST_HURT_TIME)
+		{
+			isHurt = false;
+			hurtTime = 0;
+		}
+	}
+
 	if (isAuto == true)
 	{
 		if (abs(this->x - simon->x) > 20)

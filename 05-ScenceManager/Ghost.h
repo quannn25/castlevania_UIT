@@ -6,12 +6,14 @@
 #define GHOST_SPEED_Y 0.05f
 #define GHOST_FRAMEWIDTH 32
 #define GHOST_FRAMEHEIGHT 32
+#define GHOST_HURT_TIME 300
 
 #include "Enemy.h"
 #include "Simon.h"
 class Ghost : public Enemy
 {
 	bool isAuto;
+	DWORD hurtTime;
 public:
 	Ghost(int nx1 = 1);
 	Ghost(float x1, float y1, int nx1);

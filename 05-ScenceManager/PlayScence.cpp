@@ -1544,12 +1544,16 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				}
 				case eType::GHOST:
 				{
-					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
-					gameObj->beAttacked(1);
+					Ghost *gameObj = dynamic_cast<Ghost*>(listObj[i]);
+					if (!gameObj->isHurt)
+					{
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
 
-					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
-
-					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+						if (gameObj->GetHealth() <= 0)
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+					}
 					break;
 				}
 				case eType::HUNCHBACK:
@@ -1679,8 +1683,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 						gameObj->beAttacked(1);
 						gameObj->isHurt = true;
 
-						player->SetScore(player->GetScore() + 100);
-
 						isCollisonWithEnemy = true;
 
 						listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
@@ -1698,8 +1700,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
 
-					player->SetScore(player->GetScore() + 100);
-
 					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
@@ -1714,18 +1714,20 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 
 				case eType::GHOST:
 				{
-					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
-					gameObj->beAttacked(1);
-
-					player->SetScore(player->GetScore() + 100);
-
-					isCollisonWithEnemy = true;
-
-					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
-
-					if (rand() % 2 == 1) // tỉ lệ 50%
+					Ghost *gameObj = dynamic_cast<Ghost*>(listObj[i]);
+					if (!gameObj->isHurt)
 					{
-						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						gameObj->beAttacked(1);
+						gameObj->isHurt = true;
+
+						isCollisonWithEnemy = true;
+
+						listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
+
+						if (gameObj->GetHealth() <= 0)
+						{
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+						}
 					}
 
 					break;
@@ -1734,8 +1736,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
-
-					player->SetScore(player->GetScore() + 100);
 
 					isCollisonWithEnemy = true;
 
@@ -1753,8 +1753,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
 
-					player->SetScore(player->GetScore() + 100);
-
 					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 10, gameObj->GetY() + 10)); // hiệu ứng
@@ -1770,8 +1768,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 				{
 					CGameObject *gameObj = dynamic_cast<CGameObject*>(listObj[i]);
 					gameObj->beAttacked(1);
-
-					player->SetScore(player->GetScore() + 100);
 
 					isCollisonWithEnemy = true;
 
