@@ -735,6 +735,7 @@
 #RavenZone
 #type	l	t	r	b	x1	y1	left_b.dary	right_b.dary	time(not)		count(not)
 15	270	20	1500	450	714	200	222	0	1	1
+15	270	20	1500	450	814	270	322	0	1	1
 
 
 

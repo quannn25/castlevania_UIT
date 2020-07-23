@@ -711,6 +711,11 @@
 1	32	304	22	3	1	0
 
 
+#CANDLE
+
+3	100	290	34	18	1	0
+
+
 
 #Black Knight
 # type	x	y	ani_set_id	id	leftBoundary	rightBoundary

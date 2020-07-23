@@ -1490,7 +1490,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					gameObj->beAttacked(1);
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
-					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
 					break;
@@ -1638,7 +1637,6 @@ void CPlayScene::CheckCollisionWeapon(vector<LPGAMEOBJECT> listObj)
 					isCollisonWithEnemy = true;
 
 					listEffect.push_back(new Hit(gameObj->GetX() + 14, gameObj->GetY() + 14)); // hiệu ứng
-					listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng
 					listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
 					break;
@@ -2187,7 +2185,49 @@ Item * CPlayScene::GetNewItem(int id, eType type, float x, float y)
 
 	if (type == eType::CANDLE)
 	{
-		return new SmallHeart(x, y);
+		int random = rand() % 10;
+
+		if (dynamic_cast <MorningStar*> (player->mainWeapon))
+		{
+			while (dynamic_cast <MorningStar*> (player->mainWeapon)->getLevel() == 2 && random == 4)
+			{
+				random = rand() % 10;
+			}
+		}
+
+		switch (random)
+		{
+		case 0:
+			return	new LargeHeart(x, y);
+			break;
+		case 1:
+			return	new SmallHeart(x, y);
+			break;
+		case 2:
+			return new DaggerItem(x, y);
+			break;
+		case 3:
+			return new Monney(x, y);
+			break;
+		case 4:
+			return new UpgradeMorningStar(x, y);
+			break;
+		case 5:
+			return new HolyWaterItem(x, y);
+			break;
+		case 6:
+			return new StopWatchItem(x, y);
+			break;
+		case 7:
+			return new BoomerangItem(x, y);
+			break;
+		case 8:
+			return new AxeItem(x, y);
+			break;
+		default: // 50% còn lại là SmallHeart
+			return new SmallHeart(x, y);
+			break;
+		}
 	}
 
 
