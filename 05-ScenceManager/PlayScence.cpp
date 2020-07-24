@@ -745,7 +745,7 @@ void CPlayScene::Update(DWORD dt)
 	if (!isAllowProcessClearState)
 	{
 		// xử lý gameTime và máu
-		if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0)
+		if (gameTime->GetTime() >= GAMETIME_SCENE_1 || player->GetHealth() <= 0 || player->GetY() > (Camera::GetInstance()->Gety() + Camera::GetInstance()->GetScreenHeight()))
 		{
 			if (player->GetLive() == 0)
 				return;

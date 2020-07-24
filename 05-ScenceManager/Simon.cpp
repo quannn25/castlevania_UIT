@@ -649,7 +649,7 @@ void Simon::CollisionWithBrick(vector<LPGAMEOBJECT>* coObjects)
 			x += dx;
 			y += dy;
 			FreeFallDown += dy;
-			if (FreeFallDown >= 3) // biến fix simon đang rơi tự vẫn nhảy đc
+			if (FreeFallDown >= 2) // biến fix simon đang rơi tự vẫn nhảy đc
 			{
 				isJumping = 1;
 			}

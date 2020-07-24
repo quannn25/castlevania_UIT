@@ -756,7 +756,7 @@
 #Stair 
 #type 4 in, 5 out
 # type	x	y	ani_set_id	id	t(1 o duoi_ 2 tren)	nx	row	col
-4	914	210	0	900	2	1	1	3
+4	914	213	0	900	2	1	1	3
 
 
 # --- SCENE PORTAL ---- 115 98 150 1

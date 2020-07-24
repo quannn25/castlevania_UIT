@@ -29,7 +29,7 @@ void Stair::GetBoundingBox(float & left, float & top, float & right, float & bot
 	{
 		left = x - 10;
 		right = x + width * 2;
-		top = y;
+		top = y + height - 5;
 		bottom = y + height;
 	}
 	/*left = x;
