@@ -15,4 +15,4 @@ Giảng viên hướng dẫn : Thầy Đinh Nguyễn Anh Dũng
 - Tiled Map.
 - Camera.
 
-(Đồ án này mình được thầy cho 10đ, các bạn thấy hay và hữu ích nhớ tặng mình 1 Star nhé <3)
+(Đồ án này mình được thầy cho 10đ, các bạn tham khảo có thắc mắc nào ib mình giải đáp nhé <3)
